@@ -1,0 +1,75 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%",
+  dev = "ragg_png"
+)
+```
+
+# cards
+
+<!-- badges: start -->
+`r badger::badge_license("MIT", "blue", "https://cran.r-project.org/web/licenses/MIT")`
+`r badger::badge_repostatus("active")`
+<!-- badges: end -->
+
+The goal of cards is to ...
+
+## Installation
+
+You can install the development version of cards like so:
+
+``` r
+# pak::pkg_install("elipousson/cards")
+```
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r example}
+library(cards)
+```
+
+cards includes data on standard page sizes including sizes for papers, photo prints, postcards, and playing cards.
+
+```{r get_page}
+get_paper("Letter")
+
+get_paper("Letter", orientation = "landscape")
+
+get_card("Poker")
+```
+
+cards uses ggplot2 to create plots for individual cards and patchwork to assemble card plots into page layouts for print.
+
+```{r plot_cards}
+cards <-
+  plot_cards(
+    "Poker",
+    n = 8,
+    number = TRUE,
+    border = TRUE,
+    size = 4,
+    linewidth = 0.5,
+    text = rep(c("\U2664", "\U2661", "\U2662", "\U2667"), 2), # "♤", "♡", "♢", "♧" 
+    color = "yellow"
+    )
+
+cards[[1]]
+```
+
+```{r layout_cards}
+layout_cards(cards, paper = "Letter", orientation = "landscape")
+```
+
+cards currently has very limited features but additional features are expected to include multi-page layouts, control over the position of card elements, preset card formats/designs, and appropriate handling of cut-lines for DIY card printing.
+

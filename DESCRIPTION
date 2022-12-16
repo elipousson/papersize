@@ -1,0 +1,28 @@
+Type: Package
+Package: cards
+Title: Plot Playing Cards
+Version: 0.1.0
+Authors@R: 
+    person("Eli", "Pousson", , "eli.pousson@gmail.com", role = c("aut", "cre", "cph"),
+           comment = c(ORCID = "0000-0001-8280-1706"))
+Maintainer: Eli Pousson <eli.pousson@gmail.com>
+Description: Make simple playing cards with ggplot2.
+License: MIT + file LICENSE
+URL: https://github.com/elipousson/cards,
+    https://elipousson.github.io/cards/
+BugReports: https://github.com/elipousson/cards/issues
+Depends: 
+    R (>= 2.10)
+Imports: 
+    cli,
+    ggplot2,
+    grid,
+    patchwork,
+    rlang
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.1
