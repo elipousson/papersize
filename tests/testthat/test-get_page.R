@@ -8,7 +8,7 @@ test_that("get_page works", {
     11
   )
   expect_identical(
-    get_page(orientation = "square", reorient = FALSE)$orientation,
+    get_page_size(orientation = "square", reorient = FALSE)$orientation,
     c("square", "square", "square", "square")
   )
   expect_equal(
@@ -16,11 +16,11 @@ test_that("get_page works", {
     list("Tarot card")
   )
   expect_equal(
-    get_page("ledger", units = "cm")$units,
+    get_page_size("ledger", units = "cm")$units,
     "cm"
   )
   expect_equal(
-    get_page_dims(get_page("ledger")),
+    get_page_dims(get_page_size("ledger")),
     c("width" = 11, "height" = 17)
   )
 })

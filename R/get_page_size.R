@@ -2,17 +2,18 @@
 #'
 #' @description
 #'
-#' - [get_page()] filters `page_sizes` by one or more variables with option to
+#' - [get_page_size()] filters `paper_sizes` by one or more variables with option to
 #' reorient page dimensions or convert page units.
-#' - [get_paper()] is equivalent to [get_page()] without the option to set units,
-#' type, or reorient parameters.
+#' - [get_paper()] is equivalent to [get_page_size()] without the option to set
+#' units, type, or reorient parameters.
 #' - [get_card()] is equivalent to [get_paper()] with `type = "card"` and the
-#' string "card" attached to the end of any provided name value.
+#' string "card" attached to the end of any provided name value supporting both
+#' "Poker card" and "Poker" as a valid name.
 #' - [get_page_dims()] returns the width and height of a single page.
 #' - [convert_page_units()] uses [convert_unit_type()] to convert the unit used
 #' for page dimensions.
 #'
-#' @name get_page
+#' @name get_page_size
 #' @param name Page name, e.g. "letter", not case sensitive, Default: NULL
 #' @param width Page width in "in", "px" or "mm" units. Default: NULL
 #' @param height Page height in "in", "px" or "mm" units. Default: NULL
@@ -28,15 +29,15 @@
 #'
 #' get_paper("letter", orientation = "landscape")
 #'
-#' get_page(orientation = "square", reorient = FALSE)
+#' get_page_size(orientation = "square", reorient = FALSE)
 #'
-#' get_page("ledger", units = "cm")
+#' get_page_size("ledger", units = "cm")
 #'
 #' get_card("Tarot")
 #'
 #' @export
 #' @importFrom rlang arg_match
-get_page <- function(name = NULL,
+get_page_size <- function(name = NULL,
                      width = NULL,
                      height = NULL,
                      orientation = NULL,
@@ -94,13 +95,13 @@ get_page <- function(name = NULL,
 }
 
 #' @name get_paper
-#' @rdname get_page
+#' @rdname get_page_size
 #' @export
 get_paper <- function(name = NULL,
                       width = NULL,
                       height = NULL,
                       orientation = NULL) {
-  get_page(
+  get_page_size(
     name = name,
     width = width,
     height = height,
@@ -109,7 +110,7 @@ get_paper <- function(name = NULL,
 }
 
 #' @name get_card
-#' @rdname get_page
+#' @rdname get_page_size
 #' @export
 get_card <- function(name = NULL,
                      width = NULL,
@@ -119,7 +120,7 @@ get_card <- function(name = NULL,
     name <- paste(name, "card")
   }
 
-  get_page(
+  get_page_size(
     name = name,
     width = width,
     height = height,
@@ -129,15 +130,15 @@ get_card <- function(name = NULL,
 }
 
 #' @name get_page_dims
-#' @rdname get_page
+#' @rdname get_page_size
 #' @param page Used by [get_page_dims()], page is either a character vector
-#'   passed to the name parameter of [get_page()], a data.frame with column
+#'   passed to the name parameter of [get_page_size()], a data.frame with column
 #'   names matching the cols parameter, or a length 2 numeric vector with the
 #'   page width and height.
 #' @param cols Length 2 character vector with column names for page dimensions.
 #'   Defaults to c("width", "height").
 #' @param arg,call Passed to [cli_abort()] to improve internal error messages.
-#' @param ... Additional parameters passed by [get_page_dims()] to [get_page()]
+#' @param ... Additional parameters passed by [get_page_dims()] to [get_page_size()]
 #'   if page is a character object.
 #' @export
 #' @importFrom rlang caller_arg
@@ -151,7 +152,7 @@ get_page_dims <- function(page = NULL,
                           call = parent.frame(),
                           ...) {
   if (is.character(page)) {
-    page <- get_page(page, width, height, orientation, ...)
+    page <- get_page_size(page, width, height, orientation, ...)
   }
 
   if (is.data.frame(page)) {
@@ -211,7 +212,7 @@ check_dims_cols <- function(cols = c("width", "height"),
 }
 
 #' @name convert_page_units
-#' @rdname get_page
+#' @rdname get_page_size
 #' @param units Units to convert page dimensions to using [convert_unit_type()].
 #' @export
 convert_page_units <- function(page, units = NULL) {
@@ -239,7 +240,8 @@ convert_page_units <- function(page, units = NULL) {
 }
 
 #' @noRd
-page_filter <- function(page, y = NULL, col = "name") {
+#' @importFrom rlang caller_arg
+page_filter <- function(page, y = NULL, col = rlang::caller_arg(y)) {
   if (is.null(y)) {
     return(page)
   }

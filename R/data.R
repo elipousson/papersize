@@ -1,7 +1,7 @@
 #'  Standard paper and image sizes
 #'
 #' Reference table of standard paper, postcard, photo print, social media image
-#' sizes, and playing card sizes for [get_page()]. Derived from
+#' sizes, and playing card sizes for [get_page_size()]. Derived from
 #' [visioguy/PaperSizes](https://github.com/visioguy/PaperSizes/) repo, [Adobe
 #' UK guide to photo
 #' sizes](https://www.adobe.com/uk/creativecloud/photography/discover/standard-photo-sizes.html)

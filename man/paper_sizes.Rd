@@ -24,7 +24,7 @@ paper_sizes
 }
 \description{
 Reference table of standard paper, postcard, photo print, social media image
-sizes, and playing card sizes for \code{\link[=get_page]{get_page()}}. Derived from
+sizes, and playing card sizes for \code{\link[=get_page_size]{get_page_size()}}. Derived from
 \href{https://github.com/visioguy/PaperSizes/}{visioguy/PaperSizes} repo, \href{https://www.adobe.com/uk/creativecloud/photography/discover/standard-photo-sizes.html}{Adobe UK guide to photo sizes}
 and other sources. Data is identical to data included with sfext package.
 }
