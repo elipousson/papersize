@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://elipousson.github.io/cards/404.html</loc>
+    <loc>https://elipousson.github.io/papersize/404.html</loc>
   </url>
   <url>
-    <loc>https://elipousson.github.io/cards/LICENSE-text.html</loc>
+    <loc>https://elipousson.github.io/papersize/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://elipousson.github.io/cards/LICENSE.html</loc>
+    <loc>https://elipousson.github.io/papersize/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://elipousson.github.io/cards/authors.html</loc>
+    <loc>https://elipousson.github.io/papersize/authors.html</loc>
   </url>
   <url>
-    <loc>https://elipousson.github.io/cards/index.html</loc>
+    <loc>https://elipousson.github.io/papersize/index.html</loc>
   </url>
   <url>
-    <loc>https://elipousson.github.io/cards/reference/as_unit.html</loc>
+    <loc>https://elipousson.github.io/papersize/reference/as_unit.html</loc>
   </url>
   <url>
-    <loc>https://elipousson.github.io/cards/reference/card_sizes.html</loc>
+    <loc>https://elipousson.github.io/papersize/reference/card_sizes.html</loc>
   </url>
   <url>
-    <loc>https://elipousson.github.io/cards/reference/cards-package.html</loc>
+    <loc>https://elipousson.github.io/papersize/reference/get_page_size.html</loc>
   </url>
   <url>
-    <loc>https://elipousson.github.io/cards/reference/get_page.html</loc>
+    <loc>https://elipousson.github.io/papersize/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://elipousson.github.io/cards/reference/index.html</loc>
+    <loc>https://elipousson.github.io/papersize/reference/layout_cards.html</loc>
   </url>
   <url>
-    <loc>https://elipousson.github.io/cards/reference/layout_cards.html</loc>
+    <loc>https://elipousson.github.io/papersize/reference/paper_sizes.html</loc>
   </url>
   <url>
-    <loc>https://elipousson.github.io/cards/reference/paper_sizes.html</loc>
+    <loc>https://elipousson.github.io/papersize/reference/papersize-package.html</loc>
   </url>
   <url>
-    <loc>https://elipousson.github.io/cards/reference/plot_cards.html</loc>
+    <loc>https://elipousson.github.io/papersize/reference/plot_cards.html</loc>
   </url>
 </urlset>
