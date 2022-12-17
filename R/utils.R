@@ -43,7 +43,11 @@ map_gg <- function(.x, gg = NULL) {
 #'
 #' @noRd
 geom_text_if_family <- function(data,
-                                mapping = ggplot2::aes(x = x, y = y, label = label),
+                                mapping = ggplot2::aes(
+                                  x = x,
+                                  y = y,
+                                  label = label
+                                ),
                                 family = NULL,
                                 ...) {
   if (!is.null(family)) {
