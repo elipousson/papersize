@@ -29,7 +29,7 @@ layout_cards <- function(card = NULL,
                          orientation = "landscape",
                          byrow = FALSE,
                          ...) {
-  paper_dims <- page_dims(paper, width, height, orientation)
+  paper_dims <- get_page_dims(paper, width, height, orientation)
 
   if (is.list(card)) {
     ncol <- NULL
@@ -56,7 +56,7 @@ layout_cards <- function(card = NULL,
     )
   }
 
-  dims <- page_dims(card)
+  dims <- get_page_dims(card)
 
   patchwork::plot_layout(
     ncol = paper_dims[[1]] %/% dims[[1]],

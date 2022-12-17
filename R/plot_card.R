@@ -40,52 +40,32 @@ plot_cards <- function(card,
                        linetype = "dashed",
                        linewidth = 1,
                        text = NULL,
-                       center = c(0, 0)) {
+                       center = NULL) {
   if (is.character(card)) {
     card <- get_card(card, orientation = orientation)
   }
 
-  check_page(card)
+  if (!all(rlang::has_name(card, c("x", "y")))) {
+    center <- center %||% c(0, 0)
+    card$x <- center[1]
+    card$y <- center[2]
+  }
 
-  plots <- make_card_plots(card, n, fill, center)
+  plots <- make_card_plots(card, n, fill)
 
   if (border) {
-    plots <- add_card_border(plots, card, inset, fill, color, linetype, linewidth, center)
+    plots <- add_card_border(plots, card, inset, fill, color, linetype, linewidth)
   }
 
   if (number) {
-    plots <- add_card_number(plots, n, color, size, family, center)
+    plots <- add_card_number(plots, card, n, color, size, family)
   }
 
   if (!is.null(text)) {
-    plots <- add_card_text(plots, text, color, size, family, center)
+    plots <- add_card_text(plots, card, text, color, size, family)
   }
 
   plots
-}
-
-#' Helper to create a ggplot for a single card
-#'
-#' @noRd
-#' @importFrom ggplot2 ggplot geom_tile aes theme_void coord_fixed
-make_card_plot <- function(card,
-                           fill = "gray20",
-                           fixed = TRUE,
-                           center = c(0, 0)) {
-  plot <-
-    ggplot2::ggplot() +
-    ggplot2::geom_tile(
-      data = card,
-      ggplot2::aes(x = center[1], y = center[2], width = width, height = height),
-      fill = fill
-    ) +
-    ggplot2::theme_void()
-
-  if (fixed) {
-    return(plot + ggplot2::coord_fixed())
-  }
-
-  plot
 }
 
 #' Helper to create a list of plots for n cards
@@ -104,9 +84,39 @@ make_card_plots <- function(card,
   map(
     n,
     function(x) {
-      make_card_plot(card, fill, fixed = TRUE)
+      setup_card_plot(card, fill, fixed = TRUE)
     }
   )
+}
+
+#' Helper to create a ggplot for a single card
+#'
+#' @noRd
+#' @importFrom ggplot2 ggplot geom_tile aes theme_void coord_fixed
+setup_card_plot <- function(card,
+                           fill = "gray20",
+                           tile = TRUE,
+                           fixed = TRUE) {
+  check_page(card, cols = c("width", "height", "x", "y"))
+
+  plot <-
+    ggplot2::ggplot()
+
+  if (tile) {
+    plot <- plot +
+      ggplot2::geom_tile(
+        data = card,
+        ggplot2::aes(x = x, y = y, width = width, height = height),
+        fill = fill
+      )
+  }
+
+  if (fixed) {
+    return(plot + ggplot2::coord_fixed())
+  }
+
+  plot +
+    ggplot2::theme_void()
 }
 
 #' Helper to add a number to each card plot in a list
@@ -114,28 +124,30 @@ make_card_plots <- function(card,
 #' @noRd
 #' @importFrom ggplot2 geom_text aes
 add_card_number <- function(plots,
+                            card = NULL,
                             n = 1,
                             color = "white",
                             size = 5,
-                            family = NULL,
-                            center = c(0, 0)) {
+                            family = NULL) {
   n <- c(1:n)
+
+  # repeat card function to copy layout rows
 
   map(
     n,
     function(i) {
-      data <-
+      card_number <-
         data.frame(
-        "x" = center[1],
-        "y" = center[2],
-        "label" = i
-      )
+          "x" = card$x,
+          "y" = card$y,
+          "label" = i
+        )
 
       plots[[i]] +
-      geom_text_if_family(
-        data = data,
-        mapping = ggplot2::aes(x = x, y = y, label = label),
-        color = color, size = size, family = family
+        geom_text_if_family(
+          data = card_number,
+          mapping = ggplot2::aes(x = x, y = y, label = label),
+          color = color, size = size, family = family
         )
     }
   )
@@ -147,13 +159,12 @@ add_card_number <- function(plots,
 #' @importFrom grid unit
 #' @importFrom ggplot2 geom_tile aes
 add_card_border <- function(plots,
-                            card,
+                            card = NULL,
                             inset = unit(c(5, 5), "mm"),
                             fill = NA,
                             color = "white",
                             linetype = "dashed",
-                            linewidth = 1,
-                            center = c(0, 0)) {
+                            linewidth = 1) {
   inset_card <- inset_page(card, inset)
 
   if (length(fill) == 2) {
@@ -167,7 +178,7 @@ add_card_border <- function(plots,
     ggplot2::geom_tile(
       data = inset_card,
       ggplot2::aes(
-        x = center[1], y = center[2],
+        x = x, y = y,
         width = width,
         height = height
       ),
@@ -184,11 +195,11 @@ add_card_border <- function(plots,
 #' @noRd
 #' @importFrom ggplot2 geom_text aes
 add_card_text <- function(plots,
+                          card = NULL,
                           text = NULL,
                           color = "white",
                           size = 5,
                           family = NULL,
-                          center = c(0, 0),
                           nudge_x = 0,
                           nudge_y = 0.5) {
   if (is.null(text)) {
@@ -209,28 +220,28 @@ add_card_text <- function(plots,
     text <-
       data.frame(
         "label" = text,
-        "x" = rep(center[1] + nudge_x, n),
-        "y" = rep(center[2] + nudge_y, n)
+        "x" = rep(card$x + nudge_x, n),
+        "y" = rep(card$y + nudge_y, n)
       )
 
     plots <-
       map(
-      c(1:n),
-      function(i) {
-        plots[[i]] +
-          geom_text_if_family(
-            data = text[i, ],
-            mapping = ggplot2::aes(
-              x = x,
-              y = y,
-              label = label
-            ),
-            size = size,
-            color = color,
-            family = family
-          )
-      }
-    )
+        c(1:n),
+        function(i) {
+          plots[[i]] +
+            geom_text_if_family(
+              data = text[i, ],
+              mapping = ggplot2::aes(
+                x = x,
+                y = y,
+                label = label
+              ),
+              size = size,
+              color = color,
+              family = family
+            )
+        }
+      )
 
     return(plots)
   }
