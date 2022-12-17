@@ -40,6 +40,8 @@ is_same_unit_type(x, y, recurse = FALSE)
 
 \item{recurse}{Whether to recurse into complex units.}
 
+\item{arg}{Passed to \code{\link[=cli_abort]{cli_abort()}} to improve internal error messages.}
+
 \item{call}{The execution environment of a currently running
 function, e.g. \code{call = caller_env()}. The corresponding function
 call is retrieved and mentioned in error messages as the source
@@ -77,12 +79,15 @@ Defaults to \code{FALSE}.}
     \item{\code{typeTo}}{ Same as \code{typeFrom}, but applies to the unit object
     that is to be created. }
   }}
+
+\item{y}{Object to compare to x.}
 }
 \description{
 \itemize{
 \item \code{\link[=as_unit]{as_unit()}}: Convert to unit (allowing unit objects as units)
 \item \code{\link[=as_unit_type]{as_unit_type()}}: Convert to unit type (or checking unit types)
-\item \code{\link[=convert_unit_type]{convert_unit_type()}}: Convert x from one unit type to another
+\item \code{\link[=convert_unit_type]{convert_unit_type()}}: Convert x from one unit type to another (preserving
+names for named vectors)
 \item \code{\link[=is_same_unit_type]{is_same_unit_type()}}: Are x and y the same unit type?
 }
 }
@@ -100,7 +105,7 @@ as_unit(inch)
 
 convert_unit_type(inch, to = "cm")
 
-convert_unit_type(100, from = "mm", to = "cm")
+convert_unit_type(c(10, 100), from = "mm", to = "cm")
 
 is_same_unit_type(inch, "in")
 

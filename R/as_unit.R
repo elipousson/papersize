@@ -30,6 +30,7 @@
 #' is_same_unit_type("pt", "points")
 #'
 #' @inheritParams grid::unit
+#' @param arg Passed to [cli_abort()] to improve internal error messages.
 #' @inheritParams cli::cli_abort
 #' @export
 as_unit <- function(x,
@@ -145,6 +146,7 @@ convert_unit_type <- function(x,
 
 #' @name is_same_unit_type
 #' @rdname as_unit
+#' @param y Object to compare to x.
 #' @export
 is_same_unit_type <- function(x, y, recurse = FALSE) {
   as_unit_type(x, recurse) == as_unit_type(y, recurse)
