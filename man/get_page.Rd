@@ -4,6 +4,8 @@
 \alias{get_page}
 \alias{get_paper}
 \alias{get_card}
+\alias{get_page_dims}
+\alias{convert_page_units}
 \title{Get a paper or card size based on name, dimensions, orientation, or type}
 \usage{
 get_page(
@@ -11,12 +13,27 @@ get_page(
   width = NULL,
   height = NULL,
   orientation = NULL,
+  reorient = TRUE,
+  units = NULL,
   type = NULL
 )
 
 get_paper(name = NULL, width = NULL, height = NULL, orientation = NULL)
 
 get_card(name = NULL, width = NULL, height = NULL, orientation = NULL)
+
+get_page_dims(
+  page = NULL,
+  width = NULL,
+  height = NULL,
+  orientation = NULL,
+  cols = c("width", "height"),
+  arg = caller_arg(page),
+  call = parent.frame(),
+  ...
+)
+
+convert_page_units(page, units = NULL)
 }
 \arguments{
 \item{name}{Page name, e.g. "letter", not case sensitive, Default: NULL}
@@ -27,12 +44,48 @@ get_card(name = NULL, width = NULL, height = NULL, orientation = NULL)
 
 \item{orientation}{Page orientation, Default: NULL}
 
+\item{reorient}{If \code{TRUE} and orientation is not NULL, flip width and height
+dimensions for any pages that do not match the provided orientation. Set
+\code{reorient = FALSE} to filter pages by orientation.}
+
+\item{units}{Units to convert page dimensions to using \code{\link[=convert_unit_type]{convert_unit_type()}}.}
+
 \item{type}{Page type, Options include "paper", "social", "postcard",
 "print", "card", or "screen". Default: NULL}
+
+\item{cols}{Length 2 character vector with column names for page dimensions.
+Defaults to c("width", "height").}
+
+\item{arg, call}{Passed to \code{\link[=cli_abort]{cli_abort()}} to improve internal error messages.}
+
+\item{...}{Additional parameters passed by \code{\link[=get_page_dims]{get_page_dims()}} to \code{\link[=get_page]{get_page()}}
+if page is a character object.}
 }
 \value{
 A data.frame with page, paper, or card name and dimensions.
 }
 \description{
-Get a paper or card size based on name, dimensions, orientation, or type
+\itemize{
+\item \code{\link[=get_page]{get_page()}} filters \code{page_sizes} by one or more variables with option to
+reorient page dimensions or convert page units.
+\item \code{\link[=get_paper]{get_paper()}} is equivalent to \code{\link[=get_page]{get_page()}} without the option to set units,
+type, or reorient parameters.
+\item \code{\link[=get_card]{get_card()}} is equivalent to \code{\link[=get_paper]{get_paper()}} with \code{type = "card"} and the
+string "card" attached to the end of any provided name value.
+\item \code{\link[=get_page_dims]{get_page_dims()}} returns the width and height of a single page.
+\item \code{\link[=convert_page_units]{convert_page_units()}} uses \code{\link[=convert_unit_type]{convert_unit_type()}} to convert the unit used
+for page dimensions.
+}
+}
+\examples{
+get_paper("letter")
+
+get_paper("letter", orientation = "landscape")
+
+get_page(orientation = "square", reorient = FALSE)
+
+get_page("ledger", units = "cm")
+
+get_card("Tarot")
+
 }

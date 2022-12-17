@@ -18,7 +18,7 @@ plot_cards(
   linetype = "dashed",
   linewidth = 1,
   text = NULL,
-  center = c(0, 0)
+  center = NULL
 )
 }
 \arguments{
