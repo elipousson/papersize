@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(cards)
+library(papersize)
 
-test_check("cards")
+test_check("papersize")

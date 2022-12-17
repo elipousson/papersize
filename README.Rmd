@@ -14,32 +14,31 @@ knitr::opts_chunk$set(
 )
 ```
 
-# cards
+# papersize
 
 <!-- badges: start -->
 `r badger::badge_license("MIT", "blue", "https://cran.r-project.org/web/licenses/MIT")`
-`r badger::badge_repostatus("active")`
+`r badger::badge_repostatus("WIP")`
+`r badger::badge_lifecycle()``
 <!-- badges: end -->
 
-The goal of cards is to ...
+The goal of papersize is to provide you with convenience functions extending grid, ggplot2, and patchwork to help in sizing plots and files for printing to paper, postcards, playing cards, and other physical media.
 
 ## Installation
 
-You can install the development version of cards like so:
+You can install the development version of papersize like so:
 
 ``` r
-# pak::pkg_install("elipousson/cards")
+# pak::pkg_install("elipousson/papersize")
 ```
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
-
-```{r example}
-library(cards)
+```{r setup}
+library(papersize)
 ```
 
-cards includes data on standard page sizes including sizes for papers, photo prints, postcards, and playing cards.
+papersize includes data on standard paper sizes including sizes for papers (ANSI, ISO, and other standards), photo prints, postcards, and playing cards.
 
 ```{r get_page}
 get_paper("Letter")
@@ -49,10 +48,10 @@ get_paper("Letter", orientation = "landscape")
 get_card("Poker")
 ```
 
-cards uses ggplot2 to create plots for individual cards and patchwork to assemble card plots into page layouts for print.
+papersize includes plotting functions that create lists of ggplot2 plots with repeated elements that can be assembled with patchwork into page layouts for print. For example, `plot_cards()` creates a list of Poker-card sized plots that can be tiled onto a letter-size patchwork to save and print.
 
 ```{r plot_cards}
-cards <-
+papersize <-
   plot_cards(
     "Poker",
     n = 8,
@@ -60,16 +59,19 @@ cards <-
     border = TRUE,
     size = 4,
     linewidth = 0.5,
-    text = rep(c("\U2664", "\U2661", "\U2662", "\U2667"), 2), # "♤", "♡", "♢", "♧" 
+    text = rep(c("\U2664", "\U2661", "\U2662", "\U2667"), 2),
     color = "yellow"
-    )
+  )
 
-cards[[1]]
+papersize[[1]]
 ```
 
 ```{r layout_cards}
-layout_cards(cards, paper = "Letter", orientation = "landscape")
+layout_cards(
+  papersize,
+  paper = "Letter",
+  orientation = "landscape"
+  )
 ```
 
-cards currently has very limited features but additional features are expected to include multi-page layouts, control over the position of card elements, preset card formats/designs, and appropriate handling of cut-lines for DIY card printing.
-
+papersize currently has very limited features but additional features are expected to include better support for multi-page layouts, control over the position of card elements, preset card formats/designs, and appropriate handling of cut-lines for DIY card printing.

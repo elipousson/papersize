@@ -1,37 +1,40 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# cards
+# papersize
 
 <!-- badges: start -->
 
 [![License:
 MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://cran.r-project.org/web/licenses/MIT)
-[![Project Status: Active - The project has reached a stable, usable
-state and is being actively
-developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Project Status: WIP - Initial development is in progress, but there
+has not yet been a stable, usable release suitable for the
+public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+[![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)\`
 <!-- badges: end -->
 
-The goal of cards is to …
+The goal of papersize is to provide you with convenience functions
+extending grid, ggplot2, and patchwork to help in sizing plots and files
+for printing to paper, postcards, playing cards, and other physical
+media.
 
 ## Installation
 
-You can install the development version of cards like so:
+You can install the development version of papersize like so:
 
 ``` r
-# pak::pkg_install("elipousson/cards")
+# pak::pkg_install("elipousson/papersize")
 ```
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
-
 ``` r
-library(cards)
+library(papersize)
 ```
 
-cards includes data on standard page sizes including sizes for papers,
-photo prints, postcards, and playing cards.
+papersize includes data on standard paper sizes including sizes for
+papers (ANSI, ISO, and other standards), photo prints, postcards, and
+playing cards.
 
 ``` r
 get_paper("Letter")
@@ -53,11 +56,14 @@ get_card("Poker")
 #> 1 <chr [1]> <NA>   <NULL> <NA>     in      2.5    3.5 portrait    card
 ```
 
-cards uses ggplot2 to create plots for individual cards and patchwork to
-assemble card plots into page layouts for print.
+papersize includes plotting functions that create lists of ggplot2 plots
+with repeated elements that can be assembled with patchwork into page
+layouts for print. For example, `plot_cards()` creates a list of
+Poker-card sized plots that can be tiled onto a letter-size patchwork to
+save and print.
 
 ``` r
-cards <-
+papersize <-
   plot_cards(
     "Poker",
     n = 8,
@@ -65,22 +71,26 @@ cards <-
     border = TRUE,
     size = 4,
     linewidth = 0.5,
-    text = rep(c("\U2664", "\U2661", "\U2662", "\U2667"), 2), # "♤", "♡", "♢", "♧" 
+    text = rep(c("\U2664", "\U2661", "\U2662", "\U2667"), 2),
     color = "yellow"
-    )
+  )
 
-cards[[1]]
+papersize[[1]]
 ```
 
 <img src="man/figures/README-plot_cards-1.png" width="100%" />
 
 ``` r
-layout_cards(cards, paper = "Letter", orientation = "landscape")
+layout_cards(
+  papersize,
+  paper = "Letter",
+  orientation = "landscape"
+  )
 ```
 
 <img src="man/figures/README-layout_cards-1.png" width="100%" />
 
-cards currently has very limited features but additional features are
-expected to include multi-page layouts, control over the position of
-card elements, preset card formats/designs, and appropriate handling of
-cut-lines for DIY card printing.
+papersize currently has very limited features but additional features
+are expected to include better support for multi-page layouts, control
+over the position of card elements, preset card formats/designs, and
+appropriate handling of cut-lines for DIY card printing.

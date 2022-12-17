@@ -1,16 +1,18 @@
 Type: Package
-Package: cards
-Title: Plot Playing Cards
+Package: papersize
+Title: Sizing Plots and Files for Paper
 Version: 0.1.0
 Authors@R: 
     person("Eli", "Pousson", , "eli.pousson@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-8280-1706"))
 Maintainer: Eli Pousson <eli.pousson@gmail.com>
-Description: Make simple playing cards with ggplot2.
+Description: A set of convenience functions extending grid, ggplot2, and
+    patchwork to help you size plots and files for printing to paper,
+    postcards, playing cards, and other physical media.
 License: MIT + file LICENSE
-URL: https://github.com/elipousson/cards,
-    https://elipousson.github.io/cards/
-BugReports: https://github.com/elipousson/cards/issues
+URL: https://github.com/elipousson/papersize,
+    https://elipousson.github.io/papersize/
+BugReports: https://github.com/elipousson/papersize/issues
 Depends: 
     R (>= 2.10)
 Imports: 
@@ -25,4 +27,4 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
