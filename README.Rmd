@@ -20,6 +20,7 @@ knitr::opts_chunk$set(
 `r badger::badge_license("MIT", "blue", "https://cran.r-project.org/web/licenses/MIT")`
 `r badger::badge_repostatus("WIP")`
 `r badger::badge_lifecycle()``
+[![Codecov test coverage](https://codecov.io/gh/elipousson/papersize/branch/main/graph/badge.svg)](https://app.codecov.io/gh/elipousson/papersize?branch=main)
 <!-- badges: end -->
 
 The goal of papersize is to provide you with convenience functions extending grid, ggplot2, and patchwork to help in sizing plots and files for printing to paper, postcards, playing cards, and other physical media.
