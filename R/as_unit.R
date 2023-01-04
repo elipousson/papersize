@@ -33,17 +33,34 @@
 #' @param arg Passed to [cli_abort()] to improve internal error messages.
 #' @inheritParams cli::cli_abort
 #' @export
+#' @importFrom cliExtras cli_abort_if
+#' @importFrom rlang try_fetch
+#' @importFrom grid unit
+#' @importFrom cli cli_abort
 as_unit <- function(x,
                     units = NULL,
                     data = NULL,
                     recurse = FALSE,
                     arg = caller_arg(x),
                     call = parent.frame()) {
+  num <- suppressWarnings(as.numeric(x))
+
+  cliExtras::cli_abort_if(
+    "{.arg {arg}} must be {.cls numeric} or an object that can be coerced to {.cls numeric}.",
+    condition = any(is.na(num))
+  )
+
+  if (is.null(units)) {
+    units <- x
+  }
+
+  units <- as_unit_type(units, recurse, call = call)
+
   rlang::try_fetch(
-    grid::unit(as.numeric(x), as_unit_type(units %||% x, recurse), data),
+    grid::unit(num, units, data),
     error = function(cnd) {
       cli::cli_abort(
-        "{.arg {arg}} can't be coerced to a unit object.",
+        "{.arg {arg}} can't be coerced to a unit object of type {.val {units}}.",
         call = call,
         parent = cnd
       )
@@ -70,7 +87,7 @@ as_unit_type <- function(x,
     grid::unitType(grid::unit(1, x), recurse),
     error = function(cnd) {
       cli::cli_abort(
-        "{.arg {arg}} can't be coerced to a unit type.",
+        "{.arg {arg}} ({.val {x}}) can't be coerced to a grid unit type.",
         call = call,
         parent = cnd
       )
@@ -126,11 +143,13 @@ convert_unit_type <- function(x,
 
   x <- as_unit(x, from)
 
-  if (!is_unit(x)) {
-    cli::cli_abort(
-      "{.arg x} must be a {.cls numeric} vector or {.cls unit} object."
-    )
-  }
+  # TODO: It should be impossible to trigger this error so double-check then remove it.
+  #
+  # if (!is_unit(x)) {
+  #   cli::cli_abort(
+  #     "{.arg x} must be a {.cls numeric} vector or {.cls unit} object."
+  #   )
+  # }
 
   x <-
     grid::convertUnit(
