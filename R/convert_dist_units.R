@@ -98,8 +98,8 @@ is_same_units <- function(x, y = NULL) {
     return(FALSE)
   }
 
-  x <- as_units_attr(x)
-  y <- as_units_attr(y)
+  x <- as_unit_type(x)
+  y <- as_unit_type(y)
 
   in_opts <- c("in", "inch", "inches", "international_inch", "international_inches")
   ft_opts <- c("ft", "foot", "feet", "international_foot", "international_feet")

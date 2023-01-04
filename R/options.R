@@ -5,7 +5,7 @@ get_units_col <- function(default = "units") {
 
 #' @noRd
 set_units_col <- function(x = "units") {
-  option("papersize.units_col" = x)
+  options("papersize.units_col" = x)
 }
 
 #' @noRd
@@ -15,5 +15,5 @@ get_orientation_col <- function(default = "orientation") {
 
 #' @noRd
 set_orientation_col <- function(x = "orientation") {
-  option("papersize.orientation_col" = x)
+  options("papersize.orientation_col" = x)
 }

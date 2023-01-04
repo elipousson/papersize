@@ -25,6 +25,8 @@
 #' as columns named actual_width and actual_height.
 #' @family dist
 #' @export
+#' @importFrom rlang has_length
+#' @importFrom cliExtras cli_abort_ifnot cli_warn_ifnot
 convert_dist_scale <- function(dist = NULL,
                                scale = NULL,
                                standard = NULL,
@@ -36,7 +38,7 @@ convert_dist_scale <- function(dist = NULL,
                                paper = NULL,
                                orientation = NULL,
                                ...) {
-  if (is.character(scale) && has_length(scale, 1)) {
+  if (is.character(scale) && rlang::has_length(scale, 1)) {
     scale_nm <- scale
     scale <- get_scale(scale = scale, standard = standard, series = series)
 
