@@ -16,19 +16,40 @@
     <loc>https://elipousson.github.io/papersize/index.html</loc>
   </url>
   <url>
+    <loc>https://elipousson.github.io/papersize/reference/area_unit_options.html</loc>
+  </url>
+  <url>
     <loc>https://elipousson.github.io/papersize/reference/as_unit.html</loc>
   </url>
   <url>
     <loc>https://elipousson.github.io/papersize/reference/card_sizes.html</loc>
   </url>
   <url>
+    <loc>https://elipousson.github.io/papersize/reference/convert_dist_scale.html</loc>
+  </url>
+  <url>
+    <loc>https://elipousson.github.io/papersize/reference/convert_dist_units.html</loc>
+  </url>
+  <url>
+    <loc>https://elipousson.github.io/papersize/reference/dist_unit_options.html</loc>
+  </url>
+  <url>
+    <loc>https://elipousson.github.io/papersize/reference/dist_units.html</loc>
+  </url>
+  <url>
     <loc>https://elipousson.github.io/papersize/reference/get_page_size.html</loc>
+  </url>
+  <url>
+    <loc>https://elipousson.github.io/papersize/reference/get_scale.html</loc>
   </url>
   <url>
     <loc>https://elipousson.github.io/papersize/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://elipousson.github.io/papersize/reference/layout_cards.html</loc>
+    <loc>https://elipousson.github.io/papersize/reference/is_dist_units.html</loc>
+  </url>
+  <url>
+    <loc>https://elipousson.github.io/papersize/reference/page_layout.html</loc>
   </url>
   <url>
     <loc>https://elipousson.github.io/papersize/reference/paper_sizes.html</loc>
@@ -38,5 +59,8 @@
   </url>
   <url>
     <loc>https://elipousson.github.io/papersize/reference/plot_cards.html</loc>
+  </url>
+  <url>
+    <loc>https://elipousson.github.io/papersize/reference/standard_scales.html</loc>
   </url>
 </urlset>
