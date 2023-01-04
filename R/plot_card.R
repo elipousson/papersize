@@ -54,7 +54,15 @@ plot_cards <- function(card,
   plots <- make_card_plots(card, n, fill)
 
   if (border) {
-    plots <- add_card_border(plots, card, inset, fill, color, linetype, linewidth)
+    plots <- add_card_border(
+      plots,
+      card,
+      inset,
+      fill,
+      color,
+      linetype,
+      linewidth
+    )
   }
 
   if (number) {
@@ -94,9 +102,9 @@ make_card_plots <- function(card,
 #' @noRd
 #' @importFrom ggplot2 ggplot geom_tile aes theme_void coord_fixed
 setup_card_plot <- function(card,
-                           fill = "gray20",
-                           tile = TRUE,
-                           fixed = TRUE) {
+                            fill = "gray20",
+                            tile = TRUE,
+                            fixed = TRUE) {
   check_page(card, cols = c("width", "height", "x", "y"))
 
   plot <-
@@ -111,12 +119,14 @@ setup_card_plot <- function(card,
       )
   }
 
+  plot <- plot +
+    ggplot2::theme_void()
+
   if (fixed) {
     return(plot + ggplot2::coord_fixed())
   }
 
-  plot +
-    ggplot2::theme_void()
+  plot
 }
 
 #' Helper to add a number to each card plot in a list
