@@ -67,11 +67,11 @@ papersize[[1]]
 ```
 
 ```{r layout_cards}
-layout_cards(
-  papersize,
-  paper = "Letter",
+page_layout(
+  plots = papersize,
+  page = "Letter",
   orientation = "landscape"
-  )
+)
 ```
 
 papersize currently has very limited features but additional features are expected to include better support for multi-page layouts, control over the position of card elements, preset card formats/designs, and appropriate handling of cut-lines for DIY card printing.

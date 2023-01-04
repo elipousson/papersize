@@ -81,11 +81,12 @@ papersize[[1]]
 <img src="man/figures/README-plot_cards-1.png" width="100%" />
 
 ``` r
-layout_cards(
-  papersize,
-  paper = "Letter",
+page_layout(
+  plots = papersize,
+  page = "Letter",
   orientation = "landscape"
-  )
+)
+#> $`1`
 ```
 
 <img src="man/figures/README-layout_cards-1.png" width="100%" />
