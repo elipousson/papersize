@@ -15,7 +15,8 @@ get_page_size(
   orientation = NULL,
   reorient = TRUE,
   units = NULL,
-  type = NULL
+  type = NULL,
+  ignore.case = TRUE
 )
 
 get_paper(name = NULL, width = NULL, height = NULL, orientation = NULL)
@@ -33,7 +34,7 @@ get_page_dims(
   ...
 )
 
-convert_page_units(page, units = NULL)
+convert_page_units(page, units = NULL, cols = c("width", "height"))
 }
 \arguments{
 \item{name}{Page name, e.g. "letter", not case sensitive, Default: NULL}
