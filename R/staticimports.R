@@ -3,6 +3,164 @@
 # Imported from pkg:isstatic
 # ======================================================================
 
+#' What is the orientation of a numeric aspect ratio?
+#'
+#' @param x A numeric vector with an aspect ratio or a data.frame with width and
+#'   height column (using width and height values from columns matching the cols
+#'   parameter).
+#' @param tolerance Positive numeric value above or below 1 used to determine if
+#'   an aspect ratio is square, landscape, or portrait.
+#' @param cols Name of width and height column if x is a data.frame object.
+#' @returns A character vector of orientations of the same length as x or, if x
+#'   is a data.frame, the same length as the number of rows in x.
+#' @noRd
+as_orientation <- function(x, tolerance = 0.1, cols = c("width", "height")) {
+  tolerance <- abs(tolerance)
+
+  if (is.data.frame(x)) {
+    check_name(x, cols)
+    return(
+      as_orientation(
+        as.numeric(x[, cols[1]]) / as.numeric(x[, cols[2]]),
+        tolerance
+      )
+    )
+  }
+
+  check_numeric(x)
+
+  if (length(x) > 1) {
+    return(map_chr(x, as_orientation, tolerance))
+  }
+
+  if (x > (1 + tolerance)) {
+    return("landscape")
+  }
+
+  if (x < (1 - tolerance)) {
+    return("portrait")
+  }
+
+  "square"
+}
+
+#' @noRd
+check_if <- function(condition, message = NULL, call = parent.frame()) {
+  if (isTRUE(condition)) {
+    return(invisible(NULL))
+  }
+
+  stop(
+    message,
+    call. = call
+  )
+}
+
+#' @noRd
+check_name <- function(x, name = NULL, call = parent.frame()) {
+  check_if(
+    condition = has_all_names(x, name),
+    message = paste0(
+      "`x` must have ", plural_words("name", length(name), after = " "), name,
+      ", but ", combine_words(name[!(name %in% names(x))]), " are all missing."
+    ),
+    call = call
+  )
+}
+
+#' @noRd
+check_numeric <- function(x, call = parent.frame()) {
+  check_if(
+    condition = all(is.numeric(x[!is.na(x)])),
+    message = paste("`x` must be a <numeric> vector, not", class(x)),
+    call = call
+  )
+}
+
+#' Combine multiple words into a single string
+#'
+#' @author Yihui Xie \email{xie@yihui.name}
+#'   ([ORCID](https://orcid.org/0000-0003-0645-5666))
+#'
+#' @source Adapted from [knitr::combine_words()] in the
+#'   [knitr](https://yihui.org/knitr/) package.
+#'
+#' @inherit knitr::combine_words
+#' @returns A character string
+#' @noRd
+combine_words <- function(words,
+                          sep = ", ",
+                          and = " and ",
+                          before = "",
+                          after = before,
+                          oxford_comma = TRUE) {
+  n <- length(words)
+
+  rs <- function (x) {
+    if (is.null(x))
+      x = as.character(x)
+    x
+  }
+
+  if (n == 0) {
+    return(words)
+  }
+
+  words <- paste0(before, words, after)
+
+  if (n == 1) {
+    return(rs(words))
+  }
+
+  if (n == 2) {
+    return(rs(paste(words, collapse = if (is_blank(and)) sep else and)))
+  }
+
+  if (oxford_comma && grepl("^ ", and) && grepl(" $", sep)) {
+    and <- gsub("^ ", "", and)
+  }
+
+  words[n] <- paste0(and, words[n])
+
+  if (!oxford_comma) {
+    words[n - 1] <- paste0(words[n - 1:0], collapse = "")
+    words <- words[-n]
+  }
+
+  rs(paste(words, collapse = sep))
+}
+
+#' Does an object have all of the provided names?
+#'
+#' @param x A data frame or another named object.
+#' @param name Element name(s) to check.
+#' @noRd
+has_all_names <- function(x, name) {
+  if (anyNA(c(x, name))) {
+    return(FALSE)
+  }
+
+  all(utils::hasName(x, name))
+}
+
+#' @inherit xfun::is_blank
+#'
+#' @author Yihui Xie \email{xie@yihui.name}
+#'   ([ORCID](https://orcid.org/0000-0003-0645-5666))
+#'
+#' @source Adapted from [xfun::is_blank()] in the
+#'   [xfun](https://yihui.org/xfun/) package.
+#'
+#' @examples
+#' is_blank("")
+#' is_blank("abc")
+#' is_blank(c("", "  ", "\n\t"))
+#' is_blank(c("", " ", "abc"))
+#' @noRd
+is_blank <- function(x) {
+  all(grepl("^\\s*$", x))
+}
+
 #' Is this a gg class object?
 #'
 #' @param x Object to be tested.
@@ -11,12 +169,84 @@ is_gg <- function(x) {
   inherits(x, "gg")
 }
 
+#' Is this a sf class object?
+#'
+#' @param x Object to be tested.
+#' @noRd
+is_sf <- function(x) {
+  inherits(x, "sf")
+}
+
+#' Is this a sf, sfc, or bbox class object?
+#'
+#' @param x Object to be tested.
+#' @param ext If `TRUE`, return `TRUE` is x is a sf, sfc, or bbox object. If
+#'   `FALSE`, only check if x is an sf object. If ext is a character object, it
+#'   is passed to the what parameter of [inherits()] with sf.
+#' @noRd
+is_sf_ext <- function(x, ext = TRUE) {
+  if (is.logical(ext)) {
+    if (!isTRUE(ext)) {
+      return(is_sf(x))
+    }
+
+    ext <- c("sfc", "bbox")
+  }
+
+  inherits(x, c("sf", ext))
+}
+
 #' Is this a unit class object?
 #'
 #' @param x Object to be tested.
 #' @noRd
 is_unit <- function(x) {
-  inherits(x, c("unit", "unit_v2"))
+  inherits(x, "unit")
+}
+
+#' Is this a units class object?
+#'
+#' @param x Object to be tested.
+#' @noRd
+is_units <- function(x) {
+  inherits(x, "units")
+}
+
+#' Apply a function to each element of a vector.
+#'
+#' @author Winston Chang \email{winston@stdout.org}
+#'
+#' @source [purr-like functions](https://github.com/wch/staticimports/blob/main/inst/staticexports/purrr.R) in [staticimports](https://wch.github.io/staticimports/) package
+#
+#' @noRd
+map_chr <- function(.x, .f, ...) {
+  if (is.character(.f)) {
+    vapply(.x, `[[`, .f, ..., FUN.VALUE = NA_character_)
+  } else {
+    vapply(.x, .f, ..., FUN.VALUE = NA_character_)
+  }
+}
+
+#' Simple helper for pluralizing words
+#'
+#' @noRd
+plural_words <- function(words,
+                         n = 1,
+                         suffix = "s",
+                         before = "",
+                         after = "",
+                         replacement = NULL) {
+  words <- paste0(before, words, after)
+
+  if (is.null(replacement)) {
+    replacement <- paste0(words, suffix)
+  }
+
+  if (n > 1) {
+    return(replacement)
+  }
+
+  words
 }
 # Generated by staticimports; do not edit by hand.
 # ======================================================================
