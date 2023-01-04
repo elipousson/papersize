@@ -38,12 +38,13 @@
 #' @export
 #' @importFrom rlang arg_match
 get_page_size <- function(name = NULL,
-                     width = NULL,
-                     height = NULL,
-                     orientation = NULL,
-                     reorient = TRUE,
-                     units = NULL,
-                     type = NULL) {
+                          width = NULL,
+                          height = NULL,
+                          orientation = NULL,
+                          reorient = TRUE,
+                          units = NULL,
+                          type = NULL,
+                          ignore.case = TRUE) {
   pg <- paper_sizes
 
   if (!is.null(name) && !(tolower(name) %in% tolower(pg$name))) {
@@ -54,11 +55,11 @@ get_page_size <- function(name = NULL,
     )
   }
 
-  pg <- page_filter(pg, name, "name")
+  pg <- filter_col(pg, name, ignore.case = ignore.case)
 
-  pg <- page_filter(pg, width, "width")
+  pg <- filter_col(pg, width)
 
-  pg <- page_filter(pg, height, "height")
+  pg <- filter_col(pg, height)
 
   if (!is.null(type) && !(tolower(type) %in% tolower(pg$type))) {
     type <- rlang::arg_match(
@@ -68,7 +69,7 @@ get_page_size <- function(name = NULL,
     )
   }
 
-  pg <- page_filter(pg, type, "type")
+  pg <- filter_col(pg, type, ignore.case = ignore.case)
 
   if (!is.null(units)) {
     pg <- convert_page_units(pg, units)
@@ -88,7 +89,7 @@ get_page_size <- function(name = NULL,
         multiple = TRUE
       )
 
-    return(page_filter(pg, orientation, "orientation"))
+    return(filter_col(pg, orientation))
   }
 
   set_page_orientation(pg, orientation)
@@ -164,11 +165,11 @@ get_page_dims <- function(page = NULL,
   nm <- check_dims_cols(cols, width, height)
 
   if (all(is.numeric(c(width, height)))) {
-    return(rlang::set_names(c(width, height), cols))
+    return(rlang::set_names(c(width, height), nm))
   }
 
   if (is.numeric(page) && (length(page) == 2)) {
-    return(rlang::set_names(page, cols))
+    return(rlang::set_names(page, nm))
   }
 
   cli::cli_abort(
@@ -182,30 +183,31 @@ get_page_dims <- function(page = NULL,
 #' @noRd
 check_dims_cols <- function(cols = c("width", "height"),
                             width = NULL,
-                            height = NULL) {
-  replace_cols <- c("width", "height")
+                            height = NULL,
+                            default = c("width", "height")) {
+  if (identical(cols, default)) {
+    return(cols)
+  }
 
-  # FIXME: This should be updated to support reverse order names
-  if (all(is.numeric(c(width, height))) && (cols != replace_cols)) {
+  if (all(is.numeric(c(width, height)))) {
     cli::cli_warn(
-      c("{cols} must be {.val {replace_cols}} when
-        {.arg width} and {.arg height} are provided.",
-        "i" = "Replacing {.val {cols}} with {.val {replace_cols}}."
+      c("{cols} must be {.val {default}} when {.arg width} and {.arg height} are provided.",
+        "i" = "Replacing {.val {cols}} with {.val {default}}."
       )
     )
 
-    return(replace_cols)
+    return(default)
   }
 
   if ((length(cols) != 2) | !is.character(cols)) {
     cli::cli_warn(
       c(
         "{.arg cols} must be a length 2 {.cls character} vector.",
-        "Replacing {.val {cols}} with {.val {replace_cols}}."
+        "i" = "Replacing {.val {cols}} with {.val {default}}."
       )
     )
 
-    return(replace_cols)
+    return(default)
   }
 
   cols
@@ -215,19 +217,27 @@ check_dims_cols <- function(cols = c("width", "height"),
 #' @rdname get_page_size
 #' @param units Units to convert page dimensions to using [convert_unit_type()].
 #' @export
-convert_page_units <- function(page, units = NULL) {
+convert_page_units <- function(page,
+                               units = NULL,
+                               cols = c("width", "height")) {
   if (is.null(units)) {
     return(page)
   }
 
-  if (is_same_unit_type(page$units, units)) {
+  units_col <- get_units_col()
+
+  cli_abort_ifnot(
+    "{.arg page} must have a name {.val units_col}" = rlang::has_name(page, units_col)
+  )
+
+  if (is_same_unit_type(page[[units_col]], units)) {
     return(page)
   }
 
   pg_dims <-
     convert_unit_type(
-      c(page$width, page$height),
-      page$units,
+      c(page[[cols[1]]], page[[cols[2]]]),
+      page[[units_col]],
       units,
       valueOnly = TRUE
     )
@@ -240,29 +250,23 @@ convert_page_units <- function(page, units = NULL) {
 }
 
 #' @noRd
-#' @importFrom rlang caller_arg
-page_filter <- function(page, y = NULL, col = rlang::caller_arg(y)) {
-  if (is.null(y)) {
-    return(page)
-  }
-  page[tolower(page[[col]]) %in% tolower(y), ]
-}
-
-#' @noRd
 set_page_orientation <- function(page,
                                  orientation = NULL,
-                                 tolerance = 0.1) {
+                                 tolerance = 0.1,
+                                 cols = c("width", "height")) {
   if (is.null(orientation)) {
     return(page)
   }
 
-  pg_orientation <- has_orientation(page$width / page$height, tolerance)
+  pg_orientation <- as_orientation(page[[cols[1]]] / page[[cols[2]]], tolerance)
+
+  orientation <- tolower(orientation)
 
   orientation <-
-    match.arg(
-      tolower(orientation),
+    rlang::arg_match(
+      orientation,
       c("portrait", "landscape", "square"),
-      several.ok = TRUE
+      multiple = TRUE
     )
 
   switch_pg <- !(orientation == pg_orientation)
@@ -276,21 +280,25 @@ set_page_orientation <- function(page,
   page[switch_pg, ] <-
     set_page_dims(
       page[switch_pg, ],
-      width = page[switch_pg, ]$height,
-      height = page[switch_pg, ]$width
+      width = page[switch_pg, ][[cols[2]]],
+      height = page[switch_pg, ][[cols[1]]],
+      cols = cols
     )
 
-  page[switch_pg, ]$orientation <-
-    has_orientation(
-      page[switch_pg, ]$width / page[switch_pg, ]$height,
-      tolerance
+  orientation_col <- get_orientation_col()
+
+  page[switch_pg, ][[orientation_col]] <-
+    as_orientation(
+      page[switch_pg, ][[cols[1]]] / page[switch_pg, ][[cols[2]]],
+      tolerance,
+      cols = cols
     )
 
-  if (any(!(orientation == page$orientation))) {
+  if (any(!(orientation == page[[orientation_col]]))) {
     cli::cli_warn(
       c("{.arg orientation} can't be set to {.val {orientation}}
-        when the page width is {.val {pg_in$width}} and height
-        is {.val {pg_in$height}}.",
+        when the page width is {.val {pg_in[[cols[1]]]}} and height
+        is {.val {pg_in[[cols[2]]]}}.",
         "i" = "Orientation kept as {.val {pg_in$orientation}}."
       )
     )
@@ -299,23 +307,6 @@ set_page_orientation <- function(page,
   }
 
   page
-}
-
-#' @noRd
-has_orientation <- function(x, tolerance = 0.1) {
-  if (length(x) > 1) {
-    return(map_chr(x, has_orientation, tolerance))
-  }
-
-  if (x >= (1 + tolerance)) {
-    return("landscape")
-  }
-
-  if (x <= (1 - tolerance)) {
-    return("portrait")
-  }
-
-  "square"
 }
 
 #' @noRd
@@ -349,21 +340,24 @@ set_page_dims <- function(page,
                           dims = NULL,
                           width = NULL,
                           height = NULL,
-                          units = NULL) {
+                          units = NULL,
+                          cols = c("width", "height")) {
   if (!is.null(dims)) {
     stopifnot(length(dims) == 2)
 
     if (rlang::is_named(dims)) {
-      dims <- c(dims["width"], dims["height"])
+      dims <- c(dims[cols[1]], dims[cols[2]])
     }
 
     width <- dims[[1]]
     height <- dims[[2]]
   }
 
-  page$width <- width %||% page$width
-  page$height <- height %||% page$height
-  page$units <- units %||% page$units
+  units_col <- get_units_col()
+
+  page[[cols[1]]] <- width %||% page[[cols[1]]]
+  page[[cols[2]]] <- height %||% page[[cols[2]]]
+  page[[units_col]] <- units %||% page[[units_col]]
 
   page
 }
@@ -371,20 +365,31 @@ set_page_dims <- function(page,
 #' Apply numeric or unit class inset to width/height dimensions of page
 #'
 #' @noRd
-inset_page <- function(page, inset = 0.1) {
-  if (is_unit(inset)) {
-    dims <- get_inset_dims(c(page$width, page$height), page$units, inset)
-    return(set_page_dims(page, dims))
+inset_page <- function(page,
+                       inset = 0.1,
+                       units = "in",
+                       pct_inset = NULL,
+                       cols = c("width", "height")) {
+  units_col <- get_units_col()
+
+  if (!is_unit(inset) && is.null(pct_inset)) {
+    inset <- as_unit(inset, units)
   }
 
-  if (length(inset) == 1) {
-    inset <- rep(inset, 2)
+  if (is_unit(inset)) {
+    dims <- get_inset_dims(c(page[[cols[1]]], page[[cols[2]]]), page[[units_col]], inset)
+    return(set_page_dims(page, dims, cols = cols))
+  }
+
+  if (length(pct_inset) == 1) {
+    pct_inset <- rep(pct_inset, 2)
   }
 
   set_page_dims(
     page,
-    width = page$width * (1 - inset[[1]]),
-    height = page$height * (1 - inset[[2]])
+    width = page[[cols[1]]] * (1 - pct_inset[[1]]),
+    height = page[[cols[2]]] * (1 - pct_inset[[2]]),
+    cols = cols
   )
 }
 

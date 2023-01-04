@@ -3,7 +3,7 @@
 
   utils::data(
     list = c(
-      "paper_sizes"
+      "paper_sizes", "dist_unit_options", "area_unit_options", "standard_scales"
     ),
     package = pkg,
     envir = parent.env(environment())
@@ -16,7 +16,6 @@ utils::globalVariables(
   )
 )
 
-
 # @staticimports pkg:staticimports
 #  map map_chr
 
@@ -24,7 +23,23 @@ utils::globalVariables(
 #  str_detect
 
 # @staticimports pkg:isstatic
-#  is_unit is_gg
+#  is_unit is_gg is_units is_sf is_sf_ext as_orientation
+
+#' @noRd
+#' @importFrom rlang caller_arg
+filter_col <- function(x, y = NULL, col = rlang::caller_arg(y), ignore.case = TRUE) {
+  if (is.null(y)) {
+    return(x)
+  }
+
+  xcol <- x[[col]]
+  if (ignore.case) {
+    xcol <- tolower(xcol)
+    y <- tolower(y)
+  }
+
+  x[xcol %in% y, ]
+}
 
 #' Helper to apply an additional ggproto object to each item in a list of ggplot
 #' plots
