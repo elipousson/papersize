@@ -41,6 +41,8 @@ defaults to \code{NULL}.}
 
 \item{dpi}{dots per square inch (used as conversion factor for "px" to "in")}
 
+\item{paper}{Name of paper passed to \code{\link[=get_paper]{get_paper()}}}
+
 \item{orientation}{Page orientation, Default: NULL}
 
 \item{...}{
@@ -50,9 +52,6 @@ defaults to \code{NULL}.}
     \item{\code{width}}{Page width in "in", "px" or "mm" units. Default: NULL}
     \item{\code{height}}{Page height in "in", "px" or "mm" units. Default: NULL}
   }}
-
-\item{scale_standard, scale_series}{Passed to standard and scale parameters of
-\code{\link[=get_scale]{get_scale()}}.}
 }
 \value{
 \itemize{

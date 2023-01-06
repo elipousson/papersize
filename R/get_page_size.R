@@ -23,6 +23,8 @@
 #'   `reorient = FALSE` to filter pages by orientation.
 #' @param type Page type, Options include "paper", "social", "postcard",
 #'   "print", "card", or "screen". Default: NULL
+#' @param ignore.case If `FALSE`, filtering for page and type are case
+#'   sensitive. Defaults to `TRUE`.
 #' @return A data.frame with page, paper, or card name and dimensions.
 #' @examples
 #' get_paper("letter")
@@ -258,11 +260,25 @@ set_page_orientation <- function(page,
                                  orientation = NULL,
                                  tolerance = 0.1,
                                  cols = c("width", "height")) {
-  if (is.null(orientation)) {
+  has_orientation_col <- rlang::has_name(page, get_orientation_col())
+
+  if (is.null(orientation) & has_orientation_col) {
     return(page)
   }
 
   pg_orientation <- as_orientation(page[[cols[1]]] / page[[cols[2]]], tolerance)
+
+  if (!has_orientation_col) {
+    page <-
+      cbind(
+        page,
+        rlang::set_names(data.frame(pg_orientation), get_orientation_col())
+      )
+
+    if (is.null(orientation)) {
+      return(page)
+    }
+  }
 
   orientation <- tolower(orientation)
 
@@ -414,19 +430,17 @@ get_inset_dims <- function(dims,
   rlang::set_names(dims - (inset * 2), nm)
 }
 
+#' Append an aspect ratio column a page size data.frame
 #'
 #' @noRd
 set_page_asp <- function(page,
-             cols = c("width", "height")) {
+                         cols = c("width", "height")) {
   asp_col <- get_asp_col()
 
-  asp_df <- data.frame("col" = c(1:nrow(page)))
-  names(asp_df) <- asp_col
-  asp_df[[asp_col]] <- page[[cols[1]]] / page[[cols[2]]]
+  if (rlang::has_name(page, asp_col)) {
+    return(page)
+  }
 
-  cbind(
-    page[, c(1:8)],
-    asp_df,
-    page[, 9]
-  )
+  page[[asp_col]] <- page[[cols[1]]] / page[[cols[2]]]
+  page
 }

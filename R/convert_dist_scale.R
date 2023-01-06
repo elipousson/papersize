@@ -6,8 +6,6 @@
 #' @param dist distance to convert. If paper is provided, dist is optional and
 #'   paper width and height are used as dist.
 #' @inheritParams get_scale
-#' @param scale_standard,scale_series Passed to standard and scale parameters of
-#'   [get_scale()].
 #' @param scale_unit "mm" (converted to cm by dividing by 10), "cm", "px"
 #'   (converted to inches by dividing by dpi), or "in".
 #' @param scale_factor factor for converting from scale_unit to actual_unit,
@@ -15,6 +13,7 @@
 #'   defaults to `NULL`.
 #' @param actual_unit any unit supported by [convert_dist_units()]
 #' @param dpi dots per square inch (used as conversion factor for "px" to "in")
+#' @param paper Name of paper passed to [get_paper()]
 #' @inheritParams get_paper
 #' @inheritDotParams get_paper
 #' @returns

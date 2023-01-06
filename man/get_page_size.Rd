@@ -54,6 +54,9 @@ dimensions for any pages that do not match the provided orientation. Set
 \item{type}{Page type, Options include "paper", "social", "postcard",
 "print", "card", or "screen". Default: NULL}
 
+\item{ignore.case}{If \code{FALSE}, filtering for page and type are case
+sensitive. Defaults to \code{TRUE}.}
+
 \item{page}{Used by \code{\link[=get_page_dims]{get_page_dims()}}, page is either a character vector
 passed to the name parameter of \code{\link[=get_page_size]{get_page_size()}}, a data.frame with column
 names matching the cols parameter, or a length 2 numeric vector with the
