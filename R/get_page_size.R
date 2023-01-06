@@ -76,7 +76,7 @@ get_page_size <- function(name = NULL,
   }
 
   if (is.null(orientation)) {
-    return(pg)
+    return(set_page_asp(pg))
   }
 
   if (!reorient) {
@@ -89,10 +89,14 @@ get_page_size <- function(name = NULL,
         multiple = TRUE
       )
 
-    return(filter_col(pg, orientation))
+    pg <- filter_col(pg, orientation)
+
+    return(set_page_asp(pg))
   }
 
-  set_page_orientation(pg, orientation)
+  pg <- set_page_orientation(pg, orientation)
+
+  set_page_asp(pg)
 }
 
 #' @name get_paper
@@ -408,4 +412,21 @@ get_inset_dims <- function(dims,
   }
 
   rlang::set_names(dims - (inset * 2), nm)
+}
+
+#'
+#' @noRd
+set_page_asp <- function(page,
+             cols = c("width", "height")) {
+  asp_col <- get_asp_col()
+
+  asp_df <- data.frame("col" = c(1:nrow(page)))
+  names(asp_df) <- asp_col
+  asp_df[[asp_col]] <- page[[cols[1]]] / page[[cols[2]]]
+
+  cbind(
+    page[, c(1:8)],
+    asp_df,
+    page[, 9]
+  )
 }
