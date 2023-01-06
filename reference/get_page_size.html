@@ -177,38 +177,32 @@ if page is a character object.</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">get_paper</span><span class="op">(</span><span class="st">"letter"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 9</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   name      series size   standard units width height orientation type </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> <span style="color: #949494;">&lt;chr [1]&gt;</span> <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span> ANSI     in      8.5     11 portrait    paper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     name series size standard units width height orientation       asp  type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Letter   &lt;NA&gt; NULL     ANSI    in   8.5     11    portrait 0.7727273 paper</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">get_paper</span><span class="op">(</span><span class="st">"letter"</span>, orientation <span class="op">=</span> <span class="st">"landscape"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 9</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   name      series size   standard units width height orientation type </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> <span style="color: #949494;">&lt;chr [1]&gt;</span> <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span> ANSI     in       11    8.5 landscape   paper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     name series size standard units width height orientation      asp  type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Letter   &lt;NA&gt; NULL     ANSI    in    11    8.5   landscape 1.294118 paper</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">get_page_size</span><span class="op">(</span>orientation <span class="op">=</span> <span class="st">"square"</span>, reorient <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 9</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   name      series size      standard         units  width height orient…¹ type </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> <span style="color: #949494;">&lt;chr [1]&gt;</span> <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>    British Imperial in      10     10   square   paper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> <span style="color: #949494;">&lt;chr [1]&gt;</span> <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;chr [1]&gt;</span> Instagram        px    <span style="text-decoration: underline;">1</span>080   <span style="text-decoration: underline;">1</span>080   square   soci…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> <span style="color: #949494;">&lt;chr [1]&gt;</span> C      <span style="color: #949494;">&lt;dbl [1]&gt;</span> ISO              mm      28     28   square   paper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> <span style="color: #949494;">&lt;chr [1]&gt;</span> <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>    <span style="color: #BB0000;">NA</span>               in       2.5    2.5 square   card </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with abbreviated variable name ¹​orientation</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                name series size         standard units  width height</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Large Post Quarto   &lt;NA&gt; NULL British Imperial    in   10.0   10.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    Instagram post   &lt;NA&gt; post        Instagram    px 1080.0 1080.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3               C10      C   10              ISO    mm   28.0   28.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       Square card   &lt;NA&gt; NULL             &lt;NA&gt;    in    2.5    2.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   orientation asp   type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      square   1  paper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      square   1 social</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      square   1  paper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      square   1   card</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">get_page_size</span><span class="op">(</span><span class="st">"ledger"</span>, units <span class="op">=</span> <span class="st">"cm"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 9</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   name      series size   standard units width height orientation type </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> <span style="color: #949494;">&lt;chr [1]&gt;</span> <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span> ANSI     cm     27.9   43.2 portrait    paper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     name series size standard units width height orientation       asp  type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Ledger   &lt;NA&gt; NULL     ANSI    cm 27.94  43.18    portrait 0.6470588 paper</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">get_card</span><span class="op">(</span><span class="st">"Tarot"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 9</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   name      series size   standard units width height orientation type </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> <span style="color: #949494;">&lt;chr [1]&gt;</span> <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span> <span style="color: #BB0000;">NA</span>       in     2.75   4.75 portrait    card </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         name series size standard units width height orientation       asp type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Tarot card   &lt;NA&gt; NULL     &lt;NA&gt;    in  2.75   4.75    portrait 0.5789474 card</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
