@@ -57,11 +57,11 @@ get_page_size <- function(name = NULL,
     )
   }
 
-  pg <- filter_col(pg, name, ignore.case = ignore.case)
+  pg <- filter_data(pg, name, ignore.case = ignore.case)
 
-  pg <- filter_col(pg, width)
+  pg <- filter_data(pg, width)
 
-  pg <- filter_col(pg, height)
+  pg <- filter_data(pg, height)
 
   if (!is.null(type) && !(tolower(type) %in% tolower(pg$type))) {
     type <- rlang::arg_match(
@@ -71,7 +71,7 @@ get_page_size <- function(name = NULL,
     )
   }
 
-  pg <- filter_col(pg, type, ignore.case = ignore.case)
+  pg <- filter_data(pg, type, ignore.case = ignore.case)
 
   if (!is.null(units)) {
     pg <- convert_page_units(pg, units)
@@ -91,7 +91,7 @@ get_page_size <- function(name = NULL,
         multiple = TRUE
       )
 
-    pg <- filter_col(pg, orientation)
+    pg <- filter_data(pg, orientation)
 
     return(set_page_asp(pg))
   }
