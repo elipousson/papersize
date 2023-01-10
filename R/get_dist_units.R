@@ -23,7 +23,7 @@ is_dist_units <- function(x) {
 #'   [rlang::arg_match].
 #' @param quiet If `TRUE`, suppress warning messages.
 #' @export
-#' @importFrom rlang check_installed
+#' @importFrom rlang check_installed arg_match
 #' @importFrom cliExtras cli_warn_ifnot cli_abort_ifnot
 get_dist_units <- function(x, multiple = TRUE, quiet = FALSE) {
   if (is.null(x)) {
@@ -33,6 +33,17 @@ get_dist_units <- function(x, multiple = TRUE, quiet = FALSE) {
   if (is_sf_ext(x)) {
     rlang::check_installed("sf")
     return(sf::st_crs(x)$units_gdal)
+  }
+
+  if (is.character(x)) {
+    x <- underscore(x)
+    x <- rlang::arg_match(
+      x,
+      c(dist_unit_options, area_unit_options),
+      multiple = multiple
+    )
+
+    return(x)
   }
 
   if (is_units(x)) {
