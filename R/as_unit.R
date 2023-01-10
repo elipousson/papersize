@@ -6,7 +6,12 @@
 #' - [as_unit_type()]: Convert to unit type (or checking unit types)
 #' - [convert_unit_type()]: Convert x from one unit type to another (preserving
 #' names for named vectors)
+#' - [is_unit_type()]: Is x a supported unit type by the grid package?
 #' - [is_same_unit_type()]: Are x and y the same unit type?
+#'
+#' Note, when [as_unit_type()] is used on a margin object, it returns the unique
+#' unit type as a length 1 character vector not a length 4 character vector as
+#' you could expect with other length 4 input objects.
 #'
 #' @name as_unit
 #' @examples
@@ -71,20 +76,28 @@ as_unit <- function(x,
 #' @name as_unit_type
 #' @rdname as_unit
 #' @inheritParams grid::unitType
+#' @inheritParams grid::unit
 #' @export
 #' @importFrom rlang caller_arg try_fetch
 #' @importFrom grid unitType unit
 #' @importFrom cli cli_abort
 as_unit_type <- function(x,
                          recurse = FALSE,
+                         data = NULL,
                          arg = caller_arg(x),
                          call = parent.frame()) {
   if (is_unit(x)) {
-    return(grid::unitType(x, recurse))
+    type <- grid::unitType(x, recurse)
+
+    if (is_margin(x)) {
+      return(unique(type))
+    }
+
+    return(type)
   }
 
   rlang::try_fetch(
-    grid::unitType(grid::unit(1, x), recurse),
+    grid::unitType(grid::unit(1, x, data), recurse),
     error = function(cnd) {
       cli::cli_abort(
         "{.arg {arg}} ({.val {x}}) can't be coerced to a grid unit type.",
@@ -108,7 +121,7 @@ as_unit_type <- function(x,
 #' @inheritDotParams grid::convertUnit -unitTo
 #' @export
 #' @importFrom rlang is_named set_names
-#' @importFrom cli cli_abort
+#' @importFrom cli cli_alert_warning
 #' @importFrom grid unit convertUnit
 convert_unit_type <- function(x,
                               from = NULL,
@@ -128,14 +141,14 @@ convert_unit_type <- function(x,
   }
 
   if (!is_unit(x) && is.null(from)) {
-    cli::cli_warn(
+    cli::cli_alert_warning(
       "{.arg from} is {.code NULL}, converting {.arg x} to {.val {to}}."
     )
     return(rlang::set_names(as_unit(x, to), nm))
   }
 
   if (is_unit(x) && is_unit(from) && !is_same_unit_type(x, from)) {
-    cli::cli_warn(
+    cli::cli_alert_warning(
       "Existing  {.arg x} unit type {.val {as_unit_type(x)}} is ignored
         when {.arg from} is a {.cls unit} object."
     )
@@ -163,10 +176,21 @@ convert_unit_type <- function(x,
   rlang::set_names(x, nm)
 }
 
+#' @name is_unit_type
+#' @rdname as_unit
+#' @export
+is_unit_type <- function(x, ...) {
+  if (x %in% grid_units[1:27]) {
+    return(TRUE)
+  }
+
+  is_unit(as_unit(1, units = x, ..., arg = "x"))
+}
+
 #' @name is_same_unit_type
 #' @rdname as_unit
 #' @param y Object to compare to x.
 #' @export
-is_same_unit_type <- function(x, y, recurse = FALSE) {
-  as_unit_type(x, recurse) == as_unit_type(y, recurse)
+is_same_unit_type <- function(x, y, recurse = FALSE, data = NULL) {
+  as_unit_type(x, recurse, data) == as_unit_type(y, recurse, data)
 }

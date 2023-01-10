@@ -4,6 +4,7 @@
 \alias{as_unit}
 \alias{as_unit_type}
 \alias{convert_unit_type}
+\alias{is_unit_type}
 \alias{is_same_unit_type}
 \title{Helper functions for grid units}
 \usage{
@@ -16,7 +17,13 @@ as_unit(
   call = parent.frame()
 )
 
-as_unit_type(x, recurse = FALSE, arg = caller_arg(x), call = parent.frame())
+as_unit_type(
+  x,
+  recurse = FALSE,
+  data = NULL,
+  arg = caller_arg(x),
+  call = parent.frame()
+)
 
 convert_unit_type(
   x,
@@ -27,7 +34,9 @@ convert_unit_type(
   ...
 )
 
-is_same_unit_type(x, y, recurse = FALSE)
+is_unit_type(x, ...)
+
+is_same_unit_type(x, y, recurse = FALSE, data = NULL)
 }
 \arguments{
 \item{x}{A numeric vector.}
@@ -88,8 +97,13 @@ Defaults to \code{FALSE}.}
 \item \code{\link[=as_unit_type]{as_unit_type()}}: Convert to unit type (or checking unit types)
 \item \code{\link[=convert_unit_type]{convert_unit_type()}}: Convert x from one unit type to another (preserving
 names for named vectors)
+\item \code{\link[=is_unit_type]{is_unit_type()}}: Is x a supported unit type by the grid package?
 \item \code{\link[=is_same_unit_type]{is_same_unit_type()}}: Are x and y the same unit type?
 }
+
+Note, when \code{\link[=as_unit_type]{as_unit_type()}} is used on a margin object, it returns the unique
+unit type as a length 1 character vector not a length 4 character vector as
+you could expect with other length 4 input objects.
 }
 \examples{
 
