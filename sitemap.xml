@@ -46,6 +46,12 @@
     <loc>https://elipousson.github.io/papersize/reference/get_scale.html</loc>
   </url>
   <url>
+    <loc>https://elipousson.github.io/papersize/reference/get_social_size.html</loc>
+  </url>
+  <url>
+    <loc>https://elipousson.github.io/papersize/reference/grid_units.html</loc>
+  </url>
+  <url>
     <loc>https://elipousson.github.io/papersize/reference/index.html</loc>
   </url>
   <url>
@@ -53,6 +59,12 @@
   </url>
   <url>
     <loc>https://elipousson.github.io/papersize/reference/make_page_size.html</loc>
+  </url>
+  <url>
+    <loc>https://elipousson.github.io/papersize/reference/margins.html</loc>
+  </url>
+  <url>
+    <loc>https://elipousson.github.io/papersize/reference/page_extras.html</loc>
   </url>
   <url>
     <loc>https://elipousson.github.io/papersize/reference/page_layout.html</loc>
