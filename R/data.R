@@ -38,6 +38,14 @@
 #' }
 "card_sizes"
 
+#' Extra reference data for page layouts
+#'
+#' A named list of additional reference data that currently includes only one
+#' data.frame: a reference table of margin sizes in "in" and "cm".
+#'
+#' @format A length 1 list.
+"page_extras"
+
 #' Standard map, architectural, and engineering scales
 #'
 #' Standard map scales derived from USGS 2002 report on map scales
@@ -109,3 +117,12 @@
 #' @format A character vector with 41 names, plural names, and aliases for area
 #'   units.
 "area_unit_options"
+
+#' Grid units (vector)
+#'
+#' A vector of units supported by [grid::unit()]
+#'
+#' @format A character vector with 34 abbreviated, singular, and plural unit
+#'   names.
+"grid_units"
+
