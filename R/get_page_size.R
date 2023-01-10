@@ -25,7 +25,6 @@
 #'   "print", "card", or "screen". Default: NULL
 #' @param ignore.case If `FALSE`, filtering for page and type are case
 #'   sensitive. Defaults to `TRUE`.
-#' @return A data.frame with page, paper, or card name and dimensions.
 #' @examples
 #' get_paper("letter")
 #'
@@ -37,6 +36,9 @@
 #'
 #' get_card("Tarot")
 #'
+#' @seealso [make_page_size()]
+#' @seealso [get_social_size()]
+#' @return A data.frame with page, paper, or card name and dimensions.
 #' @export
 #' @importFrom rlang arg_match
 get_page_size <- function(name = NULL,

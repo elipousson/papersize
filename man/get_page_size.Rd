@@ -99,3 +99,8 @@ get_page_size("ledger", units = "cm")
 get_card("Tarot")
 
 }
+\seealso{
+\code{\link[=make_page_size]{make_page_size()}}
+
+\code{\link[=get_social_size]{get_social_size()}}
+}

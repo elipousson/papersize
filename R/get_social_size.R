@@ -15,6 +15,7 @@
 #'
 #' get_social_size(format = "cover")
 #'
+#' @seealso [get_page_size()]
 #' @export
 get_social_size <- function(name = NULL, platform = NULL, format = NULL, orientation = NULL) {
   image_sizes <- get_page_size(type = "social")

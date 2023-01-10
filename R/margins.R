@@ -9,8 +9,8 @@
 #' the same syntax as margin.
 #'
 #' @param margin A numeric list or vector or a margin class object. For
-#'   [get_margin()] only, margin can be a margin name from `page_extras$margins`.
-#'   Defaults to `NULL`.
+#'   [get_margin()] only, margin can be a margin name from
+#'   `page_extras$margins`. Defaults to `NULL`.
 #' @param ... Additional numeric values combined with margin if provided.
 #' @param unit Default units for margins (ignored if margin is a margin class
 #'   object). Passed to as_unit_type() so units class objects as well as unit

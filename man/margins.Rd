@@ -20,8 +20,8 @@ get_margin(margin = NULL, ..., unit = "in")
 }
 \arguments{
 \item{margin}{A numeric list or vector or a margin class object. For
-\code{\link[=get_margin]{get_margin()}} only, margin can be a margin name from \code{page_extras$margins}.
-Defaults to \code{NULL}.}
+\code{\link[=get_margin]{get_margin()}} only, margin can be a margin name from
+\code{page_extras$margins}. Defaults to \code{NULL}.}
 
 \item{...}{Additional numeric values combined with margin if provided.}
 

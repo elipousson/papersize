@@ -51,7 +51,8 @@ as_unit <- function(x,
   num <- suppressWarnings(as.numeric(x))
 
   cliExtras::cli_abort_if(
-    "{.arg {arg}} must be {.cls numeric} or an object that can be coerced to {.cls numeric}.",
+    "{.arg {arg}} must be {.cls numeric} or an object that can be coerced to
+    {.cls numeric}.",
     condition = any(is.na(num))
   )
 
@@ -65,9 +66,9 @@ as_unit <- function(x,
     grid::unit(num, units, data),
     error = function(cnd) {
       cli::cli_abort(
-        "{.arg {arg}} can't be coerced to a unit object of type {.val {units}}.",
-        call = call,
-        parent = cnd
+        "{.arg {arg}} can't be coerced to a unit object of type
+        {.val {units}}.",
+        call = call, parent = cnd
       )
     }
   )
@@ -141,14 +142,14 @@ convert_unit_type <- function(x,
   }
 
   if (!is_unit(x) && is.null(from)) {
-    cli::cli_alert_warning(
+    cli::cli_warn(
       "{.arg from} is {.code NULL}, converting {.arg x} to {.val {to}}."
     )
     return(rlang::set_names(as_unit(x, to), nm))
   }
 
   if (is_unit(x) && is_unit(from) && !is_same_unit_type(x, from)) {
-    cli::cli_alert_warning(
+    cli::cli_warn(
       "Existing  {.arg x} unit type {.val {as_unit_type(x)}} is ignored
         when {.arg from} is a {.cls unit} object."
     )
@@ -156,8 +157,8 @@ convert_unit_type <- function(x,
 
   x <- as_unit(x, from)
 
-  # TODO: It should be impossible to trigger this error so double-check then remove it.
-  #
+  # TODO: It should be impossible to trigger this error so double-check then
+  # remove it.
   # if (!is_unit(x)) {
   #   cli::cli_abort(
   #     "{.arg x} must be a {.cls numeric} vector or {.cls unit} object."

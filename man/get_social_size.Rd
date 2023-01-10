@@ -33,3 +33,6 @@ get_social_size(platform = "Twitter")
 get_social_size(format = "cover")
 
 }
+\seealso{
+\code{\link[=get_page_size]{get_page_size()}}
+}
