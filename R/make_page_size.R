@@ -32,6 +32,11 @@ make_page_size <- function(width = NULL,
   check_page_asp(width, height, asp)
   rlang::check_required(units)
 
+  cliExtras::cli_abort_ifnot(
+    "{.arg width}, {.arg width}, and {.arg asp} must all be {.cls numeric}
+    or {.code NULL}." = all(is.numeric(c(width, height, asp)))
+  )
+
   width <- width %||% (height * asp)
   height <- height %||% (width / asp)
   units <- as_unit_type(units)
@@ -73,7 +78,8 @@ check_page_asp <- function(width = NULL,
   )
 
   cliExtras::cli_abort_if(
-    "{.arg asp} must be provided if either {.arg width} or {.arg height} are {.code NULL}.",
+    "{.arg asp} must be provided if only {.arg width} or only
+    {.arg height} are provided.",
     condition = is.null(asp) & (is.null(width) | is.null(height)),
     call = call
   )
