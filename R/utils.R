@@ -67,15 +67,24 @@ map_gg <- function(.x, gg = NULL) {
 #' @source bplyr package
 #' @noRd
 #' @importFrom rlang quos quo_squash
-mutate_data <- function(.data,...){
+mutate_data <- function(.data, ...) {
+  FNS <- lapply(rlang::quos(...), rlang::quo_squash)
 
-  FNS <- lapply(rlang::quos(...),rlang::quo_squash)
-
-  EXPRS <- lapply(names(FNS),function(x){
-    sprintf('%s <- %s',x,deparse(FNS[[x]]))
+  EXPRS <- lapply(names(FNS), function(x) {
+    sprintf("%s <- %s", x, deparse(FNS[[x]]))
   })
 
-  within(.data,eval(parse(text = paste0(unlist(EXPRS),collapse = '\n'))))
+  within(
+    .data,
+    eval(
+      parse(text = paste0(unlist(EXPRS), collapse = "\n"))
+    )
+  )
+}
+
+#' @noRd
+sum_num <- function(x) {
+  sum(as.numeric(x))
 }
 
 

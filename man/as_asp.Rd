@@ -36,7 +36,7 @@ sensitive. Defaults to \code{TRUE}.}
 Convert character string, page name, or page data.frame to numeric aspect ratio
 }
 \examples{
-as_asp(8.5/11)
+as_asp(8.5 / 11)
 
 as_asp("11:17")
 

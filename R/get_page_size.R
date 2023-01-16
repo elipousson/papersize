@@ -160,9 +160,13 @@ get_page_dims <- function(page = NULL,
                           arg = caller_arg(page),
                           call = parent.frame(),
                           ...) {
-  if (is.character(page)) {
-    page <- get_page_size(page, width, height, orientation, ...)
-  }
+  page <-
+    as_page(page,
+      width = width,
+      height = height,
+      orientation = orientation,
+      ...
+    )
 
   if (is.data.frame(page)) {
     check_page(page, cols[1:2], n = 1, call = call)

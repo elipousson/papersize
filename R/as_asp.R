@@ -9,7 +9,7 @@
 #' @inheritDotParams get_page_size
 #' @seealso [as_orientation()]
 #' @examples
-#' as_asp(8.5/11)
+#' as_asp(8.5 / 11)
 #'
 #' as_asp("11:17")
 #'

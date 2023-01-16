@@ -106,9 +106,15 @@ page_to_list <- function(x) {
     nrow(x) == 1
   )
 
-  set_names(lapply(names(x), function(nm) {
-    x[[nm]]
-  }), names(x))
+  set_names(
+    lapply(
+      names(x),
+      function(nm) {
+        x[[nm]]
+      }
+    ),
+    names(x)
+  )
 }
 
 #' Check if correct input args are provided
