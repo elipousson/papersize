@@ -2,11 +2,12 @@
 #' Helper functions for grid units
 #'
 #' @description
-#' - [as_unit()]: Convert to unit (allowing unit objects as units)
+#' - [as_unit()]: Convert to a unit (allowing unit objects as units)
 #' - [as_unit_type()]: Convert to unit type (or checking unit types)
 #' - [convert_unit_type()]: Convert x from one unit type to another (preserving
 #' names for named vectors)
-#' - [is_unit_type()]: Is x a supported unit type by the grid package?
+#' - [is_unit_type()]: Is x a character vector with a unit type supported by the
+#' grid package or a unit object with a supported type?
 #' - [is_same_unit_type()]: Are x and y the same unit type?
 #'
 #' Note, when [as_unit_type()] is used on a margin object, it returns the unique
@@ -29,6 +30,10 @@
 #' convert_unit_type(inch, to = "cm")
 #'
 #' convert_unit_type(c(10, 100), from = "mm", to = "cm")
+#'
+#' is_unit_type("inch")
+#'
+#' is_unit_type("inchs")
 #'
 #' is_same_unit_type(inch, "in")
 #'
@@ -157,14 +162,6 @@ convert_unit_type <- function(x,
 
   x <- as_unit(x, from)
 
-  # TODO: It should be impossible to trigger this error so double-check then
-  # remove it.
-  # if (!is_unit(x)) {
-  #   cli::cli_abort(
-  #     "{.arg x} must be a {.cls numeric} vector or {.cls unit} object."
-  #   )
-  # }
-
   x <-
     grid::convertUnit(
       x,
@@ -185,7 +182,12 @@ is_unit_type <- function(x, ...) {
     return(TRUE)
   }
 
-  is_unit(as_unit(1, units = x, ..., arg = "x"))
+  rlang::try_fetch(
+    is_unit(as_unit(1, units = x, ..., arg = "x")),
+    error = function(cnd) {
+      FALSE
+    }
+  )
 }
 
 #' @name is_same_unit_type

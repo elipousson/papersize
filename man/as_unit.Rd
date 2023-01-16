@@ -93,11 +93,12 @@ Defaults to \code{FALSE}.}
 }
 \description{
 \itemize{
-\item \code{\link[=as_unit]{as_unit()}}: Convert to unit (allowing unit objects as units)
+\item \code{\link[=as_unit]{as_unit()}}: Convert to a unit (allowing unit objects as units)
 \item \code{\link[=as_unit_type]{as_unit_type()}}: Convert to unit type (or checking unit types)
 \item \code{\link[=convert_unit_type]{convert_unit_type()}}: Convert x from one unit type to another (preserving
 names for named vectors)
-\item \code{\link[=is_unit_type]{is_unit_type()}}: Is x a supported unit type by the grid package?
+\item \code{\link[=is_unit_type]{is_unit_type()}}: Is x a character vector with a unit type supported by the
+grid package or a unit object with a supported type?
 \item \code{\link[=is_same_unit_type]{is_same_unit_type()}}: Are x and y the same unit type?
 }
 
@@ -120,6 +121,10 @@ as_unit(inch)
 convert_unit_type(inch, to = "cm")
 
 convert_unit_type(c(10, 100), from = "mm", to = "cm")
+
+is_unit_type("inch")
+
+is_unit_type("inchs")
 
 is_same_unit_type(inch, "in")
 
