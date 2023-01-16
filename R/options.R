@@ -18,7 +18,6 @@ set_orientation_col <- function(x = "orientation") {
   options("papersize.orientation_col" = x)
 }
 
-
 #' @noRd
 get_asp_col <- function(default = "asp") {
   getOption("papersize.asp_col", default = default)
@@ -29,3 +28,12 @@ set_asp_col <- function(x = "asp") {
   options("papersize.asp_col" = x)
 }
 
+#' @noRd
+get_body_col <- function(default = "body") {
+  getOption("papersize.body_col", default = default)
+}
+
+#' @noRd
+set_body_col <- function(x = "body") {
+  options("papersize.body_col" = x)
+}

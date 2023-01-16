@@ -40,6 +40,13 @@ margins <- function(margin = NULL, ..., unit = "in") {
   }
 
   if (is_margin(margin)) {
+    if (!is_same_unit_type(margin, unit)) {
+      cli::cli_warn(
+        "{.arg margin} uses {.val {as_unit_type(margin)}} but the provided
+        {.arg unit} is {.val {unit}}."
+      )
+    }
+
     return(margin)
   }
 
@@ -84,7 +91,7 @@ is_margin <- function(x) {
 #' @source ggplot2 package
 #' @export
 margin <- function(t = 0, r = 0, b = 0, l = 0, unit = "pt") {
-  u <- unit(c(t, r, b, l), unit)
+  u <- unit(c(t, r, b, l), units = unit)
   class(u) <- c("margin", class(u))
   u
 }
@@ -92,6 +99,7 @@ margin <- function(t = 0, r = 0, b = 0, l = 0, unit = "pt") {
 #' @name get_margin
 #' @rdname margins
 #' @export
+#' @importFrom rlang arg_match
 get_margin <- function(margin = NULL, ..., unit = "in") {
   if (is_margin(margin)) {
     return(margin)
@@ -104,5 +112,5 @@ get_margin <- function(margin = NULL, ..., unit = "in") {
     margin <- c(margin["t"], margin["r"], margin["b"], margin["l"])
   }
 
-  margins(margin, ..., unit)
+  margins(margin, ..., unit = unit)
 }
