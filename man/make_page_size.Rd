@@ -11,16 +11,17 @@ make_page_size(
   asp = NULL,
   orientation = NULL,
   name = NULL,
+  dims = NULL,
   cols = c("width", "height"),
-  ...
+  class = "data.frame"
 )
 }
 \arguments{
 \item{width, height}{Page width and height. Both are required, if asp is
 \code{NULL}. Default to \code{NULL}.}
 
-\item{units}{Units for width and height. Required. Passed to \code{\link[=as_unit_type]{as_unit_type()}}
-to validate.}
+\item{units}{Units for width and height. Required unless units is included in
+dims. Passed to \code{\link[=as_unit_type]{as_unit_type()}} to validate.}
 
 \item{asp}{Aspect ratio. Required if only one of width or height are
 provided.}
@@ -28,7 +29,12 @@ provided.}
 \item{name}{Optional name for paper size. Recommend avoiding duplication with
 existing names in \code{paper_sizes}.}
 
+\item{dims}{A list or data.frame that can be used to set width, height,
+units, and/or asp.}
+
 \item{cols}{Column nmaes ot use for width and height columns.}
+
+\item{class}{Class of return object: "data.frame" (default) or "list" (only supported when  )}
 }
 \description{
 Width and height or aspect ratio and either width or height are required.
@@ -39,6 +45,8 @@ reversed to match the provided orientation.
 make_page_size(48, 24, "in", name = "Tabletop map")
 
 make_page_size(8.5, 8.5, "in", name = "Trimmed letter")
+
+make_page_size(5, asp = 1.25, units = "cm", class = "list")
 
 }
 \seealso{

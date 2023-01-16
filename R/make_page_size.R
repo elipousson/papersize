@@ -6,34 +6,59 @@
 #'
 #' @param width,height Page width and height. Both are required, if asp is
 #'   `NULL`. Default to `NULL`.
-#' @param units Units for width and height. Required. Passed to [as_unit_type()]
-#'   to validate.
+#' @param units Units for width and height. Required unless units is included in
+#'   dims. Passed to [as_unit_type()] to validate.
 #' @param asp Aspect ratio. Required if only one of width or height are
 #'   provided.
 #' @param name Optional name for paper size. Recommend avoiding duplication with
 #'   existing names in `paper_sizes`.
 #' @param cols Column nmaes ot use for width and height columns.
+#' @param dims A list or data.frame that can be used to set width, height,
+#'   units, and/or asp.
+#' @param class Class of return object: "data.frame" (default) or "list" (only supported when  )
 #' @examples
 #' make_page_size(48, 24, "in", name = "Tabletop map")
 #'
 #' make_page_size(8.5, 8.5, "in", name = "Trimmed letter")
 #'
+#' make_page_size(5, asp = 1.25, units = "cm", class = "list")
+#'
 #' @export
 #' @seealso [get_page_size()]
-#' @importFrom rlang check_required set_names
+#' @importFrom rlang check_required set_names arg_match
+#' @importFrom cliExtras cli_abort_ifnot
 make_page_size <- function(width = NULL,
                            height = NULL,
                            units,
                            asp = NULL,
                            orientation = NULL,
                            name = NULL,
+                           dims = NULL,
                            cols = c("width", "height"),
-                           ...) {
+                           class = "data.frame") {
+  if (is_named(dims)) {
+    if (has_name(dims, cols[1])) {
+      width <- width %||% as.numeric(dims[[cols[1]]])
+    }
+
+    if (has_name(dims, cols[2])) {
+      height <- height %||% as.numeric(dims[[cols[2]]])
+    }
+
+    if (has_name(dims, get_asp_col())) {
+      asp <- asp %||% as.numeric(dims[[get_asp_col()]])
+    }
+
+    if (missing(units) & has_name(dims, get_units_col())) {
+      units <- dims[[get_units_col()]]
+    }
+  }
+
   check_page_asp(width, height, asp)
   rlang::check_required(units)
 
-  cliExtras::cli_abort_ifnot(
-    "{.arg width}, {.arg width}, and {.arg asp} must all be {.cls numeric}
+  cli_abort_ifnot(
+    "{.arg width}, {.arg height},, and {.arg asp} must all be {.cls numeric}
     or {.code NULL}." = all(is.numeric(c(width, height, asp)))
   )
 
@@ -59,25 +84,48 @@ make_page_size <- function(width = NULL,
       )
   }
 
-  pg <- set_page_orientation(pg, orientation = orientation)
+  pg <- set_page_orientation(pg, cols = cols, orientation = orientation)
 
-  set_page_asp(pg)
+  pg <- set_page_asp(pg, cols = cols)
+
+  class <- arg_match(class, c("data.frame", "list"))
+
+  if (class == "list") {
+    return(page_to_list(pg))
+  }
+
+  pg
 }
 
+#' Convert page data.frame to a named list
+#'
+#' @noRd
+page_to_list <- function(x) {
+  stopifnot(
+    is.data.frame(x),
+    nrow(x) == 1
+  )
 
+  set_names(lapply(names(x), function(nm) {
+    x[[nm]]
+  }), names(x))
+}
+
+#' Check if correct input args are provided
+#'
 #' @noRd
 #' @importFrom cliExtras cli_abort_if
 check_page_asp <- function(width = NULL,
                            height = NULL,
                            asp = NULL,
                            call = parent.frame()) {
-  cliExtras::cli_abort_if(
+  cli_abort_if(
     "{.arg width} or {.arg height} must be provided.",
     condition = is.null(width) & is.null(height),
     call = call
   )
 
-  cliExtras::cli_abort_if(
+  cli_abort_if(
     "{.arg asp} must be provided if only {.arg width} or only
     {.arg height} are provided.",
     condition = is.null(asp) & (is.null(width) | is.null(height)),
