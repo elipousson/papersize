@@ -7,7 +7,7 @@
 #' sizes](https://www.adobe.com/uk/creativecloud/photography/discover/standard-photo-sizes.html)
 #' and other sources. Data is identical to data included with sfext package.
 #'
-#' @format A data frame with 123 rows and 9 variables:
+#' @format A data frame with 125 rows and 9 variables:
 #' \describe{
 #'   \item{`name`}{Name of paper}
 #'   \item{`series`}{Series}
@@ -125,4 +125,3 @@
 #' @format A character vector with 34 abbreviated, singular, and plural unit
 #'   names.
 "grid_units"
-

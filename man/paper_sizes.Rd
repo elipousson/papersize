@@ -5,7 +5,7 @@
 \alias{paper_sizes}
 \title{Standard paper and image sizes}
 \format{
-A data frame with 123 rows and 9 variables:
+A data frame with 125 rows and 9 variables:
 \describe{
 \item{\code{name}}{Name of paper}
 \item{\code{series}}{Series}
