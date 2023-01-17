@@ -67,6 +67,21 @@ and height are used as the column width and row height.}
 c("width", "height"). Must be length 2 and the first value is always used
 as as the width name and the second as the height.}
 }
+\value{
+A Grid layout object with the same width and height and default
+units as the input page size.
+}
 \description{
 Convert a page size data.frame to a Grid layout object
+}
+\examples{
+a8_layout <-
+  page_to_layout(
+    get_paper("A8", orientation = "landscape"),
+    ncol = 2,
+    nrow = 2
+  )
+
+grid::grid.show.layout(a8_layout)
+
 }

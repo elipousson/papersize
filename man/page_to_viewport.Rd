@@ -65,7 +65,17 @@ as as the width name and the second as the height.}
     parent's layout.}
   }}
 }
+\value{
+A \code{viewport} class object with the same width and height as the
+input page size.
+}
 \description{
 Create a \code{viewport} class object with a width and height matching the
 dimensions of a page data.frame and default.units that match the page units.
+}
+\examples{
+vp <- page_to_viewport(get_paper("Poker card"))
+
+grid::grid.show.viewport(vp)
+
 }

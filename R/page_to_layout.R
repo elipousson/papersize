@@ -9,6 +9,18 @@
 #' @param units Passed to default.units parameter of [grid::grid.layout()].
 #' @inheritParams grid::grid.layout
 #' @inheritParams make_page_size
+#' @examples
+#' a8_layout <-
+#'   page_to_layout(
+#'     get_paper("A8", orientation = "landscape"),
+#'     ncol = 2,
+#'     nrow = 2
+#'   )
+#'
+#' grid::grid.show.layout(a8_layout)
+#'
+#' @returns A Grid layout object with the same width and height and default
+#'   units as the input page size.
 #' @export
 page_to_layout <- function(page,
                            margins = NULL,

@@ -8,6 +8,13 @@
 #' @inheritParams grid::viewport
 #' @inheritParams make_page_size
 #' @inheritDotParams grid::viewport -default.units -width -height
+#' @examples
+#' vp <- page_to_viewport(get_paper("Poker card"))
+#'
+#' grid::grid.show.viewport(vp)
+#'
+#' @returns A `viewport` class object with the same width and height as the
+#'   input page size.
 #' @export
 #' @importFrom rlang check_required
 page_to_viewport <- function(page,
