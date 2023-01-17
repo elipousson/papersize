@@ -34,7 +34,7 @@ get_social_size <- function(name = NULL, platform = NULL, format = NULL, orienta
 
   if (!is.null(name)) {
     name <- tolower(name)
-    name_opts <- as.character(image_sizes$name)
+    name_opts <- tolower(as.character(image_sizes$name))
     name <- arg_match(name, name_opts)
 
     image_sizes <-
