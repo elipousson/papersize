@@ -30,6 +30,18 @@ Object created by \code{\link[units:units]{units::set_units()}}
 \description{
 Convert distance (and area) values between different units
 }
+\examples{
+convert_dist_units(1, from = "mile", to = "km")
+
+convert_dist_units(3, from = "ft", to = "yard")
+
+mile <- units::set_units(1, "mi")
+
+convert_dist_units(mile, to = "feet")
+
+is_same_units(mile, "mile")
+
+}
 \seealso{
 \code{\link[=is_same_unit_type]{is_same_unit_type()}}
 

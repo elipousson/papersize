@@ -9,6 +9,17 @@
 #' @return Object created by [units::set_units()]
 #' @rdname convert_dist_units
 #' @family dist
+#' @examples
+#' convert_dist_units(1, from = "mile", to = "km")
+#'
+#' convert_dist_units(3, from = "ft", to = "yard")
+#'
+#' mile <- units::set_units(1, "mi")
+#'
+#' convert_dist_units(mile, to = "feet")
+#'
+#' is_same_units(mile, "mile")
+#'
 #' @seealso [is_same_unit_type()]
 #' @export
 convert_dist_units <- function(dist,
@@ -86,16 +97,26 @@ set_dist_units <- function(x = NULL,
   )
 }
 
+#' @noRd
+as_units_attr <- function(x) {
+  if (is.character(x)) {
+    rlang::check_installed("units")
+    x <- units::as_units(x)
+  }
+
+  units(x)
+}
+
 #' @name is_same_units
 #' @rdname  is_dist_units
 #' @export
 is_same_units <- function(x, y = NULL) {
-  if (any(is.null(c(x, y)))) {
+  if (is.null(x) | is.null(y)) {
     return(FALSE)
   }
 
-  x <- as_unit_type(x)
-  y <- as_unit_type(y)
+  x <- as_units_attr(x)
+  y <- as_units_attr(y)
 
   in_opts <- c("in", "inch", "inches", "international_inch", "international_inches")
   ft_opts <- c("ft", "foot", "feet", "international_foot", "international_feet")
