@@ -99,6 +99,10 @@ get_page_size("ledger", units = "cm")
 
 get_card("Tarot")
 
+get_page_dims(get_paper("letter"))
+
+convert_page_units(get_paper("letter"), units = "cm")
+
 }
 \seealso{
 \code{\link[=make_page_size]{make_page_size()}}

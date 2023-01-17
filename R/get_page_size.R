@@ -37,9 +37,13 @@
 #'
 #' get_card("Tarot")
 #'
+#' get_page_dims(get_paper("letter"))
+#'
+#' convert_page_units(get_paper("letter"), units = "cm")
+#'
 #' @seealso [make_page_size()]
 #' @seealso [get_social_size()]
-#' @return A data.frame with page, paper, or card name and dimensions.
+#' @returns A data.frame with page, paper, or card name and dimensions.
 #' @export
 #' @importFrom rlang arg_match
 get_page_size <- function(name = NULL,
