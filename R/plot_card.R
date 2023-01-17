@@ -27,6 +27,8 @@
 #' plot_cards("Poker", n = 1, number = TRUE, text = "♡️")
 #' @rdname plot_cards
 #' @export
+#' @importFrom grid unit
+#' @importFrom rlang has_name
 plot_cards <- function(card,
                        n = 1,
                        orientation = "portrait",
@@ -41,8 +43,6 @@ plot_cards <- function(card,
                        linewidth = 1,
                        text = NULL,
                        center = NULL) {
-  rlang::check_installed("grid")
-
   if (is.character(card)) {
     card <- get_card(card, orientation = orientation)
   }

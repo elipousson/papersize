@@ -8,6 +8,11 @@
 #' @param orientation Paper orientation, Optional if width and height are both
 #'   provided, Default: 'landscape'
 #' @inheritParams patchwork::wrap_plots
+#' @param paginate If `TRUE`, create a list of `patchwork` objects when the
+#'   number of plots is greater than the number of spaces in the plot layout.
+#'   Default to `TRUE`.
+#' @param dims Optional. Plot dimensions. If `NULL` (default), dims are inferred
+#'   based on the dimensions of the first plot in plots.
 #' @param ... Additional parameters passed to [get_page_size()] if dims is a
 #'   character object.
 #' @return A `patchwork` object

@@ -155,7 +155,7 @@ get_card <- function(name = NULL,
 #' @param ... Additional parameters passed by [get_page_dims()] to [get_page_size()]
 #'   if page is a character object.
 #' @export
-#' @importFrom rlang caller_arg
+#' @importFrom rlang caller_arg set_names
 #' @importFrom cli cli_abort
 get_page_dims <- function(page = NULL,
                           width = NULL,
@@ -200,6 +200,7 @@ get_page_dims <- function(page = NULL,
 }
 
 #' @noRd
+#' @importFrom cli cli_warn
 check_dims_cols <- function(cols = c("width", "height"),
                             width = NULL,
                             height = NULL,
@@ -236,6 +237,7 @@ check_dims_cols <- function(cols = c("width", "height"),
 #' @rdname get_page_size
 #' @param units Units to convert page dimensions to using [convert_unit_type()].
 #' @export
+#' @importFrom cliExtras cli_abort_ifnot
 convert_page_units <- function(page,
                                units = NULL,
                                cols = c("width", "height")) {
@@ -269,6 +271,8 @@ convert_page_units <- function(page,
 }
 
 #' @noRd
+#' @importFrom rlang has_name set_names arg_match
+#' @importFrom cli cli_warn
 set_page_orientation <- function(page,
                                  orientation = NULL,
                                  tolerance = 0.1,
@@ -370,6 +374,7 @@ check_page <- function(page,
 }
 
 #' @noRd
+#' @importFrom rlang is_named
 set_page_dims <- function(page,
                           dims = NULL,
                           width = NULL,
@@ -430,13 +435,12 @@ inset_page <- function(page,
 #' Apply unit class inset to width/height dimensions
 #'
 #' @noRd
+#' @importFrom grid unit
 #' @importFrom rlang set_names
 get_inset_dims <- function(dims,
                            units = "in",
-                           inset = grid::unit(1, "in"),
+                           inset = unit(1, "in"),
                            nm = c("width", "height")) {
-  rlang::check_installed("grid")
-
   inset <- convert_unit_type(inset, to = units, valueOnly = TRUE)
 
   if (length(inset) == 1) {
@@ -449,6 +453,7 @@ get_inset_dims <- function(dims,
 #' Append an aspect ratio column a page size data.frame
 #'
 #' @noRd
+#' @importFrom rlang has_name
 set_page_asp <- function(page,
                          cols = c("width", "height")) {
   asp_col <- get_asp_col()

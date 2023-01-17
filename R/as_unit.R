@@ -45,6 +45,7 @@
 #' @export
 #' @importFrom cliExtras cli_abort_if
 #' @importFrom rlang try_fetch
+#' @importFrom grid unit
 #' @importFrom cli cli_abort
 as_unit <- function(x,
                     units = NULL,
@@ -52,7 +53,6 @@ as_unit <- function(x,
                     recurse = FALSE,
                     arg = caller_arg(x),
                     call = parent.frame()) {
-  rlang::check_installed("grid")
   num <- suppressWarnings(as.numeric(x))
 
   cliExtras::cli_abort_if(
@@ -84,15 +84,14 @@ as_unit <- function(x,
 #' @inheritParams grid::unitType
 #' @inheritParams grid::unit
 #' @export
-#' @importFrom rlang caller_arg try_fetch
+#' @importFrom rlang check_installed try_fetch
+#' @importFrom grid unitType unit
 #' @importFrom cli cli_abort
 as_unit_type <- function(x,
                          recurse = FALSE,
                          data = NULL,
                          arg = caller_arg(x),
                          call = parent.frame()) {
-  rlang::check_installed("grid")
-
   if (is_unit(x)) {
     type <- grid::unitType(x, recurse)
 
@@ -127,16 +126,15 @@ as_unit_type <- function(x,
 #'   Defaults to `FALSE`.
 #' @inheritDotParams grid::convertUnit -unitTo
 #' @export
-#' @importFrom rlang is_named set_names
-#' @importFrom cli cli_alert_warning
+#' @importFrom rlang check_installed is_named set_names
+#' @importFrom cli cli_warn
+#' @importFrom grid convertUnit
 convert_unit_type <- function(x,
                               from = NULL,
                               to = NULL,
                               typeFrom = "dimension",
                               valueOnly = FALSE,
                               ...) {
-  rlang::check_installed("grid")
-
   if (is.null(to)) {
     return(x)
   }

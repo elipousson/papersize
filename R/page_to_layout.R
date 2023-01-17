@@ -2,7 +2,8 @@
 #'
 #' @param page A page size data.frame from [get_page_size()] or a data.frame or
 #'   list from [make_page_size()].
-#' @inheritParams margins
+#' @param margins A numeric list or vector or a margin class object. Defaults to
+#'   `NULL`. margins are removed from the overall layout width and height.
 #' @param region Optional. An additional page data.frame where the region width
 #'   and height are used as the column width and row height.
 #' @param gutter Gutter width/height. Not yet implemented.
@@ -22,6 +23,7 @@
 #' @returns A Grid layout object with the same width and height and default
 #'   units as the input page size.
 #' @export
+#' @importFrom grid unit grid.layout
 page_to_layout <- function(page,
                            margins = NULL,
                            region = NULL,
@@ -34,8 +36,6 @@ page_to_layout <- function(page,
                            respect = TRUE,
                            just = "center",
                            cols = c("width", "height")) {
-  rlang::check_installed("grid")
-
   check_page(page, cols, n = 1)
 
   page_units <- as.character(page[[get_units_col()]])

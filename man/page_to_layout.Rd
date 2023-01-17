@@ -23,6 +23,9 @@ page_to_layout(
 \item{page}{A page size data.frame from \code{\link[=get_page_size]{get_page_size()}} or a data.frame or
 list from \code{\link[=make_page_size]{make_page_size()}}.}
 
+\item{margins}{A numeric list or vector or a margin class object. Defaults to
+\code{NULL}. margins are removed from the overall layout width and height.}
+
 \item{region}{Optional. An additional page data.frame where the region width
 and height are used as the column width and row height.}
 

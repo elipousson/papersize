@@ -51,6 +51,13 @@ auto-tagging should behave. See \code{\link[patchwork:plot_annotation]{plot_anno
 be specified as a text string or by concatenating calls to \code{\link[patchwork:area]{area()}} together.
 See the examples for further information on use.}
 
+\item{paginate}{If \code{TRUE}, create a list of \code{patchwork} objects when the
+number of plots is greater than the number of spaces in the plot layout.
+Default to \code{TRUE}.}
+
+\item{dims}{Optional. Plot dimensions. If \code{NULL} (default), dims are inferred
+based on the dimensions of the first plot in plots.}
+
 \item{...}{Additional parameters passed to \code{\link[=get_page_size]{get_page_size()}} if dims is a
 character object.}
 }

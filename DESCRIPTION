@@ -18,11 +18,11 @@ Depends:
 Imports: 
     cli,
     cliExtras (>= 0.1.0),
+    grid,
     rlang
 Suggests: 
     covr,
     ggplot2,
-    grid,
     patchwork,
     sf,
     testthat (>= 3.0.0),

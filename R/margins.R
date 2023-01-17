@@ -93,8 +93,8 @@ is_margin <- function(x) {
 #'   remember order, think trouble).
 #' @source ggplot2 package
 #' @export
+#' @importFrom grid unit
 margin <- function(t = 0, r = 0, b = 0, l = 0, unit = "pt") {
-  rlang::check_installed("grid")
   u <- grid::unit(c(t, r, b, l), units = unit)
   class(u) <- c("margin", class(u))
   u
