@@ -94,11 +94,17 @@ the same syntax as margin.</p>
 <dt>unit</dt>
 <dd><p>Default units for margins (ignored if margin is a margin class
 object). Passed to as_unit_type() so units class objects as well as unit
-names supported <code><a href="https://rdrr.io/r/grid/unit.html" class="external-link">grid::unit()</a></code> are allowed. Defaults to "in".</p></dd>
+names supported <code><a href="https://rdrr.io/r/grid/unit.html" class="external-link">grid::unit()</a></code> are allowed. Defaults to "in" except for
+<code>margin()</code> where unit defaults to "pt" to match <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">ggplot2::margin()</a></code>.</p></dd>
 
 
 <dt>x</dt>
 <dd><p>Object to check for class margin and unit</p></dd>
+
+
+<dt>t, r, b, l</dt>
+<dd><p>Dimensions of each margin: top, right, bottom, and left. (To
+remember order, think trouble).</p></dd>
 
 </dl></div>
 

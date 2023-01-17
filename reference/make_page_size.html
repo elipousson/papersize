@@ -87,6 +87,13 @@ dims. Passed to <code><a href="as_unit.html">as_unit_type()</a></code> to valida
 provided.</p></dd>
 
 
+<dt>orientation</dt>
+<dd><p>Page orientation, Default: <code>NULL</code>. Supported options are
+"portrait", "landscape", or "square". If width and height suggest a
+portrait orientation when orientation = "landscape", the dimensions are
+reversed so the page dimensions match the provided orientation.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>Optional name for paper size. Recommend avoiding duplication with
 existing names in <code>paper_sizes</code>.</p></dd>
@@ -98,11 +105,14 @@ units, and/or asp.</p></dd>
 
 
 <dt>cols</dt>
-<dd><p>Column nmaes ot use for width and height columns.</p></dd>
+<dd><p>Column names to use for width and height columns. Defaults to
+c("width", "height"). Must be length 2 and the first value is always used
+as as the width name and the second as the height.</p></dd>
 
 
 <dt>class</dt>
-<dd><p>Class of return object: "data.frame" (default) or "list" (only supported when  )</p></dd>
+<dd><p>Class of return object: "data.frame" (default) or "list" (only
+supported when input page size is a single row).</p></dd>
 
 </dl></div>
     <div class="section level2">

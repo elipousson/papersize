@@ -88,20 +88,37 @@ provided.</p></dd>
 <dd><p>Optional name for paper size. Recommend avoiding duplication with
 existing names in <code>paper_sizes</code>.</p></dd>
 
-    <dt><code>cols</code></dt>
-<dd><p>Column nmaes ot use for width and height columns.</p></dd>
-
     <dt><code>dims</code></dt>
 <dd><p>A list or data.frame that can be used to set width, height,
 units, and/or asp.</p></dd>
 
-    <dt><code>class</code></dt>
-<dd><p>Class of return object: "data.frame" (default) or "list" (only supported when  )</p></dd>
+    <dt><code>orientation</code></dt>
+<dd><p>Page orientation, Default: <code>NULL</code>. Supported options are
+"portrait", "landscape", or "square". If width and height suggest a
+portrait orientation when orientation = "landscape", the dimensions are
+reversed so the page dimensions match the provided orientation.</p></dd>
 
   
 </dl></dd>
 
+
+<dt>cols</dt>
+<dd><p>Column names to use for width and height columns. Defaults to
+c("width", "height"). Must be length 2 and the first value is always used
+as as the width name and the second as the height.</p></dd>
+
+
+<dt>class</dt>
+<dd><p>Class of return object: "data.frame" (default) or "list" (only
+supported when input page size is a single row).</p></dd>
+
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<p>A data.frame or list object with one or more page dimensions.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>

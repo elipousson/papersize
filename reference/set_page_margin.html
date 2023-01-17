@@ -62,10 +62,38 @@
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>margins</dt>
-<dd><p>Passed to <code><a href="margins.html">get_margin()</a></code> with unit</p></dd>
+    <dl><dt>page</dt>
+<dd><p>A character vector with a page size name or a data.frame. Passed
+to x parameter of <code><a href="as_page.html">as_page()</a></code>.</p></dd>
+
+
+<dt>margins</dt>
+<dd><p>Passed to <code><a href="margins.html">get_margin()</a></code> with unit value.</p></dd>
+
+
+<dt>unit</dt>
+<dd><p>Unit used for the margin. If margin is a unit object, unit is
+ignored. If page uses different units, the margins are converted into the
+page units for consistency.</p></dd>
+
+
+<dt>cols</dt>
+<dd><p>Column names to use for width and height columns. Defaults to
+c("width", "height"). Must be length 2 and the first value is always used
+as as the width name and the second as the height.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>Passed to <code><a href="as_page.html">as_page()</a></code> with page and cols.</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<p>A data.frame with the page dimensions and additional columns for
+body dimensions, body aspect ratio, and margins.</p>
+    </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

@@ -68,27 +68,28 @@ returns the value of asp without modification.</p></dd>
 
 
 <dt>orientation</dt>
-<dd><p>Page orientation, Default: NULL</p></dd>
+<dd><p>Page orientation, Default: <code>NULL</code>. Supported options are
+"portrait", "landscape", or "square".</p></dd>
 
 
 <dt>...</dt>
 <dd><p>Arguments passed on to <code><a href="get_page_size.html">get_page_size</a></code></p><dl><dt><code>name</code></dt>
-<dd><p>Page name, e.g. "letter", not case sensitive, Default: NULL</p></dd>
+<dd><p>Page name, e.g. "letter", not case sensitive, Default: <code>NULL</code></p></dd>
 
     <dt><code>width</code></dt>
-<dd><p>Page width in "in", "px" or "mm" units. Default: NULL</p></dd>
+<dd><p>Page width in "in", "px" or "mm" units. Default: <code>NULL</code></p></dd>
 
     <dt><code>height</code></dt>
-<dd><p>Page height in "in", "px" or "mm" units. Default: NULL</p></dd>
+<dd><p>Page height in "in", "px" or "mm" units. Default: <code>NULL</code></p></dd>
 
     <dt><code>reorient</code></dt>
-<dd><p>If <code>TRUE</code> and orientation is not NULL, flip width and height
+<dd><p>If <code>TRUE</code> and orientation is not <code>NULL</code>, flip width and height
 dimensions for any pages that do not match the provided orientation. Set
 <code>reorient = FALSE</code> to filter pages by orientation.</p></dd>
 
     <dt><code>type</code></dt>
 <dd><p>Page type, Options include "paper", "social", "postcard",
-"print", "card", or "screen". Default: NULL</p></dd>
+"print", "card", or "screen". Default: <code>NULL</code></p></dd>
 
     <dt><code>ignore.case</code></dt>
 <dd><p>If <code>FALSE</code>, filtering for page and type are case
@@ -103,7 +104,7 @@ sensitive. Defaults to <code>TRUE</code>.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code>as_orientation()</code></p></div>
+    <div class="dont-index"><p><code>isstatic::as_orientation()</code></p></div>
     </div>
 
     <div class="section level2">
