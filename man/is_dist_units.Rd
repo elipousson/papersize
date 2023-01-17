@@ -4,6 +4,7 @@
 \alias{is_same_units}
 \alias{is_dist_units}
 \alias{get_dist_units}
+\alias{as_dist_units}
 \title{General utility functions for working with distance units objects}
 \usage{
 is_same_units(x, y = NULL)
@@ -11,6 +12,8 @@ is_same_units(x, y = NULL)
 is_dist_units(x)
 
 get_dist_units(x, multiple = TRUE, quiet = FALSE)
+
+as_dist_units(x, units = NULL, call = caller_env())
 }
 \arguments{
 \item{x, y}{objects to check}
@@ -21,13 +24,14 @@ units, \code{\link[=get_dist_units]{get_dist_units()}} may return multiple units
 
 \item{quiet}{If \code{TRUE}, suppress warning messages.}
 
-\item{null.ok}{If null.ok is \code{TRUE}, allow x to return a \code{NULL} value; if
-\code{FALSE}, error on \code{NULL} values.}
+\item{units}{Distance units to convert to. Must be one of dist_unit_options
+or area_unit_options.}
+
+\item{call}{Passed to error_call for \code{\link[rlang:arg_match]{rlang::arg_match()}}}
 }
 \description{
 \itemize{
 \item \code{\link[=is_dist_units]{is_dist_units()}}: Is x a distance unit object?
-\item \code{\link[=is_same_units]{is_same_units()}}: are x and y character strings that represent the same
 \item \code{\link[=get_dist_units]{get_dist_units()}}: Get the distance units from x (if x is a sf or units
 objects or a character string from \link{dist_unit_options})
 \item \code{\link[=as_dist_units]{as_dist_units()}}: Convert x to units using \link[units:units]{units::as_units}

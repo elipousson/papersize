@@ -8,7 +8,7 @@
 #' @param orientation Paper orientation, Optional if width and height are both
 #'   provided, Default: 'landscape'
 #' @inheritParams patchwork::wrap_plots
-#' @param ... Additional parameters passed to [get_paper_size()] if dims is a
+#' @param ... Additional parameters passed to [get_page_size()] if dims is a
 #'   character object.
 #' @return A `patchwork` object
 #' @examples
@@ -22,8 +22,6 @@
 #' @rdname page_layout
 #' @aliases layout_cards
 #' @export
-#' @importFrom ggplot2 layer_data
-#' @importFrom patchwork wrap_plots plot_layout
 page_layout <- function(plots = NULL,
                         page = NULL,
                         width = NULL,
@@ -36,6 +34,8 @@ page_layout <- function(plots = NULL,
                         paginate = TRUE,
                         dims = NULL,
                         ...) {
+  rlang::check_installed(c("ggplot2", "patchwork"))
+
   page_dims <- get_page_dims(page, width, height, orientation)
 
   if (!is.null(dims)) {

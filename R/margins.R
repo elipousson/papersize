@@ -14,7 +14,8 @@
 #' @param ... Additional numeric values combined with margin if provided.
 #' @param unit Default units for margins (ignored if margin is a margin class
 #'   object). Passed to as_unit_type() so units class objects as well as unit
-#'   names supported [grid::unit()] are allowed. Defaults to "in".
+#'   names supported [grid::unit()] are allowed. Defaults to "in" except for
+#'   [margin()] where unit defaults to "pt" to match [ggplot2::margin()].
 #' @examples
 #'
 #' margins(1, unit = "in")
@@ -88,10 +89,13 @@ is_margin <- function(x) {
 
 #' @name margin
 #' @rdname margins
+#' @param t,r,b,l Dimensions of each margin: top, right, bottom, and left. (To
+#'   remember order, think trouble).
 #' @source ggplot2 package
 #' @export
 margin <- function(t = 0, r = 0, b = 0, l = 0, unit = "pt") {
-  u <- unit(c(t, r, b, l), units = unit)
+  rlang::check_installed("grid")
+  u <- grid::unit(c(t, r, b, l), units = unit)
   class(u) <- c("margin", class(u))
   u
 }

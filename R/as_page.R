@@ -7,6 +7,7 @@
 #'   height parameter to [make_page_size()]. If x is a character string that
 #'   does not match any of the names in paper_sizes, x is passed as the name
 #'   parameter to [make_page_size()]
+#' @inheritParams make_page_size
 #' @inheritDotParams make_page_size
 #' @examples
 #' as_page(c(8.5, 11), units = "in")
@@ -18,6 +19,7 @@
 #'   cols = c("w", "h")
 #' )
 #'
+#' @returns A data.frame or list object with one or more page dimensions.
 #' @export
 as_page <- function(x, ..., cols = c("width", "height"), class = "data.frame") {
   if (is.character(x) & all(tolower(x) %in% tolower(paper_sizes[["name"]]))) {

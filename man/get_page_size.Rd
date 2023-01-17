@@ -37,22 +37,23 @@ get_page_dims(
 convert_page_units(page, units = NULL, cols = c("width", "height"))
 }
 \arguments{
-\item{name}{Page name, e.g. "letter", not case sensitive, Default: NULL}
+\item{name}{Page name, e.g. "letter", not case sensitive, Default: \code{NULL}}
 
-\item{width}{Page width in "in", "px" or "mm" units. Default: NULL}
+\item{width}{Page width in "in", "px" or "mm" units. Default: \code{NULL}}
 
-\item{height}{Page height in "in", "px" or "mm" units. Default: NULL}
+\item{height}{Page height in "in", "px" or "mm" units. Default: \code{NULL}}
 
-\item{orientation}{Page orientation, Default: NULL}
+\item{orientation}{Page orientation, Default: \code{NULL}. Supported options are
+"portrait", "landscape", or "square".}
 
-\item{reorient}{If \code{TRUE} and orientation is not NULL, flip width and height
+\item{reorient}{If \code{TRUE} and orientation is not \code{NULL}, flip width and height
 dimensions for any pages that do not match the provided orientation. Set
 \code{reorient = FALSE} to filter pages by orientation.}
 
 \item{units}{Units to convert page dimensions to using \code{\link[=convert_unit_type]{convert_unit_type()}}.}
 
 \item{type}{Page type, Options include "paper", "social", "postcard",
-"print", "card", or "screen". Default: NULL}
+"print", "card", or "screen". Default: \code{NULL}}
 
 \item{ignore.case}{If \code{FALSE}, filtering for page and type are case
 sensitive. Defaults to \code{TRUE}.}

@@ -14,15 +14,16 @@
 #' for page dimensions.
 #'
 #' @name get_page_size
-#' @param name Page name, e.g. "letter", not case sensitive, Default: NULL
-#' @param width Page width in "in", "px" or "mm" units. Default: NULL
-#' @param height Page height in "in", "px" or "mm" units. Default: NULL
-#' @param orientation Page orientation, Default: NULL
-#' @param reorient If `TRUE` and orientation is not NULL, flip width and height
+#' @param name Page name, e.g. "letter", not case sensitive, Default: `NULL`
+#' @param width Page width in "in", "px" or "mm" units. Default: `NULL`
+#' @param height Page height in "in", "px" or "mm" units. Default: `NULL`
+#' @param orientation Page orientation, Default: `NULL`. Supported options are
+#'   "portrait", "landscape", or "square".
+#' @param reorient If `TRUE` and orientation is not `NULL`, flip width and height
 #'   dimensions for any pages that do not match the provided orientation. Set
 #'   `reorient = FALSE` to filter pages by orientation.
 #' @param type Page type, Options include "paper", "social", "postcard",
-#'   "print", "card", or "screen". Default: NULL
+#'   "print", "card", or "screen". Default: `NULL`
 #' @param ignore.case If `FALSE`, filtering for page and type are case
 #'   sensitive. Defaults to `TRUE`.
 #' @examples
@@ -161,10 +162,12 @@ get_page_dims <- function(page = NULL,
                           call = parent.frame(),
                           ...) {
   page <-
-    as_page(page,
+    as_page(
+      page,
       width = width,
       height = height,
       orientation = orientation,
+      cols = cols,
       ...
     )
 
@@ -343,16 +346,17 @@ check_page <- function(page,
                        n = NULL,
                        arg = caller_arg(page),
                        call = parent.frame()) {
-  if (!is.data.frame(page) | !all(rlang::has_name(page, cols))) {
+  if ((!is.data.frame(page) & !is.list(page)) | !all(rlang::has_name(page, cols))) {
     cli::cli_abort(
-      "{.arg {arg}} must be a {.cls data.frame} with columns {.val {cols}}.",
+      "{.arg {arg}} must be a {.cls data.frame} or {.cls list} with columns
+      or names {.val {cols}}.",
       call = call
     )
   }
 
   pg_n <- nrow(page)
 
-  if (!is.null(n) && (pg_n > n)) {
+  if (is.data.frame(page) && !is.null(n) && (pg_n > n)) {
     cli::cli_abort(
       "{.arg {arg}} must have no more than {.val {n}} rows,
       and {.arg {arg}} has {.val {pg_n}}.",
@@ -425,8 +429,10 @@ inset_page <- function(page,
 #' @importFrom rlang set_names
 get_inset_dims <- function(dims,
                            units = "in",
-                           inset = unit(1, "in"),
+                           inset = grid::unit(1, "in"),
                            nm = c("width", "height")) {
+  rlang::check_installed("grid")
+
   inset <- convert_unit_type(inset, to = units, valueOnly = TRUE)
 
   if (length(inset) == 1) {

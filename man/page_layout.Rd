@@ -51,7 +51,7 @@ auto-tagging should behave. See \code{\link[patchwork:plot_annotation]{plot_anno
 be specified as a text string or by concatenating calls to \code{\link[patchwork:area]{area()}} together.
 See the examples for further information on use.}
 
-\item{...}{Additional parameters passed to \code{\link[=get_paper_size]{get_paper_size()}} if dims is a
+\item{...}{Additional parameters passed to \code{\link[=get_page_size]{get_page_size()}} if dims is a
 character object.}
 }
 \value{

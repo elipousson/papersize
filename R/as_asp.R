@@ -7,7 +7,7 @@
 #'   [get_page_size()].
 #' @inheritParams get_page_size
 #' @inheritDotParams get_page_size
-#' @seealso [as_orientation()]
+#' @seealso [isstatic::as_orientation()]
 #' @examples
 #' as_asp(8.5 / 11)
 #'

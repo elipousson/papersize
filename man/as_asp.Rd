@@ -14,19 +14,20 @@ returns the value of asp without modification.}
 \item{page}{If character, page is passed as the name parameter to
 \code{\link[=get_page_size]{get_page_size()}}.}
 
-\item{orientation}{Page orientation, Default: NULL}
+\item{orientation}{Page orientation, Default: \code{NULL}. Supported options are
+"portrait", "landscape", or "square".}
 
 \item{...}{
   Arguments passed on to \code{\link[=get_page_size]{get_page_size}}
   \describe{
-    \item{\code{name}}{Page name, e.g. "letter", not case sensitive, Default: NULL}
-    \item{\code{width}}{Page width in "in", "px" or "mm" units. Default: NULL}
-    \item{\code{height}}{Page height in "in", "px" or "mm" units. Default: NULL}
-    \item{\code{reorient}}{If \code{TRUE} and orientation is not NULL, flip width and height
+    \item{\code{name}}{Page name, e.g. "letter", not case sensitive, Default: \code{NULL}}
+    \item{\code{width}}{Page width in "in", "px" or "mm" units. Default: \code{NULL}}
+    \item{\code{height}}{Page height in "in", "px" or "mm" units. Default: \code{NULL}}
+    \item{\code{reorient}}{If \code{TRUE} and orientation is not \code{NULL}, flip width and height
 dimensions for any pages that do not match the provided orientation. Set
 \code{reorient = FALSE} to filter pages by orientation.}
     \item{\code{type}}{Page type, Options include "paper", "social", "postcard",
-"print", "card", or "screen". Default: NULL}
+"print", "card", or "screen". Default: \code{NULL}}
     \item{\code{ignore.case}}{If \code{FALSE}, filtering for page and type are case
 sensitive. Defaults to \code{TRUE}.}
     \item{\code{units}}{Units to convert page dimensions to using \code{\link[=convert_unit_type]{convert_unit_type()}}.}
@@ -46,5 +47,5 @@ as_asp(paper = "letter", orientation = "landscape")
 
 }
 \seealso{
-\code{\link[=as_orientation]{as_orientation()}}
+\code{\link[isstatic:as_orientation]{isstatic::as_orientation()}}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/page_to_layout.R
 \name{page_to_layout}
 \alias{page_to_layout}
-\title{Convert a page data.frame to a Grid layout object}
+\title{Convert a page size data.frame to a Grid layout object}
 \usage{
 page_to_layout(
   page,
@@ -20,12 +20,17 @@ page_to_layout(
 )
 }
 \arguments{
+\item{page}{A page size data.frame from \code{\link[=get_page_size]{get_page_size()}} or a data.frame or
+list from \code{\link[=make_page_size]{make_page_size()}}.}
+
 \item{region}{Optional. An additional page data.frame where the region width
 and height are used as the column width and row height.}
 
 \item{ncol}{An integer describing the number of columns in the layout.}
 
 \item{nrow}{An integer describing the number of rows in the layout.}
+
+\item{gutter}{Gutter width/height. Not yet implemented.}
 
 \item{widths}{A numeric vector or unit object
     describing the widths of the columns
@@ -34,6 +39,8 @@ and height are used as the column width and row height.}
 \item{heights}{A numeric vector or unit object
     describing the heights of the rows
     in the layout.}
+
+\item{units}{Passed to default.units parameter of \code{\link[grid:grid.layout]{grid::grid.layout()}}.}
 
 \item{respect}{A logical value or a numeric matrix.
     If a logical, this indicates whether
@@ -55,7 +62,11 @@ and height are used as the column width and row height.}
     \code{"left"}, for example, means align the left
     edge of the left-most layout column with the left edge of the
     parent viewport.}
+
+\item{cols}{Column names to use for width and height columns. Defaults to
+c("width", "height"). Must be length 2 and the first value is always used
+as as the width name and the second as the height.}
 }
 \description{
-Convert a page data.frame to a Grid layout object
+Convert a page size data.frame to a Grid layout object
 }

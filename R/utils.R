@@ -99,6 +99,8 @@ geom_text_if_family <- function(data,
                                 ),
                                 family = NULL,
                                 ...) {
+  rlang::check_installed("ggplot2")
+
   if (!is.null(family)) {
     ggplot2::geom_text(
       data = data,

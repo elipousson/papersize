@@ -18,19 +18,19 @@ Depends:
 Imports: 
     cli,
     cliExtras (>= 0.1.0),
+    rlang
+Suggests: 
+    covr,
     ggplot2,
     grid,
     patchwork,
-    rlang,
-    units
-Suggests: 
-    covr,
     sf,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    units
+Remotes: 
+    elipousson/cliExtras
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-Remotes: 
-    elipousson/cliExtras

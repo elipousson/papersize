@@ -1,6 +1,15 @@
 #' Set margins for page paper with margin
 #'
-#' @param margins Passed to [get_margin()] with unit
+#' @param page A character vector with a page size name or a data.frame. Passed
+#'   to x parameter of [as_page()].
+#' @param margins Passed to [get_margin()] with unit value.
+#' @param unit Unit used for the margin. If margin is a unit object, unit is
+#'   ignored. If page uses different units, the margins are converted into the
+#'   page units for consistency.
+#' @inheritParams make_page_size
+#' @param ... Passed to [as_page()] with page and cols.
+#' @returns A data.frame with the page dimensions and additional columns for
+#'   body dimensions, body aspect ratio, and margins.
 #' @export
 set_page_margin <- function(page = NULL,
                             margins = NULL,

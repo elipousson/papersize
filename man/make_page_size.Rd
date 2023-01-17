@@ -26,15 +26,23 @@ dims. Passed to \code{\link[=as_unit_type]{as_unit_type()}} to validate.}
 \item{asp}{Aspect ratio. Required if only one of width or height are
 provided.}
 
+\item{orientation}{Page orientation, Default: \code{NULL}. Supported options are
+"portrait", "landscape", or "square". If width and height suggest a
+portrait orientation when orientation = "landscape", the dimensions are
+reversed so the page dimensions match the provided orientation.}
+
 \item{name}{Optional name for paper size. Recommend avoiding duplication with
 existing names in \code{paper_sizes}.}
 
 \item{dims}{A list or data.frame that can be used to set width, height,
 units, and/or asp.}
 
-\item{cols}{Column nmaes ot use for width and height columns.}
+\item{cols}{Column names to use for width and height columns. Defaults to
+c("width", "height"). Must be length 2 and the first value is always used
+as as the width name and the second as the height.}
 
-\item{class}{Class of return object: "data.frame" (default) or "list" (only supported when  )}
+\item{class}{Class of return object: "data.frame" (default) or "list" (only
+supported when input page size is a single row).}
 }
 \description{
 Width and height or aspect ratio and either width or height are required.

@@ -12,13 +12,15 @@ page_to_viewport(page, name = NULL, cols = c("width", "height"), ...)
 \item{name}{A character value to uniquely identify the viewport
     once it has been pushed onto the viewport tree.  }
 
+\item{cols}{Column names to use for width and height columns. Defaults to
+c("width", "height"). Must be length 2 and the first value is always used
+as as the width name and the second as the height.}
+
 \item{...}{
   Arguments passed on to \code{\link[grid:viewport]{grid::viewport}}
   \describe{
     \item{\code{x}}{A numeric vector or unit object specifying x-location.}
     \item{\code{y}}{A numeric vector or unit object specifying y-location.}
-    \item{\code{width}}{A numeric vector or unit object specifying width.}
-    \item{\code{height}}{A numeric vector or unit object specifying height.}
     \item{\code{just}}{A string or numeric
     vector specifying the justification of the viewport
     relative to its (x, y) location.  If there are two values, the first

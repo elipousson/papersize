@@ -6,14 +6,15 @@
 #'
 #' @param page A page data.frame from [get_page_size()] or [make_page_size()].
 #' @inheritParams grid::viewport
-#' @inheritDotParams grid::viewport -default.units
+#' @inheritParams make_page_size
+#' @inheritDotParams grid::viewport -default.units -width -height
 #' @export
 #' @importFrom rlang check_required
-#' @importFrom grid viewport
 page_to_viewport <- function(page,
                              name = NULL,
                              cols = c("width", "height"),
                              ...) {
+  rlang::check_installed("grid")
   rlang::check_required(page)
   check_page(page, cols, n = 1)
 

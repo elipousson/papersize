@@ -13,7 +13,24 @@ set_page_margin(
 )
 }
 \arguments{
-\item{margins}{Passed to \code{\link[=get_margin]{get_margin()}} with unit}
+\item{page}{A character vector with a page size name or a data.frame. Passed
+to x parameter of \code{\link[=as_page]{as_page()}}.}
+
+\item{margins}{Passed to \code{\link[=get_margin]{get_margin()}} with unit value.}
+
+\item{unit}{Unit used for the margin. If margin is a unit object, unit is
+ignored. If page uses different units, the margins are converted into the
+page units for consistency.}
+
+\item{cols}{Column names to use for width and height columns. Defaults to
+c("width", "height"). Must be length 2 and the first value is always used
+as as the width name and the second as the height.}
+
+\item{...}{Passed to \code{\link[=as_page]{as_page()}} with page and cols.}
+}
+\value{
+A data.frame with the page dimensions and additional columns for
+body dimensions, body aspect ratio, and margins.
 }
 \description{
 Set margins for page paper with margin

@@ -14,7 +14,7 @@ plot_cards(
   family = NULL,
   fill = "gray20",
   border = FALSE,
-  inset = unit(c(5, 5), "mm"),
+  inset = grid::unit(c(5, 5), "mm"),
   linetype = "dashed",
   linewidth = 1,
   text = NULL,
@@ -43,7 +43,7 @@ to be the inset border fill. Default: 'gray20'}
 \item{border}{If TRUE, add a border to the card. Default: FALSE}
 
 \item{inset}{Unit or numeric vector with inset distance for card border,
-Default: unit(c(5, 5), "mm"). If inset is a numeric vector, it is expected
+Default: \code{grid::unit(c(5, 5), "mm")}. If inset is a numeric vector, it is expected
 to be a percent relative to the card width and height.}
 
 \item{linetype}{linetype for card border, Default: 'dashed'}

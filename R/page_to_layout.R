@@ -1,10 +1,15 @@
-#' Convert a page data.frame to a Grid layout object
+#' Convert a page size data.frame to a Grid layout object
 #'
+#' @param page A page size data.frame from [get_page_size()] or a data.frame or
+#'   list from [make_page_size()].
+#' @inheritParams margins
 #' @param region Optional. An additional page data.frame where the region width
 #'   and height are used as the column width and row height.
+#' @param gutter Gutter width/height. Not yet implemented.
+#' @param units Passed to default.units parameter of [grid::grid.layout()].
 #' @inheritParams grid::grid.layout
+#' @inheritParams make_page_size
 #' @export
-#' @importFrom grid grid.layout
 page_to_layout <- function(page,
                            margins = NULL,
                            region = NULL,
@@ -17,7 +22,10 @@ page_to_layout <- function(page,
                            respect = TRUE,
                            just = "center",
                            cols = c("width", "height")) {
+  rlang::check_installed("grid")
+
   check_page(page, cols, n = 1)
+
   page_units <- as.character(page[[get_units_col()]])
 
   if (!is_same_unit_type(page_units, units)) {
@@ -34,13 +42,13 @@ page_to_layout <- function(page,
     page_height <- page[[body_cols[2]]]
   }
 
-  widths <- widths %||% unit(rep_len(page_width / ncol, ncol), units)
-  heights <- heights %||% unit(rep_len(page_height / nrow, nrow), units)
+  widths <- widths %||% grid::unit(rep_len(page_width / ncol, ncol), units)
+  heights <- heights %||% grid::unit(rep_len(page_height / nrow, nrow), units)
 
   if (!is.null(region)) {
     check_page(region, cols, n = 1)
-    widths <- unit(rep_len(region[[cols[1]]], ncol), units)
-    heights <- unit(rep_len(region[[cols[2]]], nrow), units)
+    widths <- grid::unit(rep_len(region[[cols[1]]], ncol), units)
+    heights <- grid::unit(rep_len(region[[cols[2]]], nrow), units)
   }
 
   if (sum_num(widths) > page_width) {

@@ -26,11 +26,23 @@ dims. Passed to \code{\link[=as_unit_type]{as_unit_type()}} to validate.}
 provided.}
     \item{\code{name}}{Optional name for paper size. Recommend avoiding duplication with
 existing names in \code{paper_sizes}.}
-    \item{\code{cols}}{Column nmaes ot use for width and height columns.}
     \item{\code{dims}}{A list or data.frame that can be used to set width, height,
 units, and/or asp.}
-    \item{\code{class}}{Class of return object: "data.frame" (default) or "list" (only supported when  )}
+    \item{\code{orientation}}{Page orientation, Default: \code{NULL}. Supported options are
+"portrait", "landscape", or "square". If width and height suggest a
+portrait orientation when orientation = "landscape", the dimensions are
+reversed so the page dimensions match the provided orientation.}
   }}
+
+\item{cols}{Column names to use for width and height columns. Defaults to
+c("width", "height"). Must be length 2 and the first value is always used
+as as the width name and the second as the height.}
+
+\item{class}{Class of return object: "data.frame" (default) or "list" (only
+supported when input page size is a single row).}
+}
+\value{
+A data.frame or list object with one or more page dimensions.
 }
 \description{
 Coerce a character or named vector to a page data.frame using get_page_size()

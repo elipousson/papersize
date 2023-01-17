@@ -31,6 +31,8 @@ Object created by \code{\link[units:units]{units::set_units()}}
 Convert distance (and area) values between different units
 }
 \seealso{
+\code{\link[=is_same_unit_type]{is_same_unit_type()}}
+
 Other dist: 
 \code{\link{convert_dist_scale}()},
 \code{\link{is_same_units}()}

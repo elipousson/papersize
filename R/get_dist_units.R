@@ -1,7 +1,6 @@
 #' General utility functions for working with distance units objects
 #'
 #' - [is_dist_units()]: Is x a distance unit object?
-#' - [is_same_units()]: are x and y character strings that represent the same
 #' - [get_dist_units()]: Get the distance units from x (if x is a sf or units
 #' objects or a character string from [dist_unit_options])
 #' - [as_dist_units()]: Convert x to units using [units::as_units]
@@ -16,8 +15,6 @@ is_dist_units <- function(x) {
 
 #' @name get_dist_units
 #' @rdname is_dist_units
-#' @param null.ok If null.ok is `TRUE`, allow x to return a `NULL` value; if
-#'   `FALSE`, error on `NULL` values.
 #' @param multiple If `TRUE` and x is a character vector with distance/area
 #'   units, [get_dist_units()] may return multiple units. Passed to
 #'   [rlang::arg_match].
@@ -80,4 +77,40 @@ get_dist_units <- function(x, multiple = TRUE, quiet = FALSE) {
   rlang::arg_match(x, c(dist_unit_options, area_unit_options),
     multiple = multiple
   )
+}
+
+
+#' @name as_dist_units
+#' @rdname is_dist_units
+#' @param units Distance units to convert to. Must be one of dist_unit_options
+#'   or area_unit_options.
+#' @param call Passed to error_call for [rlang::arg_match()]
+#' @export
+#' @importFrom rlang arg_match
+#' @importFrom cliExtras cli_yesno
+as_dist_units <- function(x,
+                          units = NULL,
+                          call = caller_env()) {
+  units <- get_dist_units(units)
+
+  units <-
+    rlang::arg_match(
+      units,
+      c(dist_unit_options, area_unit_options),
+      error_call = call
+    )
+
+  if (is.numeric(x) && !is_dist_units(x)) {
+    rlang::check_installed("units")
+    return(units::as_units(x, units))
+  }
+
+  if (cliExtras::cli_yesno(
+    "Did you mean to convert {.var x} to {.val {units}}?"
+  )) {
+    convert_dist_units(
+      dist = x,
+      to = units
+    )
+  }
 }

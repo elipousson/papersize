@@ -14,7 +14,7 @@
 #'   to be the inset border fill. Default: 'gray20'
 #' @param border If TRUE, add a border to the card. Default: FALSE
 #' @param inset Unit or numeric vector with inset distance for card border,
-#'   Default: unit(c(5, 5), "mm"). If inset is a numeric vector, it is expected
+#'   Default: `grid::unit(c(5, 5), "mm")`. If inset is a numeric vector, it is expected
 #'   to be a percent relative to the card width and height.
 #' @param linetype linetype for card border, Default: 'dashed'
 #' @param linewidth linewidth for card border, Default: 2
@@ -36,11 +36,13 @@ plot_cards <- function(card,
                        family = NULL,
                        fill = "gray20",
                        border = FALSE,
-                       inset = unit(c(5, 5), "mm"),
+                       inset = grid::unit(c(5, 5), "mm"),
                        linetype = "dashed",
                        linewidth = 1,
                        text = NULL,
                        center = NULL) {
+  rlang::check_installed("grid")
+
   if (is.character(card)) {
     card <- get_card(card, orientation = orientation)
   }
@@ -100,11 +102,11 @@ make_card_plots <- function(card,
 #' Helper to create a ggplot for a single card
 #'
 #' @noRd
-#' @importFrom ggplot2 ggplot geom_tile aes theme_void coord_fixed
 setup_card_plot <- function(card,
                             fill = "gray20",
                             tile = TRUE,
                             fixed = TRUE) {
+  rlang::check_installed("ggplot2")
   check_page(card, cols = c("width", "height", "x", "y"))
 
   plot <-
@@ -132,13 +134,14 @@ setup_card_plot <- function(card,
 #' Helper to add a number to each card plot in a list
 #'
 #' @noRd
-#' @importFrom ggplot2 geom_text aes
 add_card_number <- function(plots,
                             card = NULL,
                             n = 1,
                             color = "white",
                             size = 5,
                             family = NULL) {
+  rlang::check_installed("ggplot2")
+
   n <- c(1:n)
 
   # repeat card function to copy layout rows
@@ -166,15 +169,15 @@ add_card_number <- function(plots,
 #' Helper to add a border to each card plot in a list
 #'
 #' @noRd
-#' @importFrom grid unit
-#' @importFrom ggplot2 geom_tile aes
 add_card_border <- function(plots,
                             card = NULL,
-                            inset = unit(c(5, 5), "mm"),
+                            inset = grid::unit(c(5, 5), "mm"),
                             fill = NA,
                             color = "white",
                             linetype = "dashed",
                             linewidth = 1) {
+  rlang::check_installed(c("grid", "ggplot2"))
+
   inset_card <- inset_page(card, inset)
 
   if (length(fill) == 2) {
@@ -203,7 +206,6 @@ add_card_border <- function(plots,
 #' Helper to add text to each card plot in a list
 #'
 #' @noRd
-#' @importFrom ggplot2 geom_text aes
 add_card_text <- function(plots,
                           card = NULL,
                           text = NULL,
@@ -212,6 +214,8 @@ add_card_text <- function(plots,
                           family = NULL,
                           nudge_x = 0,
                           nudge_y = 0.5) {
+  rlang::check_installed("ggplot2")
+
   if (is.null(text)) {
     return(plots)
   }

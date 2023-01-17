@@ -12,10 +12,17 @@
 #'   provided.
 #' @param name Optional name for paper size. Recommend avoiding duplication with
 #'   existing names in `paper_sizes`.
-#' @param cols Column nmaes ot use for width and height columns.
+#' @param cols Column names to use for width and height columns. Defaults to
+#'   c("width", "height"). Must be length 2 and the first value is always used
+#'   as as the width name and the second as the height.
 #' @param dims A list or data.frame that can be used to set width, height,
 #'   units, and/or asp.
-#' @param class Class of return object: "data.frame" (default) or "list" (only supported when  )
+#' @param orientation Page orientation, Default: `NULL`. Supported options are
+#'   "portrait", "landscape", or "square". If width and height suggest a
+#'   portrait orientation when orientation = "landscape", the dimensions are
+#'   reversed so the page dimensions match the provided orientation.
+#' @param class Class of return object: "data.frame" (default) or "list" (only
+#'   supported when input page size is a single row).
 #' @examples
 #' make_page_size(48, 24, "in", name = "Tabletop map")
 #'

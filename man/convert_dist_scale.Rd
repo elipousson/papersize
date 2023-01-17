@@ -43,14 +43,15 @@ defaults to \code{NULL}.}
 
 \item{paper}{Name of paper passed to \code{\link[=get_paper]{get_paper()}}}
 
-\item{orientation}{Page orientation, Default: NULL}
+\item{orientation}{Page orientation, Default: \code{NULL}. Supported options are
+"portrait", "landscape", or "square".}
 
 \item{...}{
   Arguments passed on to \code{\link[=get_paper]{get_paper}}
   \describe{
-    \item{\code{name}}{Page name, e.g. "letter", not case sensitive, Default: NULL}
-    \item{\code{width}}{Page width in "in", "px" or "mm" units. Default: NULL}
-    \item{\code{height}}{Page height in "in", "px" or "mm" units. Default: NULL}
+    \item{\code{name}}{Page name, e.g. "letter", not case sensitive, Default: \code{NULL}}
+    \item{\code{width}}{Page width in "in", "px" or "mm" units. Default: \code{NULL}}
+    \item{\code{height}}{Page height in "in", "px" or "mm" units. Default: \code{NULL}}
   }}
 }
 \value{

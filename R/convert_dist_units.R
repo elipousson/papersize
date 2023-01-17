@@ -9,8 +9,8 @@
 #' @return Object created by [units::set_units()]
 #' @rdname convert_dist_units
 #' @family dist
+#' @seealso [is_same_unit_type()]
 #' @export
-#' @importFrom units set_units
 convert_dist_units <- function(dist,
                                from = NULL,
                                to = "meter",
@@ -22,6 +22,8 @@ convert_dist_units <- function(dist,
   )
 
   if (is_units(dist)) {
+    rlang::check_installed("units")
+
     dist_from <- get_dist_units(dist)
 
     if (!is.null(from) && (dist_from != from)) {
@@ -57,21 +59,15 @@ convert_dist_units <- function(dist,
 
 #' Set distance units
 #'
-#' @param null.ok If `FALSE`, error value; If `TRUE`, and value is `NULL` return
-#'   x without setting units.
 #' @noRd
 #' @importFrom rlang caller_env arg_match
-#' @importFrom units set_units
 set_dist_units <- function(x = NULL,
                            value = NULL,
                            mode = "standard",
-                           null.ok = TRUE,
                            call = caller_env()) {
-  if (is.null(value) && null.ok) {
+  if (is.null(value)) {
     return(x)
   }
-
-  #  check_null(value)
 
   value <- underscore(value)
 
@@ -82,6 +78,7 @@ set_dist_units <- function(x = NULL,
       error_call = call
     )
 
+  rlang::check_installed("units")
   units::set_units(
     x = x,
     value = value,
@@ -92,7 +89,6 @@ set_dist_units <- function(x = NULL,
 #' @name is_same_units
 #' @rdname  is_dist_units
 #' @export
-#' @importFrom units as_units
 is_same_units <- function(x, y = NULL) {
   if (any(is.null(c(x, y)))) {
     return(FALSE)
@@ -116,6 +112,7 @@ is_same_units <- function(x, y = NULL) {
     return(TRUE)
   }
 
+  rlang::check_installed("units")
   units::as_units(x) == units::as_units(y)
 }
 
