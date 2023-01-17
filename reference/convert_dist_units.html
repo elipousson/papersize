@@ -99,6 +99,24 @@ object, the numerator is used as "from"</p></dd>
 <code><a href="is_dist_units.html">is_same_units</a>()</code></p></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">convert_dist_units</span><span class="op">(</span><span class="fl">1</span>, from <span class="op">=</span> <span class="st">"mile"</span>, to <span class="op">=</span> <span class="st">"km"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.609344 [km]</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">convert_dist_units</span><span class="op">(</span><span class="fl">3</span>, from <span class="op">=</span> <span class="st">"ft"</span>, to <span class="op">=</span> <span class="st">"yard"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 [yard]</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">mile</span> <span class="op">&lt;-</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"mi"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">convert_dist_units</span><span class="op">(</span><span class="va">mile</span>, to <span class="op">=</span> <span class="st">"feet"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5280 [feet]</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="is_dist_units.html">is_same_units</a></span><span class="op">(</span><span class="va">mile</span>, <span class="st">"mile"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
