@@ -21,9 +21,15 @@
 #'
 #' @returns A data.frame or list object with one or more page dimensions.
 #' @export
-as_page <- function(x, ..., cols = c("width", "height"), class = "data.frame") {
+as_page <- function(x,
+                    ...,
+                    cols = c("width", "height"),
+                    class = "data.frame") {
   if (is.character(x) & all(tolower(x) %in% tolower(paper_sizes[["name"]]))) {
     page <- get_page_size(x, ...)
+    if (class == "list") {
+      page <- page_to_list(page)
+    }
   } else if (is_named(x)) {
     page <- make_page_size(dims = x, ..., cols = cols, class = class)
   } else if (is.numeric(x) & (length(x) == 2)) {
