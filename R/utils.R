@@ -25,10 +25,11 @@ utils::globalVariables(
 #  map map_chr
 
 # @staticimports pkg:stringstatic
-#  str_detect str_extract
+#  str_detect str_extract str_remove
 
 # @staticimports pkg:isstatic
-#  is_unit is_gg is_units is_sf is_sf_ext as_orientation
+#  is_unit is_gg is_units is_sf is_sf_ext is_patchwork as_orientation
+#  str_add_fileext str_remove_fileext str_extract_fileext
 
 #' @noRd
 #' @importFrom rlang caller_arg
@@ -87,6 +88,10 @@ sum_num <- function(x) {
   sum(as.numeric(x))
 }
 
+#' @noRd
+diff_num <- function(x) {
+  diff(as.numeric(x))
+}
 
 #' Helper to passed family as fixed aesthetic conditionally
 #'
