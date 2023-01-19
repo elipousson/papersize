@@ -34,7 +34,13 @@ get_page_dims(
   ...
 )
 
-convert_page_units(page, units = NULL, cols = c("width", "height"))
+convert_page_units(
+  page,
+  units = NULL,
+  valueOnly = TRUE,
+  cols = c("width", "height"),
+  ...
+)
 }
 \arguments{
 \item{name}{Page name, e.g. "letter", not case sensitive, Default: \code{NULL}}
