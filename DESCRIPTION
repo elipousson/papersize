@@ -18,17 +18,26 @@ Depends:
 Imports: 
     cli,
     cliExtras (>= 0.1.0),
+    glue,
     grid,
-    rlang
+    lifecycle,
+    rlang (>= 0.4.11),
+    units,
+    withr
 Suggests: 
     covr,
+    filenamr,
     ggplot2,
+    gridExtra,
+    magick,
     patchwork,
+    qpdf,
+    roxygen2,
     sf,
-    testthat (>= 3.0.0),
-    units
+    testthat (>= 3.0.0)
 Remotes: 
-    elipousson/cliExtras
+    elipousson/cliExtras,
+    elipousson/filenamr
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
