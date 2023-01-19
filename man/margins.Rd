@@ -60,3 +60,6 @@ is_margin(standard_margin)
 standard_margin
 
 }
+\seealso{
+\code{\link[=set_page_margin]{set_page_margin()}}
+}

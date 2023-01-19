@@ -30,6 +30,8 @@
 #'
 #' make_page_size(5, asp = 1.25, units = "cm", class = "list")
 #'
+#' @returns A data.frame with columns named (by default) width, height, units,
+#'   orientation, and asp or a list with those same names.
 #' @export
 #' @seealso [get_page_size()]
 #' @importFrom rlang check_required set_names arg_match

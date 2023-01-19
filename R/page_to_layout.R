@@ -49,7 +49,7 @@ page_to_layout <- function(page,
 
   if (!is.null(margins)) {
     page <- set_page_margin(page, margins, unit = units)
-    body_cols <- paste0("body_", cols)
+    body_cols <- glue("{get_body_col()}_{cols}")
     page_width <- page[[body_cols[1]]]
     page_height <- page[[body_cols[2]]]
   }

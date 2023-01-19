@@ -44,6 +44,10 @@ as as the width name and the second as the height.}
 \item{class}{Class of return object: "data.frame" (default) or "list" (only
 supported when input page size is a single row).}
 }
+\value{
+A data.frame with columns named (by default) width, height, units,
+orientation, and asp or a list with those same names.
+}
 \description{
 Width and height or aspect ratio and either width or height are required.
 Units are also required. If orientation is provided, width and height may be

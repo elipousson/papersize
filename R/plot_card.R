@@ -22,9 +22,14 @@
 #' @param center Position of card center, Default: c(0, 0)
 #' @return A list of plot objects where each item on the list is a card.
 #' @examples
-#' plot_cards("Tarot", n = 2, number = TRUE)[[2]]
+#' #'
+#' \dontrun{
+#' if (interactive() & is_installed("ggplot2")) {
+#'   plot_cards("Tarot", n = 2, number = TRUE)[[2]]
 #'
-#' plot_cards("Poker", n = 1, number = TRUE, text = "♡️")
+#'   plot_cards("Poker", n = 1, number = TRUE, text = "♡️")
+#' }
+#' }
 #' @rdname plot_cards
 #' @export
 #' @importFrom grid unit

@@ -1,4 +1,4 @@
-#' Set margins for page paper with margin
+#' Set margins for page data.frame (adding body width, height, and asp)
 #'
 #' @param page A character vector with a page size name or a data.frame. Passed
 #'   to x parameter of [as_page()].
@@ -10,6 +10,8 @@
 #' @param ... Passed to [as_page()] with page and cols.
 #' @returns A data.frame with the page dimensions and additional columns for
 #'   body dimensions, body aspect ratio, and margins.
+#' @seealso [ggplot2::margin()]; [set_page_dims()]; [set_page_orientation()];
+#'   [set_page_asp()]
 #' @export
 set_page_margin <- function(page = NULL,
                             margins = NULL,
@@ -42,7 +44,7 @@ set_page_margin <- function(page = NULL,
 
   nm <- c(
     names(page),
-    paste0(get_body_col(), "_", c(cols, get_asp_col())),
+    glue("{get_body_col()}_{c(cols, get_asp_col())}"),
     "margin"
   )
 

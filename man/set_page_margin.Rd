@@ -2,7 +2,7 @@
 % Please edit documentation in R/set_page_margins.R
 \name{set_page_margin}
 \alias{set_page_margin}
-\title{Set margins for page paper with margin}
+\title{Set margins for page data.frame (adding body width, height, and asp)}
 \usage{
 set_page_margin(
   page = NULL,
@@ -33,5 +33,9 @@ A data.frame with the page dimensions and additional columns for
 body dimensions, body aspect ratio, and margins.
 }
 \description{
-Set margins for page paper with margin
+Set margins for page data.frame (adding body width, height, and asp)
+}
+\seealso{
+\code{\link[ggplot2:element]{ggplot2::margin()}}; \code{\link[=set_page_dims]{set_page_dims()}}; \code{\link[=set_page_orientation]{set_page_orientation()}};
+\code{\link[=set_page_asp]{set_page_asp()}}
 }

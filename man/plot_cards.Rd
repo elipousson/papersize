@@ -61,7 +61,12 @@ A list of plot objects where each item on the list is a card.
 Make a plot of cards.
 }
 \examples{
-plot_cards("Tarot", n = 2, number = TRUE)[[2]]
+#'
+\dontrun{
+if (interactive() & is_installed("ggplot2")) {
+  plot_cards("Tarot", n = 2, number = TRUE)[[2]]
 
-plot_cards("Poker", n = 1, number = TRUE, text = "♡️")
+  plot_cards("Poker", n = 1, number = TRUE, text = "♡️")
+}
+}
 }

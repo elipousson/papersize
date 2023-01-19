@@ -32,6 +32,7 @@
 #'
 #' standard_margin
 #'
+#' @seealso [set_page_margin()]
 #' @export
 #' @importFrom rlang has_name
 #' @importFrom cli cli_abort
