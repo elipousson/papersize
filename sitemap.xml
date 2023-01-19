@@ -55,13 +55,22 @@
     <loc>https://elipousson.github.io/papersize/reference/get_social_size.html</loc>
   </url>
   <url>
+    <loc>https://elipousson.github.io/papersize/reference/ggsave_ext.html</loc>
+  </url>
+  <url>
     <loc>https://elipousson.github.io/papersize/reference/grid_units.html</loc>
   </url>
   <url>
     <loc>https://elipousson.github.io/papersize/reference/index.html</loc>
   </url>
   <url>
+    <loc>https://elipousson.github.io/papersize/reference/inset_page_element.html</loc>
+  </url>
+  <url>
     <loc>https://elipousson.github.io/papersize/reference/is_dist_units.html</loc>
+  </url>
+  <url>
+    <loc>https://elipousson.github.io/papersize/reference/is_patchwork.html</loc>
   </url>
   <url>
     <loc>https://elipousson.github.io/papersize/reference/make_page_size.html</loc>
@@ -91,9 +100,21 @@
     <loc>https://elipousson.github.io/papersize/reference/plot_cards.html</loc>
   </url>
   <url>
+    <loc>https://elipousson.github.io/papersize/reference/print_to_page.html</loc>
+  </url>
+  <url>
+    <loc>https://elipousson.github.io/papersize/reference/set_page_dims.html</loc>
+  </url>
+  <url>
     <loc>https://elipousson.github.io/papersize/reference/set_page_margin.html</loc>
   </url>
   <url>
     <loc>https://elipousson.github.io/papersize/reference/standard_scales.html</loc>
+  </url>
+  <url>
+    <loc>https://elipousson.github.io/papersize/reference/theme_page.html</loc>
+  </url>
+  <url>
+    <loc>https://elipousson.github.io/papersize/reference/tidyeval.html</loc>
   </url>
 </urlset>

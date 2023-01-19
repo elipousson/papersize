@@ -197,6 +197,13 @@ Defaults to <code>FALSE</code>.</p></dd>
 <dd><p>Object to compare to x.</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<p>A <code>unit</code> class object, a character vector with a unit type, or a
+logical vector.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -216,7 +223,9 @@ Defaults to <code>FALSE</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1inches</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">convert_unit_type</span><span class="op">(</span><span class="va">inch</span>, to <span class="op">=</span> <span class="st">"cm"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.54cm</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in is_same_unit_type(x, from):</span> `y` () can't be coerced to a grid unit type.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `grid::unit()`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> 'x' and 'units' must have length &gt; 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">convert_unit_type</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">100</span><span class="op">)</span>, from <span class="op">=</span> <span class="st">"mm"</span>, to <span class="op">=</span> <span class="st">"cm"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1cm  10cm</span>
