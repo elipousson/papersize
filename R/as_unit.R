@@ -42,6 +42,8 @@
 #' @inheritParams grid::unit
 #' @param arg Passed to [cli_abort()] to improve internal error messages.
 #' @inheritParams cli::cli_abort
+#' @returns A `unit` class object, a character vector with a unit type, or a
+#'   logical vector.
 #' @export
 #' @importFrom cliExtras cli_abort_if
 #' @importFrom rlang try_fetch
@@ -150,13 +152,18 @@ convert_unit_type <- function(x,
     cli::cli_warn(
       "{.arg from} is {.code NULL}, converting {.arg x} to {.val {to}}."
     )
-    return(rlang::set_names(as_unit(x, to), nm))
+
+    if (!isTRUE(valueOnly)) {
+      x <- as_unit(x, to)
+    }
+
+    return(rlang::set_names(x, nm))
   }
 
-  if (is_unit(x) && is_unit(from) && !is_same_unit_type(x, from)) {
+  if (is_unit(x) && is_unit_type(from) && !is_same_unit_type(x, from)) {
     cli::cli_warn(
-      "Existing  {.arg x} unit type {.val {as_unit_type(x)}} is ignored
-        when {.arg from} is a {.cls unit} object."
+      "Existing {.arg x} unit type {.val {as_unit_type(x)}} is ignored
+        when {.arg from} is provided."
     )
   }
 
@@ -178,7 +185,7 @@ convert_unit_type <- function(x,
 #' @rdname as_unit
 #' @export
 is_unit_type <- function(x, ...) {
-  if (x %in% grid_units[1:27]) {
+  if (all(x %in% grid_units[1:27])) {
     return(TRUE)
   }
 

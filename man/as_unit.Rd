@@ -91,6 +91,10 @@ Defaults to \code{FALSE}.}
 
 \item{y}{Object to compare to x.}
 }
+\value{
+A \code{unit} class object, a character vector with a unit type, or a
+logical vector.
+}
 \description{
 \itemize{
 \item \code{\link[=as_unit]{as_unit()}}: Convert to a unit (allowing unit objects as units)
