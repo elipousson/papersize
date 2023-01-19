@@ -67,8 +67,8 @@ make_page_size <- function(width = NULL,
   rlang::check_required(units)
 
   cli_abort_ifnot(
-    "{.arg width}, {.arg height},, and {.arg asp} must all be {.cls numeric}
-    or {.code NULL}." = all(is.numeric(c(width, height, asp)))
+    "{.arg width}, {.arg height}, and {.arg asp} must all be either
+    {.cls numeric} or {.code NULL}." = all(is.numeric(c(width, height, asp)))
   )
 
   width <- width %||% (height * asp)
