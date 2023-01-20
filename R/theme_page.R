@@ -18,7 +18,7 @@ theme_page <- function(page, orientation = NULL, ...) {
     aspect.ratio = as_asp(
       page = page,
       orientation = orientation,
-      flip = TRUE
+      flipped = TRUE
     ),
     ...
   )

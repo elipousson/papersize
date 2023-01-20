@@ -22,8 +22,7 @@ Imports:
     grid,
     lifecycle,
     rlang (>= 0.4.11),
-    units,
-    withr
+    units
 Suggests: 
     covr,
     filenamr,
@@ -34,7 +33,8 @@ Suggests:
     qpdf,
     roxygen2,
     sf,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    withr
 Remotes: 
     elipousson/cliExtras,
     elipousson/filenamr

@@ -76,6 +76,9 @@ Defaults to c("width", "height").}
 
 \item{...}{Additional parameters passed by \code{\link[=get_page_dims]{get_page_dims()}} to \code{\link[=get_page_size]{get_page_size()}}
 if page is a character object.}
+
+\item{valueOnly}{Passed to valueOnly parameter of \code{\link[grid:grid.convert]{grid::convertUnit()}}.
+Defaults to \code{FALSE}.}
 }
 \value{
 A data.frame with page, paper, or card name and dimensions.

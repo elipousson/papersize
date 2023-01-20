@@ -34,7 +34,6 @@
 #' @rdname inset_page_element
 #' @export
 #' @importFrom rlang check_installed
-#' @importFrom patchwork inset_element
 inset_page_element <- function(p,
                                inset_page = NULL,
                                left = NULL,

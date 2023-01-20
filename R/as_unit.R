@@ -185,6 +185,10 @@ convert_unit_type <- function(x,
 #' @rdname as_unit
 #' @export
 is_unit_type <- function(x, ...) {
+  if (is.null(x)) {
+    return(FALSE)
+  }
+
   if (all(x %in% grid_units[1:27])) {
     return(TRUE)
   }

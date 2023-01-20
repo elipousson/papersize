@@ -32,10 +32,6 @@ print_to_page <- function(plot, page, newpage = TRUE, vp = NULL, ...) {
 
 #' @rdname print_to_page
 #' @name print_to_page_layout
-#' @param layout_position Integer vector with position as c(<row number>,
-#'   <column number>). If layout_position requires a greater number of rows or
-#'   columns than is specified by ncol and nrow, the latter values are increased
-#'   to match.
 #' @param layout Passed to page_to_viewport with layout_position as
 #'   layout.pos.row and layout.pos.col if provided. Defaults to `NULL` where
 #'   layout is defined by page_to_layout using ncol, nrow, page and any

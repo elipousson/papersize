@@ -24,6 +24,34 @@ set_page_orientation(
 
 set_page_asp(page, flipped = FALSE, cols = c("width", "height"))
 }
+\arguments{
+\item{page}{If character, page is passed as the name parameter to
+\code{\link[=get_page_size]{get_page_size()}}.}
+
+\item{dims}{A vector or list with values in the same order as cols
+(defaults to \verb{c(<width>, <height>)} to match cols).}
+
+\item{width, height}{Page width and height. Both are required, if asp is
+\code{NULL}. Default to \code{NULL}.}
+
+\item{units}{Units for width and height. Required unless units is included in
+dims. Passed to \code{\link[=as_unit_type]{as_unit_type()}} to validate.}
+
+\item{cols}{Column names to use for width and height columns. Defaults to
+c("width", "height"). Must be length 2 and the first value is always used
+as as the width name and the second as the height.}
+
+\item{orientation}{Page orientation, Default: \code{NULL}. Supported options are
+"portrait", "landscape", or "square". If width and height suggest a
+portrait orientation when orientation = "landscape", the dimensions are
+reversed so the page dimensions match the provided orientation.}
+
+\item{tolerance}{Positive numeric value above or below 1 used to determine if
+an aspect ratio is square, landscape, or portrait.}
+
+\item{flipped}{If \code{TRUE}, return aspect ratio of height to width (y / x),
+instead of width to height.}
+}
 \description{
 Set page data.frame dimensions, orientation, or aspect ratio
 

@@ -1,6 +1,9 @@
 #' Set page data.frame dimensions, orientation, or aspect ratio
 #'
 #' @name set_page_dims
+#' @param dims A vector or list with values in the same order as cols
+#'   (defaults to `c(<width>, <height>)` to match cols).
+#' @inheritParams make_page_size
 #' @export
 #' @importFrom rlang is_named
 set_page_dims <- function(page,
@@ -35,6 +38,7 @@ set_page_dims <- function(page,
 
 #' @name set_page_orientation
 #' @rdname set_page_dims
+#' @inheritParams isstatic::as_orientation
 #' @export
 #' @importFrom rlang has_name set_names arg_match
 #' @importFrom cli cli_warn
@@ -115,6 +119,7 @@ set_page_orientation <- function(page,
 #'
 #' @rdname set_page_dims
 #' @name set_page_asp
+#' @inheritParams as_asp
 #' @export
 #' @importFrom rlang has_name
 set_page_asp <- function(page,

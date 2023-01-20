@@ -125,8 +125,7 @@ geom_text_if_family <- function(data,
 #' Modify function parameters
 #'
 #' @noRd
-#' @importFrom purrr discard
-#' @importFrom rlang fn_fmls is_missing
+#' @importFrom rlang fn_fmls is_missing list2
 #' @importFrom utils modifyList
 modify_fn_fmls <- function(params,
                            fn,
@@ -136,7 +135,7 @@ modify_fn_fmls <- function(params,
   fmls <- rlang::fn_fmls(fn)
 
   if (!keep_missing) {
-    fmls <- purrr::discard(fmls, rlang::is_missing)
+    fmls <- discard(fmls, rlang::is_missing)
   }
 
   params <- c(list2(...), params)

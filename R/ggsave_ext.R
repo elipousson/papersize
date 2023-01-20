@@ -42,7 +42,7 @@
 #' @export
 #' @importFrom cliExtras set_cli_quiet
 #' @importFrom cli cli_alert_success
-ggsave_ext <- function(plot = last_plot(),
+ggsave_ext <- function(plot = ggplot2::last_plot(),
                        name = NULL,
                        label = NULL,
                        prefix = NULL,

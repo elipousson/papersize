@@ -26,6 +26,7 @@
 #'   "print", "card", or "screen". Default: `NULL`
 #' @param ignore.case If `FALSE`, filtering for page and type are case
 #'   sensitive. Defaults to `TRUE`.
+#' @inheritParams convert_unit_type
 #' @examples
 #' get_paper("letter")
 #'
