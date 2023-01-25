@@ -1,4 +1,8 @@
 test_that("as_asp works", {
+  expect_identical(
+    as_asp(),
+    NULL
+  )
   expect_equal(
     as_asp(8.5 / 11),
     8.5 / 11,
@@ -33,5 +37,9 @@ test_that("as_asp works", {
     as_asp(page = make_page_size(8.5, 11, "in"), flipped = TRUE),
     11 / 8.5,
     tolerance = 0.0000001
+  )
+  expect_identical(
+    as_asp(page = data.frame("asp" = 1)),
+    1
   )
 })

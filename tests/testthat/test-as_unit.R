@@ -28,7 +28,23 @@ test_that("convert_unit_type works", {
       "in"
     )
   )
-
+  expect_identical(
+    as_unit(grid::unit(1, "in")),
+    grid::unit(1, "in")
+  )
+  expect_identical(
+    as_unit_type(margins(1, unit = "cm")),
+    "cm"
+  )
+  expect_false(
+    is_unit_type(NULL)
+  )
+  expect_true(
+    is_unit_type(grid_units[c(1:4)])
+  )
+  expect_error(
+    as_unit(1, "inchs")
+  )
   expect_error(
     convert_unit_type(
       "x",
