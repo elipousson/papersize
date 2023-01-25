@@ -188,10 +188,6 @@ get_page_dims <- function(page = NULL,
     return(rlang::set_names(c(width, height), nm))
   }
 
-  if (is.numeric(page) && (length(page) == 2)) {
-    return(rlang::set_names(page, nm))
-  }
-
   cli::cli_abort(
     "{.arg {arg}} must be a character with a name from {.code paper_sizes},
     a {.cls data.frame} with columns {.val {cols}},
