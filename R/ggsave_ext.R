@@ -171,15 +171,17 @@ set_ggsave_dims <- function(paper = NULL,
                             height = NULL,
                             asp = NULL,
                             units = "in",
-                            limitsize = TRUE) {
+                            limitsize = TRUE,
+                            cols = c("width", "height")) {
+  units_col <- get_units_col()
   if (!is.null(paper)) {
     paper <- get_page_size(paper, orientation = orientation)
 
     dims <-
       list(
-        "width" = paper[["width"]],
-        "height" = paper[["height"]],
-        "units" = paper[["units"]]
+        "width" = paper[[cols[1]]],
+        "height" = paper[[cols[2]]],
+        "units" = paper[[units_col]]
       )
 
     return(dims)
@@ -193,11 +195,16 @@ set_ggsave_dims <- function(paper = NULL,
       units = units
     )
 
+  page[[units_col]] <-
+    as_gg_unit_types(
+      page[[units_col]]
+    )
+
   dims <-
     list(
-      "width" = page$width,
-      "height" = page$height,
-      "units" = page$units
+      "width" = page[[cols[1]]],
+      "height" = page[[cols[2]]],
+      "units" = page[[units_col]]
     )
 
   if (any((c(dims$width, dims$height) > 50)) && (units == "in") && limitsize) {
@@ -210,6 +217,31 @@ set_ggsave_dims <- function(paper = NULL,
   }
 
   dims
+}
+
+#' Convert long versions of unit types from grid to ggsave compatible versions
+#'
+#' @noRd
+as_gg_unit_types <- function(x) {
+  in_pattern <- c("inch", "inches")
+  cm_pattern <- c("centimeter", "centimetre", "centimeters", "centimetres")
+  mm_pattern <- c("millimeter", "millimetre", "millimeters", "millimetres")
+  px_pattern <- c("pixel", "pixels")
+
+  as_gg_unit_type <- function(x, pattern, replacement) {
+    pattern <- paste0(pattern, collapse = "|")
+    if (any(grepl(pattern, x))) {
+      return(gsub(pattern, replacement, x))
+    }
+    x
+  }
+
+  x <- as_gg_unit_type(x, in_pattern, "in")
+  x <- as_gg_unit_type(x, cm_pattern, "cm")
+  x <- as_gg_unit_type(x, mm_pattern, "mm")
+  x <- as_gg_unit_type(x, px_pattern, "px")
+
+  x
 }
 
 #' @rdname ggsave_ext
