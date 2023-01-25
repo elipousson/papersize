@@ -50,29 +50,32 @@ as_asp <- function(asp = NULL,
   }
 
   if (is.numeric(asp)) {
-    if (isTRUE(flipped)) {
-      return(1 / asp)
-    }
-    return(asp)
+    return(set_flipped(asp, flipped))
   }
 
   if (is.character(page)) {
     page <- get_page_size(page, orientation = orientation, ...)
   }
 
+  if (is.data.frame(page) && all(has_name(page, cols))) {
+    asp <- as.numeric(page[[cols[1]]]) / as.numeric(page[[cols[2]]])
+    return(set_flipped(asp, flipped))
+  }
+
   asp_col <- get_asp_col()
 
-  if (is.data.frame(page) && all(has_name(page, cols))) {
-    if (isTRUE(flipped)) {
-      return(as.numeric(page[[cols[2]]]) / as.numeric(page[[cols[1]]]))
-    }
-    return(as.numeric(page[[cols[1]]]) / as.numeric(page[[cols[2]]]))
+  if (is.data.frame(page) && has_name(page, asp_col)) {
+    return(set_flipped(page[[asp_col]], flipped))
+  }
+}
+
+#' Helper function to optional switch orientation of aspect ratio
+#'
+#' @noRd
+set_flipped <- function(x, flipped = FALSE) {
+  if (isTRUE(flipped)) {
+    return(1 / x)
   }
 
-  if (is.data.frame(page) && has_name(page, asp_col)) {
-    if (isTRUE(flipped)) {
-      return(1 / page[[asp_col]])
-    }
-    return(page[[asp_col]])
-  }
+  x
 }
