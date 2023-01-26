@@ -6,7 +6,7 @@
 \usage{
 set_page_margin(
   page = NULL,
-  margins = NULL,
+  margins,
   unit = "in",
   cols = c("width", "height"),
   ...
