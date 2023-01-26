@@ -60,38 +60,14 @@ map_gg <- function(.x, gg = NULL) {
   )
 }
 
-#' Helper to passed family as fixed aesthetic conditionally
-#'
-#' https://github.com/yonicd/bplyr/blob/master/R/mutate.R
-#'
-#' @author Jonathan Sidi
-#' @source bplyr package
-#' @noRd
-#' @importFrom rlang quos quo_squash
-mutate_data <- function(.data, ...) {
-  FNS <- lapply(rlang::quos(...), rlang::quo_squash)
-
-  EXPRS <- lapply(names(FNS), function(x) {
-    sprintf("%s <- %s", x, deparse(FNS[[x]]))
-  })
-
-  within(
-    .data,
-    eval(
-      parse(text = paste0(unlist(EXPRS), collapse = "\n"))
-    )
-  )
-}
-
 #' @noRd
 sum_num <- function(x) {
   sum(as.numeric(x))
 }
 
-#' @noRd
-diff_num <- function(x) {
-  diff(as.numeric(x))
-}
+# diff_num <- function(x) {
+#   diff(as.numeric(x))
+# }
 
 #' Helper to passed family as fixed aesthetic conditionally
 #'
@@ -146,4 +122,3 @@ modify_fn_fmls <- function(params,
     keep.null = keep.null
   )
 }
-
