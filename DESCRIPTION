@@ -28,6 +28,7 @@ Suggests:
     filenamr,
     ggplot2,
     gridExtra,
+    janitor,
     magick,
     patchwork,
     qpdf,

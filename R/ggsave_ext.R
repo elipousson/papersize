@@ -102,6 +102,8 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
     device <- fileext
   }
 
+  rlang::check_installed("janitor")
+
   filename <-
     filenamr::make_filename(
       name = name,
@@ -328,6 +330,8 @@ map_ggsave_ext <- function(plot,
       "{.arg plot} must be a {.cls list}."
     )
   }
+
+  rlang::check_installed("janitor")
 
   filename <-
     filenamr::make_filename(
