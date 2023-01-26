@@ -14,12 +14,12 @@
 #'   [set_page_asp()]
 #' @export
 set_page_margin <- function(page = NULL,
-                            margins = NULL,
+                            margins,
                             unit = "in",
                             cols = c("width", "height"),
                             ...) {
   page <- as_page(page, ..., cols = cols)
-
+  rlang::check_required(margins)
   margin <- get_margin(margins, unit = unit)
 
   if (!is_same_unit_type(page[[get_units_col()]], margin)) {
@@ -31,28 +31,27 @@ set_page_margin <- function(page = NULL,
 
   cli_abort_if(
     "Combined l and r margin value ({width_margin}) must be less than
-    the {.arg page} width ({page[[cols[1]]]})." = all(width_margin >= page$width)
+    the {.arg page} width ({page[[cols[1]]]})." = all(width_margin >= page[[cols[1]]])
   )
 
   cli_abort_if(
     "Combined t and b margin value ({height_margin}) must be less than
-    the {.arg page} height ({page[[cols[2]]]})." = all(width_margin >= page$width)
+    the {.arg page} height ({page[[cols[2]]]})." = all(height_margin >= page[[cols[2]]])
   )
 
-  body_width <- page$width - width_margin
-  body_height <- page$height - height_margin
+  body_cols <- get_body_col(suffix = paste0("_", c(cols, get_asp_col())))
 
   nm <- c(
     names(page),
-    glue("{get_body_col()}_{c(cols, get_asp_col())}"),
+    body_cols,
     "margin"
   )
 
-  page$body_width <- body_width
-  page$body_height <- body_height
-  page$body_asp <- page$body_width / page$body_height
-  page$margin <- rep(NA, nrow(page))
-  page$margin <- rep(list(margin), nrow(page))
+  page[[body_cols[1]]] <- page[[cols[1]]] - width_margin
+  page[[body_cols[2]]] <- page[[cols[2]]] - height_margin
+  page[[body_cols[3]]] <- page[[body_cols[1]]] / page[[body_cols[2]]]
+  page[["margin"]] <- rep(NA, nrow(page))
+  page[["margin"]] <- rep(list(margin), nrow(page))
 
   set_names(page, nm)
 }

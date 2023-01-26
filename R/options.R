@@ -29,8 +29,8 @@ set_asp_col <- function(x = "asp") {
 }
 
 #' @noRd
-get_body_col <- function(default = "body") {
-  getOption("papersize.body_col", default = default)
+get_body_col <- function(default = "body", suffix = NULL) {
+  paste0(getOption("papersize.body_col", default = default), suffix)
 }
 
 #' @noRd
