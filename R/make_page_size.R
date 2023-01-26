@@ -33,8 +33,8 @@
 #'
 #' @returns A data.frame with columns named (by default) width, height, units,
 #'   orientation, and asp or a list with those same names.
-#' @export
 #' @seealso [get_page_size()]
+#' @export
 #' @importFrom rlang check_required set_names arg_match
 #' @importFrom cliExtras cli_abort_ifnot
 make_page_size <- function(width = NULL,
