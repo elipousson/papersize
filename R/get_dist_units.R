@@ -1,13 +1,32 @@
 #' General utility functions for working with distance units objects
 #'
-#' - [is_dist_units()]: Is x a distance unit object?
+#' - [is_dist_units()]: Is x a units object with a units attribute in
+#' `dist_unit_options` or `area_unit_options`?
 #' - [get_dist_units()]: Get the distance units from x (if x is a sf or units
 #' objects or a character string from [dist_unit_options])
 #' - [as_dist_units()]: Convert x to units using [units::as_units]
+#' - [is_same_units()]: Do x and y have the same distance units attribute?
+#' Names or symbols of valid distance units are allowed.
 #'
 #' @name is_dist_units
 #' @param x,y objects to check
 #' @family dist
+#' @examples
+#'
+#' mile <- units::set_units(1, "mi")
+#'
+#' is_dist_units("mi")
+#'
+#' is_dist_units(mile)
+#'
+#' is_same_units(mile, "mile")
+#'
+#' get_dist_units(mile)
+#'
+#' as_dist_units(1, "mi")
+#'
+#' as_dist_units(2, mile)
+#'
 #' @export
 is_dist_units <- function(x) {
   is_units(x) && (get_dist_units(x) %in% c(dist_unit_options, area_unit_options))
@@ -15,15 +34,27 @@ is_dist_units <- function(x) {
 
 #' @name get_dist_units
 #' @rdname is_dist_units
-#' @param multiple If `TRUE` and x is a character vector with distance/area
-#'   units, [get_dist_units()] may return multiple units. Passed to
-#'   [rlang::arg_match].
-#' @param quiet If `TRUE`, suppress warning messages.
 #' @export
-#' @importFrom rlang check_installed arg_match
+#' @importFrom rlang check_installed arg_match caller_arg
 #' @importFrom cliExtras cli_warn_ifnot cli_abort_ifnot
-get_dist_units <- function(x, multiple = TRUE, quiet = FALSE) {
+get_dist_units <- function(x,
+                           arg = caller_arg(x),
+                           call = parent.frame()) {
+  rlang::check_required(x)
   if (is.null(x)) {
+    return(x)
+  }
+
+  if (is.character(x)) {
+    x <- underscore(x)
+    x <- rlang::arg_match(
+      arg = x,
+      values = c(dist_unit_options, area_unit_options),
+      error_arg = arg,
+      multiple = TRUE,
+      call = call
+    )
+
     return(x)
   }
 
@@ -32,53 +63,62 @@ get_dist_units <- function(x, multiple = TRUE, quiet = FALSE) {
     return(sf::st_crs(x)$units_gdal)
   }
 
-  if (is.character(x)) {
-    x <- underscore(x)
-    x <- rlang::arg_match(
-      x,
-      c(dist_unit_options, area_unit_options),
-      multiple = multiple
-    )
-
-    return(x)
-  }
-
   if (is_units(x)) {
-    x_is_dist_unit <-
-      all(as.character(units(x)[["numerator"]]) %in% dist_unit_options)
-
-    x_not_area_unit <-
-      !(as.character(units(x)) %in% area_unit_options)
-
-    if (x_is_dist_unit && x_not_area_unit) {
-      return(as.character(units(x)[["numerator"]]))
-    }
-
     return(as.character(units(x)))
   }
 
+  if (is_unit(x)) {
+    unit_type <- as_unit_type(x)
+
+    unit_type <-
+      rlang::try_fetch(
+        rlang::arg_match(
+          arg = unit_type,
+          values = grid_units[c(2:13)],
+          error_arg = arg,
+          error_call = call
+        ),
+        error = function(cnd) {
+          cli::cli_abort(
+            c("i" = "{.arg {arg}} is a {.cls unit} object and the provided
+            {.val {unit_type}} unit type can't be used."),
+            parent = cnd,
+            call = call
+          )
+        }
+      )
+
+    return(unit_type)
+  }
+
   if (is.numeric(x)) {
-    cliExtras::cli_warn_ifnot(
-      "{.var units} can't be determined for a numeric vector with
-      no {.arg units} attribute.",
-      condition = quiet
+    cli::cli_warn(
+      "units can't be determined for a numeric vector
+      that is not a {.cls unit} or {.cls units} object."
     )
 
     return(invisible(NULL))
   }
 
-  cliExtras::cli_abort_ifnot(
-    "{.var units} must be a {.cls character} string from
+  cli::cli_abort(
+    c("{.arg {arg}} must be a {.cls character} string matching a value from
     {.code dist_unit_options} or {.code area_unit_options}, a {.cls units}
     object, or a {.cls sf} object with a valid crs.",
-    condition = inherits(x, c("character", "units", "sf"))
-  )
-
-  rlang::arg_match(x, c(dist_unit_options, area_unit_options),
-    multiple = multiple
+      "i" = "{.arg {arg}} is a {.cls {class(x)}} class object."
+    ),
+    call = call
   )
 }
 
+#' @noRd
+is_dist_unit_option <- function(x) {
+  all(as.character(units(x)[["numerator"]]) %in% dist_unit_options) & !is_area_unit_option(x)
+}
+
+#' @noRd
+is_area_unit_option <- function(x) {
+  as.character(units(x)) %in% area_unit_options
+}
 
 #' @name as_dist_units
 #' @rdname is_dist_units
@@ -86,28 +126,33 @@ get_dist_units <- function(x, multiple = TRUE, quiet = FALSE) {
 #'   or area_unit_options.
 #' @param call Passed to error_call for [rlang::arg_match()]
 #' @export
-#' @importFrom rlang arg_match
-#' @importFrom cliExtras cli_yesno
+#' @importFrom rlang caller_arg check_installed is_interactive
+#' @importFrom cliExtras cli_abort_if cli_yesno
+#' @importFrom units as_units
 as_dist_units <- function(x,
                           units = NULL,
-                          call = caller_env()) {
-  units <- get_dist_units(units)
+                          arg = caller_arg(x),
+                          call = parent.frame()) {
+  units <- get_dist_units(units, call = call)
 
-  units <-
-    rlang::arg_match(
-      units,
-      c(dist_unit_options, area_unit_options),
-      error_call = call
+  if (is.numeric(x) & !is_units(x)) {
+    cliExtras::cli_abort_if(
+      "{.arg units} must be length 1,
+      not length {length(units)}." = length(units) > 1
     )
 
-  if (is.numeric(x) && !is_dist_units(x)) {
-    rlang::check_installed("units")
     return(units::as_units(x, units))
   }
 
-  if (cliExtras::cli_yesno(
-    "Did you mean to convert {.var x} to {.val {units}}?"
-  )) {
+  convert_dist <- TRUE
+  if (rlang::is_interactive()) {
+    convert_dist <-
+      cliExtras::cli_yesno(
+        "Did you mean to convert {.arg {arg}} to {.val {units}}?"
+      )
+  }
+
+  if (convert_dist) {
     convert_dist_units(
       dist = x,
       to = units

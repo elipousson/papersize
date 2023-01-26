@@ -11,31 +11,45 @@ is_same_units(x, y = NULL)
 
 is_dist_units(x)
 
-get_dist_units(x, multiple = TRUE, quiet = FALSE)
+get_dist_units(x, arg = caller_arg(x), call = parent.frame())
 
-as_dist_units(x, units = NULL, call = caller_env())
+as_dist_units(x, units = NULL, arg = caller_arg(x), call = parent.frame())
 }
 \arguments{
 \item{x, y}{objects to check}
 
-\item{multiple}{If \code{TRUE} and x is a character vector with distance/area
-units, \code{\link[=get_dist_units]{get_dist_units()}} may return multiple units. Passed to
-\link[rlang:arg_match]{rlang::arg_match}.}
-
-\item{quiet}{If \code{TRUE}, suppress warning messages.}
+\item{call}{Passed to error_call for \code{\link[rlang:arg_match]{rlang::arg_match()}}}
 
 \item{units}{Distance units to convert to. Must be one of dist_unit_options
 or area_unit_options.}
-
-\item{call}{Passed to error_call for \code{\link[rlang:arg_match]{rlang::arg_match()}}}
 }
 \description{
 \itemize{
-\item \code{\link[=is_dist_units]{is_dist_units()}}: Is x a distance unit object?
+\item \code{\link[=is_dist_units]{is_dist_units()}}: Is x a units object with a units attribute in
+\code{dist_unit_options} or \code{area_unit_options}?
 \item \code{\link[=get_dist_units]{get_dist_units()}}: Get the distance units from x (if x is a sf or units
 objects or a character string from \link{dist_unit_options})
 \item \code{\link[=as_dist_units]{as_dist_units()}}: Convert x to units using \link[units:units]{units::as_units}
+\item \code{\link[=is_same_units]{is_same_units()}}: Do x and y have the same distance units attribute?
+Names or symbols of valid distance units are allowed.
 }
+}
+\examples{
+
+mile <- units::set_units(1, "mi")
+
+is_dist_units("mi")
+
+is_dist_units(mile)
+
+is_same_units(mile, "mile")
+
+get_dist_units(mile)
+
+as_dist_units(1, "mi")
+
+as_dist_units(2, mile)
+
 }
 \seealso{
 Other dist: 
