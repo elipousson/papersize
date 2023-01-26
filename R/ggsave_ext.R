@@ -246,7 +246,8 @@ as_gg_unit_types <- function(x) {
 
 #' @rdname ggsave_ext
 #' @name ggsave_social
-#' @inheritParams sfext::get_social_image
+#' @param image Image name passed to name parameter of [get_social_size()].
+#' @inheritParams get_social_size
 #' @export
 #' @importFrom rlang exec list2
 ggsave_social <- function(plot = ggplot2::last_plot(),
@@ -295,7 +296,7 @@ ggsave_social <- function(plot = ggplot2::last_plot(),
 #'   arrangelist class object that [ggplot2::ggsave()] can save as a single
 #'   multi-page file. Note: this does not work with plots modified with
 #'   patchwork including inset maps created with the
-#'   [layer_inset()] function.
+#'   [maplayer::layer_inset()] function.
 #' @export
 #' @importFrom cli cli_bullets
 map_ggsave_ext <- function(plot,

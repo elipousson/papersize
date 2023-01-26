@@ -151,7 +151,7 @@ specifying dimensions in pixels.}
     \item{\code{}}{}
   }}
 
-\item{image}{Image size name, Default: \code{NULL}}
+\item{image}{Image name passed to name parameter of \code{\link[=get_social_size]{get_social_size()}}.}
 
 \item{platform}{Social media platform, "Instagram", "Facebook", or "Twitter",
 Default: \code{NULL}}
@@ -162,7 +162,7 @@ Default: \code{NULL}}
 arrangelist class object that \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} can save as a single
 multi-page file. Note: this does not work with plots modified with
 patchwork including inset maps created with the
-\code{\link[=layer_inset]{layer_inset()}} function.}
+\code{\link[maplayer:layer_inset]{maplayer::layer_inset()}} function.}
 }
 \description{
 Save a plot or map then update the EXIF metadata for the title, author, and
