@@ -9,8 +9,10 @@
 #' if (interactive() & is_installed("ggplot2")) {
 #'   library(ggplot2)
 #'
-#'   plot <- ggplot(mpg, aes(displ, hwy, colour = class)) +
+#'   plot <-
+#'     ggplot(mpg, aes(displ, hwy, colour = class)) +
 #'     geom_point()
+#'
 #'   print_to_page(
 #'     plot,
 #'     page = get_page_size("Tarot card")
@@ -124,10 +126,11 @@ get_region_dims <- function(page,
 }
 
 #' @noRd
-check_ggplot <- function(plot) {
+check_ggplot <- function(plot, class = NULL) {
   check_installed("ggplot2")
   check_required(plot)
   cli_abort_ifnot(
-    "{.arg plot} must be a {.cls ggplot} object." = ggplot2::is.ggplot(plot)
+    message = "{.arg plot} must be a {.cls ggplot} object or an object with class {.cls {class}}.",
+    condition = ggplot2::is.ggplot(plot) | rlang::inherits_any(plot, class)
   )
 }
