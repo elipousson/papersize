@@ -47,6 +47,6 @@ is_same_units(mile, "mile")
 
 Other dist: 
 \code{\link{convert_dist_scale}()},
-\code{\link{is_same_units}()}
+\code{\link{is_dist_units}()}
 }
 \concept{dist}

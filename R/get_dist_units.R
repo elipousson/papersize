@@ -10,6 +10,8 @@
 #'
 #' @name is_dist_units
 #' @param x,y objects to check
+#' @param arg Used internally and passed to [rlang::arg_match()] as error arg or
+#'   used by [cli::cli_abort()] to improve error messages.
 #' @family dist
 #' @examples
 #'
@@ -28,8 +30,9 @@
 #' as_dist_units(2, mile)
 #'
 #' @export
-is_dist_units <- function(x) {
-  is_units(x) && (get_dist_units(x) %in% c(dist_unit_options, area_unit_options))
+#' @importFrom rlang caller_arg
+is_dist_units <- function(x, arg = caller_arg(x)) {
+  is_units(x) && (get_dist_units(x, arg) %in% c(dist_unit_options, area_unit_options))
 }
 
 #' @name get_dist_units
@@ -158,4 +161,43 @@ as_dist_units <- function(x,
       to = units
     )
   }
+}
+
+#' @name is_same_units
+#' @rdname  is_dist_units
+#' @export
+is_same_units <- function(x, y = NULL) {
+  if (is.null(x) | is.null(y)) {
+    return(FALSE)
+  }
+
+  x <- as_units_attr(x)
+  y <- as_units_attr(y)
+
+  in_opts <- c("in", "inch", "inches", "international_inch", "international_inches")
+  ft_opts <- c("ft", "foot", "feet", "international_foot", "international_feet")
+  yd_opts <- c("yd", "yard", "yards", "international_yard", "international_yards")
+
+  nums <- c(x[["numerator"]], y[["numerator"]])
+  dens <- c(x[["denominator"]], y[["denominator"]])
+
+  if (any(
+    c(all(nums %in% in_opts), all(nums %in% ft_opts), all(nums %in% yd_opts))
+  ) && (
+    all(dens == character(0)) | (dens[1] == dens[2])
+  )) {
+    return(TRUE)
+  }
+
+  try_as_units(x) == try_as_units(y)
+}
+
+#' @noRd
+as_units_attr <- function(x) {
+  if (is.character(x)) {
+    x <- underscore(x)
+    x <- try_as_units(x)
+  }
+
+  units(x)
 }

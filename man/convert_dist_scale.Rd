@@ -70,6 +70,6 @@ This function converts scale distances to actual units based on named
 \seealso{
 Other dist: 
 \code{\link{convert_dist_units}()},
-\code{\link{is_same_units}()}
+\code{\link{is_dist_units}()}
 }
 \concept{dist}
