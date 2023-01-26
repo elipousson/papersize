@@ -7,7 +7,7 @@ test_that("as_asp works", {
     as_asp(8.5 / 11),
     8.5 / 11,
     tolerance = 0.0000001
-    )
+  )
   expect_equal(
     as_asp("11:17"),
     11 / 17,

@@ -19,6 +19,9 @@ test_that("get_page works", {
     get_page_size("ledger", units = "cm")$units,
     "cm"
   )
+  expect_warning(
+    get_page_size("Large Post Quarto", orientation = "landscape")
+  )
 })
 
 test_that("get_page_dims works", {
@@ -109,7 +112,6 @@ test_that("helpers work", {
       w = 8.5,
       h = 11
     )
-
   expect_error(
     check_page(test_df$name)
   )
@@ -145,5 +147,23 @@ test_that("helpers work", {
       nm = c("w", "h")
     ),
     c("w" = 6.5, "h" = 9)
+  )
+})
+
+test_that("make_page_size works", {
+  expect_identical(
+    make_page_size(48, 24, "in", name = "Tabletop map")[["name"]],
+    "Tabletop map"
+  )
+  expect_identical(
+    make_page_size(8.5, 11, "in", name = "letter", class = "list"),
+    list(
+      "name" = "letter",
+      "width" = 8.5,
+      "height" = 11,
+      "units" = "inches",
+      "orientation" = "portrait",
+      "asp" = 8.5 / 11
+    )
   )
 })
