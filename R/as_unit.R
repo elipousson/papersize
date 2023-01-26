@@ -83,6 +83,9 @@ as_unit <- function(x,
 
 #' @name as_unit_type
 #' @rdname as_unit
+#' @param valid_units Character vector with name or symbols for valid units.
+#'   Defaults to `NULL` but any other unit name or symbol, e.g. "px", is
+#'   permitted.
 #' @inheritParams grid::unitType
 #' @inheritParams grid::unit
 #' @export
@@ -92,8 +95,13 @@ as_unit <- function(x,
 as_unit_type <- function(x,
                          recurse = FALSE,
                          data = NULL,
+                         valid_units = NULL,
                          arg = caller_arg(x),
                          call = parent.frame()) {
+  if (!is.null(valid_units) & all(x %in% valid_units)) {
+    return(x)
+  }
+
   if (is_unit(x)) {
     type <- grid::unitType(x, recurse)
 
@@ -205,6 +213,12 @@ is_unit_type <- function(x, ...) {
 #' @rdname as_unit
 #' @param y Object to compare to x.
 #' @export
-is_same_unit_type <- function(x, y, recurse = FALSE, data = NULL) {
-  as_unit_type(x, recurse, data) == as_unit_type(y, recurse, data)
+is_same_unit_type <- function(x,
+                              y,
+                              recurse = FALSE,
+                              data = NULL,
+                              valid_units = NULL) {
+  x <- as_unit_type(x, recurse, data, valid_units)
+  y <- as_unit_type(y, recurse, data, valid_units)
+  x == y
 }

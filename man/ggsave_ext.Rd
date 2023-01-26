@@ -14,6 +14,7 @@ ggsave_ext(
   postfix = NULL,
   filename = NULL,
   device = NULL,
+  fileext = NULL,
   filetype = NULL,
   path = NULL,
   paper = NULL,
@@ -21,7 +22,7 @@ ggsave_ext(
   width = NULL,
   height = NULL,
   asp = NULL,
-  units = "in",
+  units = getOption("papersize.ggsave_units", "in"),
   scale = 1,
   dpi = 300,
   bgcolor = NULL,
@@ -46,7 +47,8 @@ ggsave_social(
   orientation = NULL,
   name = NULL,
   filename = NULL,
-  filetype = "jpeg",
+  fileext = "jpeg",
+  filetype = NULL,
   dpi = 72,
   width = 1080,
   height = 1080,
@@ -62,11 +64,13 @@ map_ggsave_ext(
   postfix = "pg_",
   filename = NULL,
   device = NULL,
+  fileext = NULL,
   filetype = NULL,
   path = NULL,
   overwrite = TRUE,
   ...,
-  single_file = TRUE
+  single_file = TRUE,
+  onefile = TRUE
 )
 }
 \arguments{
@@ -91,6 +95,8 @@ date/time prefix; defaults to \code{NULL}.}
 \item{device}{Device to use. Can either be a device function
 (e.g. \link{png}), or one of "eps", "ps", "tex" (pictex),
 "pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf" (windows only).}
+
+\item{fileext}{File type or extension.}
 
 \item{filetype}{The file extension or file type; defaults to \code{NULL}.}
 

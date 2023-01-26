@@ -21,6 +21,7 @@
 #'   "portrait", "landscape", or "square". If width and height suggest a
 #'   portrait orientation when orientation = "landscape", the dimensions are
 #'   reversed so the page dimensions match the provided orientation.
+#' @inheritParams as_unit_type
 #' @param class Class of return object: "data.frame" (default) or "list" (only
 #'   supported when input page size is a single row).
 #' @examples
@@ -43,6 +44,7 @@ make_page_size <- function(width = NULL,
                            orientation = NULL,
                            name = NULL,
                            dims = NULL,
+                           valid_units = NULL,
                            cols = c("width", "height"),
                            class = "data.frame") {
   if (is_named(dims)) {
@@ -73,7 +75,7 @@ make_page_size <- function(width = NULL,
 
   width <- width %||% (height * asp)
   height <- height %||% (width / asp)
-  units <- as_unit_type(units)
+  units <- as_unit_type(units, valid_units = valid_units)
 
   pg <-
     rlang::set_names(

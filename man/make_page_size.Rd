@@ -12,6 +12,7 @@ make_page_size(
   orientation = NULL,
   name = NULL,
   dims = NULL,
+  valid_units = NULL,
   cols = c("width", "height"),
   class = "data.frame"
 )
@@ -36,6 +37,10 @@ existing names in \code{paper_sizes}.}
 
 \item{dims}{A list or data.frame that can be used to set width, height,
 units, and/or asp.}
+
+\item{valid_units}{Character vector with name or symbols for valid units.
+Defaults to \code{NULL} but any other unit name or symbol, e.g. "px", is
+permitted.}
 
 \item{cols}{Column names to use for width and height columns. Defaults to
 c("width", "height"). Must be length 2 and the first value is always used

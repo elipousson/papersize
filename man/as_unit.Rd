@@ -21,6 +21,7 @@ as_unit_type(
   x,
   recurse = FALSE,
   data = NULL,
+  valid_units = NULL,
   arg = caller_arg(x),
   call = parent.frame()
 )
@@ -36,7 +37,7 @@ convert_unit_type(
 
 is_unit_type(x, ...)
 
-is_same_unit_type(x, y, recurse = FALSE, data = NULL)
+is_same_unit_type(x, y, recurse = FALSE, data = NULL, valid_units = NULL)
 }
 \arguments{
 \item{x}{A numeric vector.}
@@ -64,6 +65,10 @@ Can also be \code{NULL} or a \link[rlang:topic-defuse]{defused function call} to
 respectively not display any call or hard-code a code to display.
 
 For more information about error calls, see \ifelse{html}{\link[rlang:topic-error-call]{Including function calls in error messages}}{\link[rlang:topic-error-call]{Including function calls in error messages}}.}
+
+\item{valid_units}{Character vector with name or symbols for valid units.
+Defaults to \code{NULL} but any other unit name or symbol, e.g. "px", is
+permitted.}
 
 \item{from}{Unit to convert from. If \code{NULL} and x is not a units object,
 convert to \code{to} units with a warning.}

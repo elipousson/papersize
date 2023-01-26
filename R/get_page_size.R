@@ -57,6 +57,11 @@ get_page_size <- function(name = NULL,
                           ignore.case = TRUE) {
   pg <- paper_sizes
 
+  if (is.data.frame(name)) {
+    check_page(name)
+    return(name)
+  }
+
   if (!is.null(name) && !(tolower(name) %in% tolower(pg$name))) {
     name <- rlang::arg_match(
       name,

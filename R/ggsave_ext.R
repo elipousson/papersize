@@ -49,6 +49,7 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
                        postfix = NULL,
                        filename = NULL,
                        device = NULL,
+                       fileext = NULL,
                        filetype = NULL,
                        path = NULL,
                        paper = NULL,
@@ -56,7 +57,7 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
                        width = NULL,
                        height = NULL,
                        asp = NULL,
-                       units = "in",
+                       units = getOption("papersize.ggsave_units", "in"),
                        scale = 1,
                        dpi = 300,
                        bgcolor = NULL,
@@ -71,6 +72,7 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
                        limitsize = TRUE,
                        quiet = FALSE,
                        ...) {
+  fileext <- fileext %||% filetype
   if (quiet) {
     existing_handler <- getOption("cli.default_handler")
     cliExtras::set_cli_quiet(TRUE)
@@ -90,14 +92,14 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
       limitsize = limitsize
     )
 
-  if (is.null(device) && (!is.null(filetype) | !is.null(filename))) {
-    filetype <- filetype %||% str_extract_fileext(filename)
+  if (is.null(device) && (!is.null(fileext) | !is.null(filename))) {
+    fileext <- fileext %||% str_extract_fileext(filename)
 
     if (!is.null(filename)) {
-      filename <- str_remove_fileext(filename, filetype)
+      filename <- str_remove_fileext(filename, fileext)
     }
 
-    device <- filetype
+    device <- fileext
   }
 
   filename <-
@@ -105,7 +107,7 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
       name = name,
       label = label,
       filename = filename,
-      fileext = filetype,
+      fileext = fileext,
       path = path,
       prefix = prefix,
       postfix = postfix
@@ -125,7 +127,7 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
     plot <- magick::image_ggplot(plot)
   }
 
-  check_ggplot(plot)
+  check_ggplot(plot, class = "arrangelist")
 
   ggplot2::ggsave(
     filename = filename,
@@ -147,7 +149,7 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
   if (exif) {
     filenamr::write_exif(
       path = filename,
-      fileext = filetype,
+      fileext = fileext,
       title = title,
       author = author,
       keywords = keywords,
@@ -161,6 +163,16 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
   }
 }
 
+#' Units that work wth ggsave
+#'
+#' @noRd
+gg_units <-
+  list(
+    "in" = c("inch", "inches"),
+    "cm" = c("centimeter", "centimetre", "centimeters", "centimetres"),
+    "mm" = c("millimeter", "millimetre", "millimeters", "millimetres"),
+    "px" = c("pixel", "pixels")
+  )
 #' Set the dimensions of a plot for ggsave_ext()
 #'
 #' @noRd
@@ -170,7 +182,7 @@ set_ggsave_dims <- function(paper = NULL,
                             width = NULL,
                             height = NULL,
                             asp = NULL,
-                            units = "in",
+                            units = getOption("papersize.ggsave_units", "in"),
                             limitsize = TRUE,
                             cols = c("width", "height")) {
   units_col <- get_units_col()
@@ -192,11 +204,12 @@ set_ggsave_dims <- function(paper = NULL,
       width = width,
       height = height,
       asp = asp,
-      units = units
+      units = units,
+      valid_units = names(gg_units)
     )
 
   page[[units_col]] <-
-    as_gg_unit_types(
+    replace_with_gg_units(
       page[[units_col]]
     )
 
@@ -207,7 +220,7 @@ set_ggsave_dims <- function(paper = NULL,
       "units" = page[[units_col]]
     )
 
-  if (any((c(dims$width, dims$height) > 50)) && (units == "in") && limitsize) {
+  if (any((c(dims[["width"]], dims[["height"]]) > 50)) && (units == "in") && limitsize) {
     cli::cli_alert_warning(
       "Switching {.arg units} from default {.val in} to {.val px} when
       dimensions exceed 50 inches and {.code limitsize = TRUE}."
@@ -222,24 +235,10 @@ set_ggsave_dims <- function(paper = NULL,
 #' Convert long versions of unit types from grid to ggsave compatible versions
 #'
 #' @noRd
-as_gg_unit_types <- function(x) {
-  in_pattern <- c("inch", "inches")
-  cm_pattern <- c("centimeter", "centimetre", "centimeters", "centimetres")
-  mm_pattern <- c("millimeter", "millimetre", "millimeters", "millimetres")
-  px_pattern <- c("pixel", "pixels")
-
-  as_gg_unit_type <- function(x, pattern, replacement) {
-    pattern <- paste0(pattern, collapse = "|")
-    if (any(grepl(pattern, x))) {
-      return(gsub(pattern, replacement, x))
-    }
-    x
+replace_with_gg_units <- function(x) {
+  for (i in seq_along(gg_units)) {
+    x[x %in% gg_units[[i]]] <- names(gg_units)[[i]]
   }
-
-  x <- as_gg_unit_type(x, in_pattern, "in")
-  x <- as_gg_unit_type(x, cm_pattern, "cm")
-  x <- as_gg_unit_type(x, mm_pattern, "mm")
-  x <- as_gg_unit_type(x, px_pattern, "px")
 
   x
 }
@@ -257,12 +256,15 @@ ggsave_social <- function(plot = ggplot2::last_plot(),
                           orientation = NULL,
                           name = NULL,
                           filename = NULL,
-                          filetype = "jpeg",
+                          fileext = "jpeg",
+                          filetype = NULL,
                           dpi = 72,
                           width = 1080,
                           height = 1080,
                           units = "px",
                           ...) {
+  fileext <- fileext %||% filetype
+
   image_size <-
     get_social_size(
       name = image,
@@ -280,7 +282,7 @@ ggsave_social <- function(plot = ggplot2::last_plot(),
       height = image_size$height,
       name = name,
       filename = filename,
-      filetype = filetype,
+      fileext = fileext,
       units = units
     )
 
@@ -306,11 +308,21 @@ map_ggsave_ext <- function(plot,
                            postfix = "pg_",
                            filename = NULL,
                            device = NULL,
+                           fileext = NULL,
                            filetype = NULL,
                            path = NULL,
                            overwrite = TRUE,
                            ...,
-                           single_file = TRUE) {
+                           single_file = TRUE,
+                           onefile = TRUE) {
+  fileext <- fileext %||% filetype
+
+  if (!identical(single_file, onefile)) {
+    cli::cli_warn("{.arg single_file} and {.arg onefile} do not match.")
+  }
+
+  # single_file <- onefile
+
   if (!is.list(plot)) {
     cli_abort(
       "{.arg plot} must be a {.cls list}."
@@ -322,20 +334,22 @@ map_ggsave_ext <- function(plot,
       name = name,
       label = label,
       filename = filename,
-      fileext = filetype,
+      fileext = fileext,
       path = NULL,
       prefix = prefix
     )
 
   is_patchwork_plot <- is_patchwork(plot)
 
-  if (single_file & !is_patchwork_plot) {
+  if ((single_file | onefile) & !is_patchwork_plot) {
     rlang::check_installed("gridExtra")
 
     plot <-
       map(
         seq(plot),
-        ~ gridExtra::arrangeGrob(plot[[.x]])
+        function(x) {
+          gridExtra::arrangeGrob(plot[[x]])
+        }
       )
 
     class(plot) <- c("arrangelist", class(plot))
@@ -351,7 +365,7 @@ map_ggsave_ext <- function(plot,
     return(invisible())
   }
 
-  if (single_file) {
+  if (single_file | onefile) {
     if (has_fileext(filename, "pdf")) {
       output_path <- path
       path <- tempdir()

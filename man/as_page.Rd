@@ -32,6 +32,9 @@ units, and/or asp.}
 "portrait", "landscape", or "square". If width and height suggest a
 portrait orientation when orientation = "landscape", the dimensions are
 reversed so the page dimensions match the provided orientation.}
+    \item{\code{valid_units}}{Character vector with name or symbols for valid units.
+Defaults to \code{NULL} but any other unit name or symbol, e.g. "px", is
+permitted.}
   }}
 
 \item{cols}{Column names to use for width and height columns. Defaults to
