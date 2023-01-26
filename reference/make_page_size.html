@@ -65,6 +65,7 @@ reversed to match the provided orientation.</p>
 <span>  orientation <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  name <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  dims <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  valid_units <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"width"</span>, <span class="st">"height"</span><span class="op">)</span>,</span>
 <span>  class <span class="op">=</span> <span class="st">"data.frame"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -102,6 +103,12 @@ existing names in <code>paper_sizes</code>.</p></dd>
 <dt>dims</dt>
 <dd><p>A list or data.frame that can be used to set width, height,
 units, and/or asp.</p></dd>
+
+
+<dt>valid_units</dt>
+<dd><p>Character vector with name or symbols for valid units.
+Defaults to <code>NULL</code> but any other unit name or symbol, e.g. "px", is
+permitted.</p></dd>
 
 
 <dt>cols</dt>

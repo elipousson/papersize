@@ -100,6 +100,7 @@ you could expect with other length 4 input objects.</p>
 <span>  <span class="va">x</span>,</span>
 <span>  recurse <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  valid_units <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  arg <span class="op">=</span> <span class="fu">caller_arg</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
 <span>  call <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
@@ -115,7 +116,7 @@ you could expect with other length 4 input objects.</p>
 <span></span>
 <span><span class="fu">is_unit_type</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">is_same_unit_type</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, recurse <span class="op">=</span> <span class="cn">FALSE</span>, data <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">is_same_unit_type</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, recurse <span class="op">=</span> <span class="cn">FALSE</span>, data <span class="op">=</span> <span class="cn">NULL</span>, valid_units <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -153,6 +154,12 @@ message.</p>
 <p>Can also be <code>NULL</code> or a <a href="https://rlang.r-lib.org/reference/topic-defuse.html" class="external-link">defused function call</a> to
 respectively not display any call or hard-code a code to display.</p>
 <p>For more information about error calls, see <a href="https://rlang.r-lib.org/reference/topic-error-call.html" class="external-link">Including function calls in error messages</a>.</p></dd>
+
+
+<dt>valid_units</dt>
+<dd><p>Character vector with name or symbols for valid units.
+Defaults to <code>NULL</code> but any other unit name or symbol, e.g. "px", is
+permitted.</p></dd>
 
 
 <dt>from</dt>
