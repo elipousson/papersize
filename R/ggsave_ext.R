@@ -73,6 +73,8 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
                        quiet = FALSE,
                        ...) {
   fileext <- fileext %||% filetype
+  params <- rlang::list2(...)
+
   if (quiet) {
     existing_handler <- getOption("cli.default_handler")
     cliExtras::set_cli_quiet(TRUE)
@@ -98,8 +100,11 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
     if (!is.null(filename)) {
       filename <- str_remove_fileext(filename, fileext)
     }
+  }
 
-    device <- fileext
+  if ((filext == "pdf") & isTRUE(capabilities()[["cairo"]])) {
+    device <- cairo_pdf
+    params$symbolfamily <- params$symbolfamily %||% plot[["theme"]][["text"]][["family"]]
   }
 
   rlang::check_installed("janitor")
@@ -131,7 +136,8 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
 
   check_ggplot(plot, class = "arrangelist")
 
-  ggplot2::ggsave(
+  rlang::exec(
+    ggplot2::ggsave,
     filename = filename,
     plot = plot,
     device = device,
@@ -141,7 +147,7 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
     units = dims$units,
     dpi = dpi,
     bg = bgcolor,
-    ...
+    !!!params
   )
 
   cli::cli_alert_success(
