@@ -1,9 +1,9 @@
 grid_units <-
   c(
-    "npc", "centimeter", "centimetre", "centimeters", "centimetres", "cm",
-    "inch", "inches", "in", "millimeter", "millimetre", "millimeters",
-    "millimetres", "mm", "point", "points", "pt", "picas", "pc", "bigpts",
-    "bp", "dida", "dd", "cicero", "cc", "scaledpts", "sp", "lines", "char",
+    "npc", "cm", "centimeter", "centimetre", "centimeters", "centimetres",
+    "in", "inch", "inches", "mm", "millimeter", "millimetre", "millimeters",
+    "millimetres", "pt", "point", "points", "pc", "picas", "bp", "bigpts",
+    "dd", "dida", "cc", "cicero", "sp", "scaledpts", "lines", "char",
     "native", "snpc", "strwidth", "strheight", "grobheight"
   )
 
