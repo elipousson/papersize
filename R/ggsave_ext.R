@@ -94,7 +94,7 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
       limitsize = limitsize
     )
 
-  if (is.null(device) && (!is.null(fileext) | !is.null(filename))) {
+  if (!is.null(fileext) | !is.null(filename)) {
     fileext <- fileext %||% str_extract_fileext(filename)
 
     if (!is.null(filename)) {
@@ -102,8 +102,8 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
     }
   }
 
-  if ((filext == "pdf") & isTRUE(capabilities()[["cairo"]])) {
-    device <- cairo_pdf
+  if ((fileext == "pdf") & isTRUE(capabilities()[["cairo"]])) {
+    device <- device %||% cairo_pdf
     params$symbolfamily <- params$symbolfamily %||% plot[["theme"]][["text"]][["family"]]
   }
 
