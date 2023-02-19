@@ -3,15 +3,12 @@
 \name{is_dist_units}
 \alias{is_dist_units}
 \alias{get_dist_units}
-\alias{as_dist_units}
 \alias{is_same_units}
 \title{General utility functions for working with distance units objects}
 \usage{
 is_dist_units(x, arg = caller_arg(x))
 
 get_dist_units(x, arg = caller_arg(x), call = parent.frame())
-
-as_dist_units(x, units = NULL, arg = caller_arg(x), call = parent.frame())
 
 is_same_units(x, y = NULL)
 }
@@ -20,11 +17,6 @@ is_same_units(x, y = NULL)
 
 \item{arg}{Used internally and passed to \code{\link[rlang:arg_match]{rlang::arg_match()}} as error arg or
 used by \code{\link[cli:cli_abort]{cli::cli_abort()}} to improve error messages.}
-
-\item{call}{Passed to error_call for \code{\link[rlang:arg_match]{rlang::arg_match()}}}
-
-\item{units}{Distance units to convert to. Must be one of dist_unit_options
-or area_unit_options.}
 }
 \description{
 \itemize{

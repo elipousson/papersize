@@ -83,7 +83,8 @@ map_ggsave_ext(
 
 \item{label}{Label to combine with name converted to snake case with
 \code{\link[janitor:make_clean_names]{janitor::make_clean_names()}}. The label is designed to identify the area
-or other shared characteristics across multiple data files, maps, or plots.}
+or other shared characteristics across multiple data files, maps, or plots.
+label is ignored if name is NULL or if name includes a file extension.}
 
 \item{prefix}{File name prefix. "date" adds a date prefix, "time" adds a
 date/time prefix; defaults to \code{NULL}.}
