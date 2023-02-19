@@ -69,16 +69,7 @@ as_unit <- function(x,
 
   units <- as_unit_type(units, recurse, call = call)
 
-  rlang::try_fetch(
-    grid::unit(num, units, data),
-    error = function(cnd) {
-      cli::cli_abort(
-        "{.arg {arg}} can't be coerced to a unit object of type
-        {.val {units}}.",
-        call = call, parent = cnd
-      )
-    }
-  )
+  grid::unit(num, units, data)
 }
 
 #' @name as_unit_type
