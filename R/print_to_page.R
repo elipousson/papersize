@@ -129,8 +129,17 @@ get_region_dims <- function(page,
 check_ggplot <- function(plot, class = NULL) {
   check_installed("ggplot2")
   check_required(plot)
+
+  message <- "{.arg plot} must be a {.cls ggplot} object."
+  inherits_class <- FALSE
+
+  if (!is.null(class)) {
+    message <- "{.arg plot} must be a {.cls ggplot} object or an object with class {.cls {class}}."
+    inherits_class <- rlang::inherits_any(plot, class)
+  }
+
   cli_abort_ifnot(
-    message = "{.arg plot} must be a {.cls ggplot} object or an object with class {.cls {class}}.",
-    condition = ggplot2::is.ggplot(plot) | rlang::inherits_any(plot, class)
+    message = message,
+    condition = ggplot2::is.ggplot(plot) | inherits_class
   )
 }
