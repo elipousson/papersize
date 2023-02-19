@@ -82,8 +82,6 @@ Names or symbols of valid distance units are allowed.</p></li>
 <span></span>
 <span><span class="fu">get_dist_units</span><span class="op">(</span><span class="va">x</span>, arg <span class="op">=</span> <span class="fu">caller_arg</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, call <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">as_dist_units</span><span class="op">(</span><span class="va">x</span>, units <span class="op">=</span> <span class="cn">NULL</span>, arg <span class="op">=</span> <span class="fu">caller_arg</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, call <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu">is_same_units</span><span class="op">(</span><span class="va">x</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -96,15 +94,6 @@ Names or symbols of valid distance units are allowed.</p></li>
 <dt>arg</dt>
 <dd><p>Used internally and passed to <code><a href="https://rlang.r-lib.org/reference/arg_match.html" class="external-link">rlang::arg_match()</a></code> as error arg or
 used by <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_abort()</a></code> to improve error messages.</p></dd>
-
-
-<dt>call</dt>
-<dd><p>Passed to error_call for <code><a href="https://rlang.r-lib.org/reference/arg_match.html" class="external-link">rlang::arg_match()</a></code></p></dd>
-
-
-<dt>units</dt>
-<dd><p>Distance units to convert to. Must be one of dist_unit_options
-or area_unit_options.</p></dd>
 
 </dl></div>
     <div class="section level2">
