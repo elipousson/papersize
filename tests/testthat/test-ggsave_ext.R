@@ -1,5 +1,4 @@
 test_that("ggsave_ext works", {
-
   skip_if_not_installed("ggplot2")
   p <- ggplot2::ggplot(ggplot2::mpg, ggplot2::aes(class)) +
     ggplot2::geom_bar()
@@ -38,7 +37,6 @@ test_that("ggsave_ext works", {
   )
 })
 
-
 test_that("ggsave_ext w/ magick works", {
   withr::with_dir(
     tempdir(),
@@ -59,7 +57,6 @@ test_that("ggsave_ext w/ magick works", {
     }
   )
 })
-
 
 test_that("map_ggsave_ext w/ gridExtra works", {
   skip_if_not_installed("ggplot2")
@@ -83,7 +80,6 @@ test_that("map_ggsave_ext w/ gridExtra works", {
     }
   )
 })
-
 
 test_that("set_ggsave_dims helper works", {
   expect_identical(
@@ -113,5 +109,30 @@ test_that("set_ggsave_dims helper works", {
       units = "millimeters"
     ),
     list("width" = 210, "height" = 297, "units" = "mm")
+  )
+})
+
+test_that("map_ggsave_ext warns and errors", {
+  skip_if_not_installed("ggplot2")
+  p <- ggplot2::ggplot(ggplot2::mpg, ggplot2::aes(class)) +
+    ggplot2::geom_bar()
+
+  expect_error(
+    map_ggsave_ext(
+      plot = p,
+      filename = "expect-error.png",
+      width = 6,
+      height = 4
+    )
+  )
+  expect_warning(
+    map_ggsave_ext(
+      plot = list(p),
+      filename = "expect-warning.png",
+      width = 6,
+      height = 4,
+      single_file = FALSE,
+      onefile = TRUE
+    )
   )
 })
