@@ -114,14 +114,14 @@ get_dist_units <- function(x,
 }
 
 #' @noRd
-is_dist_unit_option <- function(x) {
-  all(as.character(units(x)[["numerator"]]) %in% dist_unit_options) & !is_area_unit_option(x)
-}
+# is_dist_unit_option <- function(x) {
+#   all(as.character(units(x)[["numerator"]]) %in% dist_unit_options) & !is_area_unit_option(x)
+# }
 
 #' @noRd
-is_area_unit_option <- function(x) {
-  as.character(units(x)) %in% area_unit_options
-}
+# is_area_unit_option <- function(x) {
+#   as.character(units(x)) %in% area_unit_options
+# }
 
 #' @name as_dist_units
 #' @rdname is_dist_units
