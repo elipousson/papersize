@@ -104,7 +104,11 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
 
   if ((fileext == "pdf") & isTRUE(capabilities()[["cairo"]])) {
     device <- device %||% cairo_pdf
-    params$symbolfamily <- params$symbolfamily %||% plot[["theme"]][["text"]][["family"]]
+    if (!is_patchwork(plot)) {
+      params$symbolfamily <- params$symbolfamily %||% plot[["theme"]][["text"]][["family"]]
+    } else {
+      params$symbolfamily <- params$symbolfamily %||% plot$theme$text$family
+    }
   }
 
   rlang::check_installed("janitor")
