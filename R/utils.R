@@ -34,7 +34,7 @@ utils::globalVariables(
 #' @noRd
 #' @importFrom rlang caller_arg
 filter_data <- function(x, y = NULL, col = rlang::caller_arg(y), ignore.case = TRUE) {
-  if (is.null(y)) {
+  if (is_null(y)) {
     return(x)
   }
 
@@ -80,9 +80,9 @@ geom_text_if_family <- function(data,
                                 ),
                                 family = NULL,
                                 ...) {
-  rlang::check_installed("ggplot2")
+  check_installed("ggplot2")
 
-  if (!is.null(family)) {
+  if (!is_null(family)) {
     ggplot2::geom_text(
       data = data,
       mapping = mapping,

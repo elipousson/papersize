@@ -87,7 +87,7 @@ make_page_size <- function(width = NULL,
       c(cols, get_units_col())
     )
 
-  if (!is.null(name)) {
+  if (!is_null(name)) {
     pg <-
       cbind(
         data.frame("name" = name),
@@ -138,14 +138,14 @@ check_page_asp <- function(width = NULL,
                            call = parent.frame()) {
   cli_abort_if(
     "{.arg width} or {.arg height} must be provided.",
-    condition = is.null(width) & is.null(height),
+    condition = is_null(width) & is_null(height),
     call = call
   )
 
   cli_abort_if(
     "{.arg asp} must be provided if only {.arg width} or only
     {.arg height} are provided.",
-    condition = is.null(asp) & (is.null(width) | is.null(height)),
+    condition = is_null(asp) & (is_null(width) | is_null(height)),
     call = call
   )
 }

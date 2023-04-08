@@ -21,12 +21,12 @@ get_margin(margin = NULL, ..., unit = "in")
 \arguments{
 \item{margin}{A numeric list or vector or a margin class object. For
 \code{\link[=get_margin]{get_margin()}} only, margin can be a margin name from
-\code{page_extras$margins}. Defaults to \code{NULL}.}
+\code{page_extras[["margins"]]}. Defaults to \code{NULL}.}
 
 \item{...}{Additional numeric values combined with margin if provided.}
 
 \item{unit}{Default units for margins (ignored if margin is a margin class
-object). Passed to as_unit_type() so units class objects as well as unit
+object). Passed to \code{\link[=as_unit_type]{as_unit_type()}} so units class objects as well as unit
 names supported \code{\link[grid:unit]{grid::unit()}} are allowed. Defaults to "in" except for
 \code{\link[=margin]{margin()}} where unit defaults to "pt" to match \code{\link[ggplot2:element]{ggplot2::margin()}}.}
 
@@ -40,8 +40,8 @@ An extended version of \code{\link[ggplot2:element]{ggplot2::margin()}} with mor
 specification. If margin is a margin class object it is returned as is. If
 margin is length 1, the t, r, b, and l values are all set to that value. If
 margin is length 2, the t and b are set to half the first value and the r and
-l are set to half the second value. The ... parameters also allow you to use
-the same syntax as margin.
+l are set to half the second value. The \code{...} parameters also allow you to
+use the same syntax as margin.
 }
 \examples{
 

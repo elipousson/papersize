@@ -92,7 +92,7 @@ print_to_page_layout <- function(plot,
     vp = page_vp
   )
 
-  if (is.null(filename)) {
+  if (is_null(filename)) {
     return(invisible())
   }
 
@@ -133,7 +133,7 @@ check_ggplot <- function(plot, class = NULL) {
   message <- "{.arg plot} must be a {.cls ggplot} object."
   inherits_class <- FALSE
 
-  if (!is.null(class)) {
+  if (!is_null(class)) {
     message <- "{.arg plot} must be a {.cls ggplot} object or an object with class {.cls {class}}."
     inherits_class <- rlang::inherits_any(plot, class)
   }

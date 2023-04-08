@@ -6,6 +6,13 @@
 #' @importFrom cli cli_abort cli_warn
 #' @importFrom glue glue
 #' @importFrom lifecycle deprecated
-#' @importFrom rlang on_load local_use_cli run_on_load caller_arg %||%
+#' @importFrom rlang on_load
+#' @importFrom rlang local_use_cli
+#' @importFrom rlang run_on_load
+#' @importFrom rlang caller_arg
+#' @importFrom rlang `%||%`
+#' @importFrom rlang has_name
+#' @importFrom rlang has_length
+#' @importFrom rlang check_installed
 ## usethis namespace: end
 rlang::on_load(rlang::local_use_cli())

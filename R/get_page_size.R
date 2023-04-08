@@ -62,7 +62,7 @@ get_page_size <- function(name = NULL,
     return(name)
   }
 
-  if (!is.null(name) && !(tolower(name) %in% tolower(pg$name))) {
+  if (!is_null(name) && !(tolower(name) %in% tolower(pg$name))) {
     name <- rlang::arg_match(
       name,
       values = as.character(pg$name),
@@ -76,7 +76,7 @@ get_page_size <- function(name = NULL,
 
   pg <- filter_data(pg, height)
 
-  if (!is.null(type) && !(tolower(type) %in% tolower(pg$type))) {
+  if (!is_null(type) && !(tolower(type) %in% tolower(pg$type))) {
     type <- rlang::arg_match(
       type,
       values = as.character(pg$type),
@@ -86,11 +86,11 @@ get_page_size <- function(name = NULL,
 
   pg <- filter_data(pg, type, ignore.case = ignore.case)
 
-  if (!is.null(units)) {
+  if (!is_null(units)) {
     pg <- convert_page_units(pg, units)
   }
 
-  if (is.null(orientation)) {
+  if (is_null(orientation)) {
     return(set_page_asp(pg))
   }
 
@@ -136,7 +136,7 @@ get_card <- function(name = NULL,
                      width = NULL,
                      height = NULL,
                      orientation = NULL) {
-  if (!is.null(name) && !str_detect(name, " card$")) {
+  if (!is_null(name) && !str_detect(name, " card$")) {
     name <- glue("{name} card")
   }
 
@@ -189,7 +189,7 @@ get_page_dims <- function(page = NULL,
 
   nm <- check_dims_cols(cols, width, height)
 
-  if (all(is.numeric(c(width, height)))) {
+  if (all(is_bare_numeric(c(width, height)))) {
     return(rlang::set_names(c(width, height), nm))
   }
 
@@ -221,7 +221,7 @@ check_dims_cols <- function(cols = c("width", "height"),
     return(default)
   }
 
-  if ((length(cols) != 2) | !is.character(cols)) {
+  if ((length(cols) != 2) | !is_character(cols)) {
     cli::cli_warn(
       c(
         "{.arg cols} must be a length 2 {.cls character} vector.",
@@ -245,14 +245,14 @@ convert_page_units <- function(page,
                                valueOnly = TRUE,
                                cols = c("width", "height"),
                                ...) {
-  if (is.null(units)) {
+  if (is_null(units)) {
     return(page)
   }
 
   units_col <- get_units_col()
 
   cli_abort_ifnot(
-    "{.arg page} must have a name {.val units_col}" = rlang::has_name(page, units_col)
+    "{.arg page} must have a name {.val units_col}" = has_name(page, units_col)
   )
 
   if (is_same_unit_type(page[[units_col]], units)) {
@@ -284,7 +284,7 @@ check_page <- function(page,
                        n = NULL,
                        arg = caller_arg(page),
                        call = parent.frame()) {
-  if ((!is.data.frame(page) & !is.list(page)) | !all(rlang::has_name(page, cols))) {
+  if ((!is.data.frame(page) & !is.list(page)) | !all(has_name(page, cols))) {
     cli::cli_abort(
       "{.arg {arg}} must be a {.cls data.frame} or {.cls list} with columns
       or names {.val {cols}}.",
@@ -294,7 +294,7 @@ check_page <- function(page,
 
   pg_n <- nrow(page)
 
-  if (is.data.frame(page) && !is.null(n) && (pg_n > n)) {
+  if (is.data.frame(page) && !is_null(n) && (pg_n > n)) {
     cli::cli_abort(
       "{.arg {arg}} must have no more than {.val {n}} rows,
       and {.arg {arg}} has {.val {pg_n}}.",

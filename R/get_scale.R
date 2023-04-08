@@ -19,7 +19,7 @@ get_scale <- function(scale = NULL,
                       series = NULL) {
   scales <- filter_data(standard_scales, scale)
 
-  if (!is.null(standard)) {
+  if (!is_null(standard)) {
     standard <- rlang::arg_match(
       standard,
       c("USGS", "Engineering", "Architectural"),
@@ -28,7 +28,7 @@ get_scale <- function(scale = NULL,
     scales <- filter_data(scales, standard)
   }
 
-  if (!is.null(series)) {
+  if (!is_null(series)) {
     series <- rlang::arg_match(
       series,
       unique(standard_scales$series),

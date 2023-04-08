@@ -1,4 +1,3 @@
-
 #' Apply numeric or unit class inset to width/height dimensions of page
 #'
 #' @noRd
@@ -9,7 +8,7 @@ inset_page <- function(page,
                        cols = c("width", "height")) {
   units_col <- get_units_col()
 
-  if (!is_unit(inset) && is.null(pct_inset)) {
+  if (!is_unit(inset) && is_null(pct_inset)) {
     inset <- as_unit(inset, units)
   }
 
@@ -18,7 +17,7 @@ inset_page <- function(page,
     return(set_page_dims(page, dims, cols = cols))
   }
 
-  if (length(pct_inset) == 1) {
+  if (has_length(pct_inset, 1)) {
     pct_inset <- rep(pct_inset, 2)
   }
 
@@ -41,7 +40,7 @@ get_inset_dims <- function(dims,
                            nm = c("width", "height")) {
   inset <- convert_unit_type(inset, to = units, valueOnly = TRUE)
 
-  if (length(inset) == 1) {
+  if (has_length(inset, 1)) {
     inset <- rep(inset, 2)
   }
 

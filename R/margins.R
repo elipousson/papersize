@@ -1,19 +1,18 @@
-
 #' Specify the margins of a page or element
 #'
 #' An extended version of [ggplot2::margin()] with more flexibility in
 #' specification. If margin is a margin class object it is returned as is. If
 #' margin is length 1, the t, r, b, and l values are all set to that value. If
 #' margin is length 2, the t and b are set to half the first value and the r and
-#' l are set to half the second value. The ... parameters also allow you to use
-#' the same syntax as margin.
+#' l are set to half the second value. The `...` parameters also allow you to
+#' use the same syntax as margin.
 #'
 #' @param margin A numeric list or vector or a margin class object. For
 #'   [get_margin()] only, margin can be a margin name from
-#'   `page_extras$margins`. Defaults to `NULL`.
+#'   `page_extras[["margins"]]`. Defaults to `NULL`.
 #' @param ... Additional numeric values combined with margin if provided.
 #' @param unit Default units for margins (ignored if margin is a margin class
-#'   object). Passed to as_unit_type() so units class objects as well as unit
+#'   object). Passed to [as_unit_type()] so units class objects as well as unit
 #'   names supported [grid::unit()] are allowed. Defaults to "in" except for
 #'   [margin()] where unit defaults to "pt" to match [ggplot2::margin()].
 #' @examples
@@ -44,33 +43,30 @@ margins <- function(margin = NULL, ..., unit = "in") {
   if (is_margin(margin)) {
     if (!is_same_unit_type(margin, unit)) {
       cli::cli_warn(
-        "{.arg margin} uses {.val {as_unit_type(margin)}} but the provided
-        {.arg unit} is {.val {unit}}."
+        "{.arg margin} uses {.val {as_unit_type(margin)}} but
+        the provided {.arg unit} is {.val {unit}}."
       )
     }
-
     return(margin)
   }
 
-  if (is.list(margin)) {
+  if (is_list(margin)) {
     margin <- unlist(margin)
   }
 
-  if (all(rlang::has_name(margin, c("t", "r", "b", "l")))) {
+  if (all(has_name(margin, c("t", "r", "b", "l")))) {
     margin <- c(margin["t"], margin["r"], margin["b"], margin["l"])
   }
 
-  if (length(margin) == 1) {
+  if (has_length(margin, 1)) {
     margin <- rep(margin, 4)
   }
 
-  unit <- as_unit_type(unit)
-
-  if (length(margin) == 4) {
+  if (has_length(margin, 4)) {
     return(margin(margin[1], margin[2], margin[3], margin[4], unit))
   }
 
-  if (length(margin) == 2) {
+  if (has_length(margin, 2)) {
     margin <- margin / 2
     return(margin(margin[1], margin[2], margin[1], margin[2], unit))
   }
@@ -105,14 +101,17 @@ margin <- function(t = 0, r = 0, b = 0, l = 0, unit = "pt") {
 #' @rdname margins
 #' @export
 #' @importFrom rlang arg_match
-get_margin <- function(margin = NULL, ..., unit = "in") {
+get_margin <- function(margin = NULL,
+                       ...,
+                       unit = "in") {
   if (is_margin(margin)) {
     return(margin)
   }
 
-  if (is.character(margin)) {
-    margin <- rlang::arg_match(margin, unique(page_extras$margins$name))
-    margin <- filter_data(page_extras$margins, margin, "name")
+  if (is_character(margin)) {
+    extra_margins <- page_extras[["margins"]]
+    margin <- rlang::arg_match(margin, unique(extra_margins[["name"]]))
+    margin <- filter_data(extra_margins, margin, "name")
     margin <- filter_data(margin, unit)
     margin <- c(margin["t"], margin["r"], margin["b"], margin["l"])
   }

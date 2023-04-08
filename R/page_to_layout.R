@@ -47,7 +47,7 @@ page_to_layout <- function(page,
   page_width <- page[[cols[1]]]
   page_height <- page[[cols[2]]]
 
-  if (!is.null(margins)) {
+  if (!is_null(margins)) {
     page <- set_page_margin(page, margins, unit = units)
     body_cols <- glue("{get_body_col()}_{cols}")
     page_width <- page[[body_cols[1]]]
@@ -57,7 +57,7 @@ page_to_layout <- function(page,
   widths <- widths %||% grid::unit(rep_len(page_width / ncol, ncol), units)
   heights <- heights %||% grid::unit(rep_len(page_height / nrow, nrow), units)
 
-  if (!is.null(region)) {
+  if (!is_null(region)) {
     check_page(region, cols, n = 1)
     widths <- grid::unit(rep_len(region[[cols[1]]], ncol), units)
     heights <- grid::unit(rep_len(region[[cols[2]]], nrow), units)

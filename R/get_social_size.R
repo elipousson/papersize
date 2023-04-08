@@ -20,19 +20,19 @@
 get_social_size <- function(name = NULL, platform = NULL, format = NULL, orientation = NULL) {
   image_sizes <- get_page_size(type = "social")
 
-  if (!is.null(platform)) {
+  if (!is_null(platform)) {
     platform <- tolower(platform)
     platform <- arg_match(platform, tolower(unique(image_sizes$standard)))
     image_sizes <- image_sizes[tolower(image_sizes$standard) %in% platform, ]
   }
 
-  if (!is.null(format)) {
+  if (!is_null(format)) {
     format <- tolower(format)
     format <- arg_match(format, tolower(unique(image_sizes$size)))
     image_sizes <- image_sizes[tolower(image_sizes$size) %in% format, ]
   }
 
-  if (!is.null(name)) {
+  if (!is_null(name)) {
     name <- tolower(name)
     name_opts <- tolower(as.character(image_sizes$name))
     name <- arg_match(name, name_opts)

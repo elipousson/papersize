@@ -44,11 +44,11 @@ get_dist_units <- function(x,
                            arg = caller_arg(x),
                            call = parent.frame()) {
   rlang::check_required(x)
-  if (is.null(x)) {
+  if (is_null(x)) {
     return(x)
   }
 
-  if (is.character(x)) {
+  if (is_character(x)) {
     x <- underscore(x)
     x <- rlang::arg_match(
       arg = x,
@@ -62,7 +62,7 @@ get_dist_units <- function(x,
   }
 
   if (is_sf_ext(x)) {
-    rlang::check_installed("sf")
+    check_installed("sf")
     return(sf::st_crs(x)$units_gdal)
   }
 
@@ -94,7 +94,7 @@ get_dist_units <- function(x,
     return(unit_type)
   }
 
-  if (is.numeric(x)) {
+  if (is_bare_numeric(x)) {
     cli::cli_warn(
       "units can't be determined for a numeric vector
       that is not a {.cls unit} or {.cls units} object."
@@ -138,7 +138,7 @@ as_dist_units <- function(x,
                           call = parent.frame()) {
   units <- get_dist_units(units, call = call)
 
-  if (is.numeric(x) & !is_units(x)) {
+  if (is_bare_numeric(x) & !is_units(x)) {
     cliExtras::cli_abort_if(
       "{.arg units} must be length 1,
       not length {length(units)}." = length(units) > 1
@@ -167,7 +167,7 @@ as_dist_units <- function(x,
 #' @rdname  is_dist_units
 #' @export
 is_same_units <- function(x, y = NULL) {
-  if (is.null(x) | is.null(y)) {
+  if (is_null(x) | is_null(y)) {
     return(FALSE)
   }
 
@@ -194,7 +194,7 @@ is_same_units <- function(x, y = NULL) {
 
 #' @noRd
 as_units_attr <- function(x) {
-  if (is.character(x)) {
+  if (is_character(x)) {
     x <- underscore(x)
     x <- try_as_units(x)
   }

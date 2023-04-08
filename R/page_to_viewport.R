@@ -1,4 +1,3 @@
-
 #' Convert a page data.frame to a `viewport` class object
 #'
 #' Create a `viewport` class object with a width and height matching the

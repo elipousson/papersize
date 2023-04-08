@@ -48,11 +48,11 @@ plot_cards <- function(card,
                        linewidth = 1,
                        text = NULL,
                        center = NULL) {
-  if (is.character(card)) {
+  if (is_character(card)) {
     card <- get_card(card, orientation = orientation)
   }
 
-  if (!all(rlang::has_name(card, c("x", "y")))) {
+  if (!all(has_name(card, c("x", "y")))) {
     center <- center %||% c(0, 0)
     card$x <- center[1]
     card$y <- center[2]
@@ -76,7 +76,7 @@ plot_cards <- function(card,
     plots <- add_card_number(plots, card, n, color, size, family)
   }
 
-  if (!is.null(text)) {
+  if (!is_null(text)) {
     plots <- add_card_text(plots, card, text, color, size, family)
   }
 
@@ -92,7 +92,7 @@ make_card_plots <- function(card,
                             fixed = TRUE) {
   n <- c(1:n)
 
-  if (length(fill) == 2) {
+  if (has_length(fill, 2)) {
     fill <- fill[1]
   }
 
@@ -111,7 +111,7 @@ setup_card_plot <- function(card,
                             fill = "gray20",
                             tile = TRUE,
                             fixed = TRUE) {
-  rlang::check_installed("ggplot2")
+  check_installed("ggplot2")
   check_page(card, cols = c("width", "height", "x", "y"))
 
   plot <-
@@ -145,7 +145,7 @@ add_card_number <- function(plots,
                             color = "white",
                             size = 5,
                             family = NULL) {
-  rlang::check_installed("ggplot2")
+  check_installed("ggplot2")
 
   n <- c(1:n)
 
@@ -181,11 +181,11 @@ add_card_border <- function(plots,
                             color = "white",
                             linetype = "dashed",
                             linewidth = 1) {
-  rlang::check_installed(c("grid", "ggplot2"))
+  check_installed("ggplot2")
 
   inset_card <- inset_page(card, inset)
 
-  if (length(fill) == 2) {
+  if (has_length(fill, 2)) {
     fill <- fill[2]
   } else {
     fill <- NA
@@ -219,16 +219,16 @@ add_card_text <- function(plots,
                           family = NULL,
                           nudge_x = 0,
                           nudge_y = 0.5) {
-  rlang::check_installed("ggplot2")
+  check_installed("ggplot2")
 
-  if (is.null(text)) {
+  if (is_null(text)) {
     return(plots)
   }
 
   n <- length(plots)
 
-  if (is.character(text)) {
-    if (length(text) == 1) {
+  if (is_character(text)) {
+    if (has_length(text, 1)) {
       text <- rep(text, n)
     }
 

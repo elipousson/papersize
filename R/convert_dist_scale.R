@@ -37,7 +37,7 @@ convert_dist_scale <- function(dist = NULL,
                                paper = NULL,
                                orientation = NULL,
                                ...) {
-  if (is.character(scale) && rlang::has_length(scale, 1)) {
+  if (is_character(scale) && has_length(scale, 1)) {
     scale_nm <- scale
     scale <- get_scale(scale = scale, standard = standard, series = series)
 
@@ -50,11 +50,11 @@ convert_dist_scale <- function(dist = NULL,
 
     cliExtras::cli_warn_ifnot(
       c("{.arg actual_unit} is ignored if {.arg scale} is provided."),
-      condition = is.null(actual_unit)
+      condition = is_null(actual_unit)
     )
   }
 
-  if (!is.null(paper) && is.null(dist)) {
+  if (!is_null(paper) && is_null(dist)) {
     # paper_nm <- paper
     paper <- get_paper(paper, orientation = orientation, ...)
 
@@ -70,8 +70,8 @@ convert_dist_scale <- function(dist = NULL,
     cliExtras::cli_warn_ifnot(
       c("{.arg scale_unit} and {.arg scale_factor} are ignored if {.arg paper}
         is provided."),
-      condition = is.null(scale_unit) | is.null(scale_factor) |
-        (!is.null(scale_unit) && scale_unit == paper$units)
+      condition = is_null(scale_unit) | is_null(scale_factor) |
+        (!is_null(scale_unit) && scale_unit == paper$units)
     )
 
     scale_unit <- paper$units
@@ -97,8 +97,8 @@ convert_dist_scale <- function(dist = NULL,
     scale_factor <- scale[[paste0("scale_", scale_unit)]]
   } else {
     stopifnot(
-      is.numeric(scale_factor),
-      !is.null(actual_unit)
+      is_bare_numeric(scale_factor),
+      !is_null(actual_unit)
     )
   }
 
@@ -108,7 +108,7 @@ convert_dist_scale <- function(dist = NULL,
       to = actual_unit
     )
 
-  if (is.null(paper)) {
+  if (is_null(paper)) {
     return(dist)
   }
 

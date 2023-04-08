@@ -12,8 +12,8 @@ set_page_dims <- function(page,
                           height = NULL,
                           units = NULL,
                           cols = c("width", "height")) {
-  if (!is.null(dims)) {
-    stopifnot(length(dims) == 2)
+  if (!is_null(dims)) {
+    stopifnot(has_length(dims, 2))
 
     if (rlang::is_named(dims)) {
       dims <- c(dims[cols[1]], dims[cols[2]])
@@ -46,9 +46,9 @@ set_page_orientation <- function(page,
                                  orientation = NULL,
                                  tolerance = 0.1,
                                  cols = c("width", "height")) {
-  has_orientation_col <- rlang::has_name(page, get_orientation_col())
+  has_orientation_col <- has_name(page, get_orientation_col())
 
-  if (is.null(orientation) & has_orientation_col) {
+  if (is_null(orientation) & has_orientation_col) {
     return(page)
   }
 
@@ -61,7 +61,7 @@ set_page_orientation <- function(page,
         rlang::set_names(data.frame(pg_orientation), get_orientation_col())
       )
 
-    if (is.null(orientation)) {
+    if (is_null(orientation)) {
       return(page)
     }
   }

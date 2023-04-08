@@ -32,6 +32,7 @@
 #' as_asp(page = make_page_size(8.5, 11, "in"), flipped = TRUE)
 #'
 #' @export
+#' @importFrom rlang is_null is_string is_bare_numeric is_character has_name
 as_asp <- function(asp = NULL,
                    page = NULL,
                    orientation = NULL,
@@ -39,32 +40,32 @@ as_asp <- function(asp = NULL,
                    sep = ":",
                    cols = c("width", "height"),
                    ...) {
-  if (is.null(asp) & is.null(page)) {
+  if (is_null(asp) && is_null(page)) {
     return(asp)
   }
 
-  if (is.character(asp)) {
+  if (is_string(asp)) {
     w <- as.numeric(str_extract(asp, paste0(".+(?=", sep, ")")))
     h <- as.numeric(str_extract(asp, paste0("(?<=", sep, ").+")))
     asp <- w / h
   }
 
-  if (is.numeric(asp)) {
+  if (is_bare_numeric(asp)) {
     return(set_flipped(asp, flipped))
   }
 
-  if (is.character(page)) {
+  if (is_character(page)) {
     page <- get_page_size(page, orientation = orientation, ...)
   }
 
-  if (is.data.frame(page) && all(has_name(page, cols))) {
+  if (all(has_name(page, cols))) {
     asp <- as.numeric(page[[cols[1]]]) / as.numeric(page[[cols[2]]])
     return(set_flipped(asp, flipped))
   }
 
   asp_col <- get_asp_col()
 
-  if (is.data.frame(page) && has_name(page, asp_col)) {
+  if (has_name(page, asp_col)) {
     return(set_flipped(page[[asp_col]], flipped))
   }
 }
@@ -72,8 +73,9 @@ as_asp <- function(asp = NULL,
 #' Helper function to optional switch orientation of aspect ratio
 #'
 #' @noRd
+#' @importFrom rlang is_true
 set_flipped <- function(x, flipped = FALSE) {
-  if (isTRUE(flipped)) {
+  if (is_true(flipped)) {
     return(1 / x)
   }
 

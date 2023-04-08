@@ -30,21 +30,21 @@ convert_dist_units <- function(dist,
                                digits = NULL) {
   cliExtras::cli_abort_ifnot(
     "{.arg dist} must be a {.cls numeric} or
-    {.cls units} object." = any(c(is.numeric(dist), is_units(dist)))
+    {.cls units} object." = any(c(is_bare_numeric(dist), is_units(dist)))
   )
 
-  if (!is.null(from) & !is.character(from)) {
+  if (!is_null(from) & !is_character(from)) {
     from <- get_dist_units(from)
   }
 
-  if (!is.null(to) & !is.character(to)) {
+  if (!is_null(to) & !is_character(to)) {
     to <- get_dist_units(to)
   }
 
   if (is_units(dist) | is_unit(dist)) {
     dist_from <- get_dist_units(dist)
 
-    if (!is.null(from)) {
+    if (!is_null(from)) {
       cliExtras::cli_warn_ifnot(
         message = c("{.arg dist} is class {.cls units} and has different units than
         {.arg from} ({.val {from}}).",
@@ -63,13 +63,13 @@ convert_dist_units <- function(dist,
     }
   }
 
-  if (!is.null(from)) {
+  if (!is_null(from)) {
     dist <- set_dist_units(dist, value = from)
   }
 
   dist <- set_dist_units(dist, value = to)
 
-  if (!is.null(digits)) {
+  if (!is_null(digits)) {
     dist <- round(dist, digits = digits)
   }
 
@@ -90,7 +90,7 @@ set_dist_units <- function(x = NULL,
                            value = NULL,
                            mode = "standard",
                            call = caller_env()) {
-  if (is.null(value)) {
+  if (is_null(value)) {
     return(x)
   }
 

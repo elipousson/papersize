@@ -1,4 +1,3 @@
-
 #' Create an inset with page size dimensions be added on top of the previous plot
 #'
 #'
@@ -45,33 +44,33 @@ inset_page_element <- function(p,
                                clip = TRUE,
                                ignore_tag = FALSE,
                                ...) {
-  if (!is.null(inset_page)) {
+  if (!is_null(inset_page)) {
     pg_unit <- inset_page[[get_units_col()]]
     pg_w <- as_unit(inset_page[["width"]], pg_unit)
     pg_h <- as_unit(inset_page[["height"]], pg_unit)
 
-    if (!is.null(left) & is.null(right)) {
+    if (!is_null(left) & is_null(right)) {
       left <- convert_unit_type(left, to = pg_unit, ...)
       right <- left + pg_w
     }
 
-    if (!is.null(bottom) & is.null(top)) {
+    if (!is_null(bottom) & is_null(top)) {
       bottom <- convert_unit_type(bottom, to = pg_unit, ...)
       top <- bottom + pg_h
     }
 
-    if (!is.null(right) & is.null(left)) {
+    if (!is_null(right) & is_null(left)) {
       right <- convert_unit_type(right, to = pg_unit, ...)
       left <- right - pg_w
     }
 
-    if (!is.null(top) & is.null(bottom)) {
+    if (!is_null(top) & is_null(bottom)) {
       top <- convert_unit_type(top, to = pg_unit, ...)
       bottom <- top - pg_h
     }
   }
 
-  rlang::check_installed("patchwork")
+  check_installed("patchwork")
   patchwork::inset_element(
     p + theme_page(inset_page),
     left,

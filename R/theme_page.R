@@ -13,7 +13,7 @@
 #' @rdname theme_page
 #' @export
 theme_page <- function(page, orientation = NULL, ...) {
-  rlang::check_installed("ggplot2")
+  check_installed("ggplot2")
   ggplot2::theme(
     aspect.ratio = as_asp(
       page = page,

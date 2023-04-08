@@ -39,16 +39,16 @@ page_layout <- function(plots = NULL,
                         paginate = TRUE,
                         dims = NULL,
                         ...) {
-  rlang::check_installed(c("ggplot2", "patchwork"))
+  check_installed(c("ggplot2", "patchwork"))
 
   page_dims <- get_page_dims(page, width, height, orientation)
 
-  if (!is.null(dims)) {
+  if (!is_null(dims)) {
     if (is.data.frame(dims)) {
       dims <- get_page_dims(dims)
-    } else if (is.character(dims)) {
+    } else if (is_character(dims)) {
       dims <- get_page_dims(get_page_size(dims, ...))
-    } else if (!is.numeric(dims)) {
+    } else if (!is_bare_numeric(dims)) {
       cli::cli_abort(
         "A {.arg dims} must be a a {.cls data.frame} with plot dimensions,
         a {.cls character} string with the name of a paper size, or a
@@ -66,7 +66,7 @@ page_layout <- function(plots = NULL,
 
   page_cols <- as.numeric(page_dims %/% dims)
 
-  if (is.null(plots)) {
+  if (is_null(plots)) {
     patch_layout <-
       patchwork::plot_layout(
         ncol = page_cols[[1]],

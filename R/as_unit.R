@@ -1,4 +1,3 @@
-
 #' Helper functions for grid units
 #'
 #' @description
@@ -63,7 +62,7 @@ as_unit <- function(x,
     condition = any(is.na(num))
   )
 
-  if (is.null(units)) {
+  if (is_null(units)) {
     units <- x
   }
 
@@ -89,7 +88,7 @@ as_unit_type <- function(x,
                          valid_units = NULL,
                          arg = caller_arg(x),
                          call = parent.frame()) {
-  if (!is.null(valid_units) & all(x %in% valid_units)) {
+  if (!is_null(valid_units) & all(x %in% valid_units)) {
     return(x)
   }
 
@@ -136,7 +135,7 @@ convert_unit_type <- function(x,
                               typeFrom = "dimension",
                               valueOnly = FALSE,
                               ...) {
-  if (is.null(to)) {
+  if (is_null(to)) {
     return(x)
   }
 
@@ -147,7 +146,7 @@ convert_unit_type <- function(x,
     x <- rlang::set_names(x, NA)
   }
 
-  if (!is_unit(x) && is.null(from)) {
+  if (!is_unit(x) && is_null(from)) {
     cli::cli_warn(
       "{.arg from} is {.code NULL}, converting {.arg x} to {.val {to}}."
     )
@@ -184,7 +183,7 @@ convert_unit_type <- function(x,
 #' @rdname as_unit
 #' @export
 is_unit_type <- function(x, ...) {
-  if (is.null(x)) {
+  if (is_null(x)) {
     return(FALSE)
   }
 
