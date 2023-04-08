@@ -97,9 +97,8 @@ date/time prefix; defaults to \code{NULL}.}
 (e.g. \link{png}), or one of "eps", "ps", "tex" (pictex),
 "pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf" (windows only).}
 
-\item{fileext}{File type or extension.}
-
-\item{filetype}{The file extension or file type; defaults to \code{NULL}.}
+\item{fileext}{File type or extension. Optional if filename or path include a
+file extension.}
 
 \item{path}{Path of the directory to save plot to: \code{path} and \code{filename}
 are combined to create the fully qualified file name. Defaults to the
@@ -129,14 +128,14 @@ with the exifr package; defaults to \code{FALSE}.}
 
 \item{title}{Title to add to file metadata with exiftoolr, Default: \code{NULL}.}
 
-\item{author}{Author to add to file metadata with exiftoolr, Default: \code{NULL}.}
+\item{author}{Author to add to file metadata to the "Author" and
+"XMP-dc:creator" tags. Default: \code{NULL}.}
 
-\item{keywords}{Keyword(s) added to file metadata with with exiftoolr,
-Default: \code{NULL}.}
+\item{keywords}{Keyword(s) added to file metadata to "IPTC:Keywords" and
+"XMP-dc:Subject" tags. Defaults to \code{NULL}.}
 
-\item{args}{Alternate arguments passed to \code{\link[exiftoolr:exif_call]{exiftoolr::exif_call()}}. If args
-is not \code{NULL}, title, author, date, and keywords are ignored; defaults to
-\code{NULL}.}
+\item{args}{Alternate arguments passed to \code{\link[exiftoolr:exif_call]{exiftoolr::exif_call()}}. Other tag
+parameters are appended to args if they are not \code{NULL}.}
 
 \item{overwrite}{If \code{TRUE} (default), overwrite any existing file with the
 same name or ask to overwrite if \code{ask = TRUE}. Passed to

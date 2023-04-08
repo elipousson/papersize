@@ -32,7 +32,7 @@
 #'   [filenamr::check_file_overwrite()].
 #' @param ask If `TRUE`, ask before overwriting file with the same name.
 #'   Defaults to `FALSE`. Passed to [filenamr::check_file_overwrite()].
-#' @inheritParams sfext::write_exif
+#' @inheritParams filenamr::write_exif
 #' @param preview If `TRUE`, open saved file in default system application.
 #'   Based on [ggpreview()] from tjmisc package.
 #' @inheritDotParams ggplot2::ggsave -width -height -units -bg
@@ -81,7 +81,7 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
     on.exit(options("cli.default_handler" = existing_handler))
   }
 
-  rlang::check_installed("filenamr")
+  check_installed("filenamr")
 
   dims <-
     set_ggsave_dims(
@@ -94,10 +94,10 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
       limitsize = limitsize
     )
 
-  if (!is.null(fileext) | !is.null(filename)) {
+  if (!is_null(fileext) | !is_null(filename)) {
     fileext <- fileext %||% str_extract_fileext(filename)
 
-    if (!is.null(filename)) {
+    if (!is_null(filename)) {
       filename <- str_remove_fileext(filename, fileext)
     }
   }
@@ -111,7 +111,7 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
     }
   }
 
-  rlang::check_installed("janitor")
+  check_installed("janitor")
 
   filename <-
     filenamr::make_filename(
@@ -131,7 +131,7 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
   )
 
   if (inherits(plot, "magick-image")) {
-    rlang::check_installed("magick")
+    check_installed("magick")
     cli::cli_alert_success(
       "Converting {.arg plot} from {.cls magick-image} to {.cls ggplot}."
     )
@@ -173,6 +173,8 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
   if (preview) {
     system2("open", filename)
   }
+
+  invisible(plot)
 }
 
 #' Units that work wth ggsave
@@ -185,6 +187,7 @@ gg_units <-
     "mm" = c("millimeter", "millimetre", "millimeters", "millimetres"),
     "px" = c("pixel", "pixels")
   )
+
 #' Set the dimensions of a plot for ggsave_ext()
 #'
 #' @noRd
@@ -198,7 +201,7 @@ set_ggsave_dims <- function(paper = NULL,
                             limitsize = TRUE,
                             cols = c("width", "height")) {
   units_col <- get_units_col()
-  if (!is.null(paper)) {
+  if (!is_null(paper)) {
     paper <- get_page_size(paper, orientation = orientation)
 
     dims <-
@@ -330,18 +333,22 @@ map_ggsave_ext <- function(plot,
   fileext <- fileext %||% filetype
 
   if (!identical(single_file, onefile)) {
-    cli::cli_warn("{.arg single_file} and {.arg onefile} do not match.")
+    cli::cli_alert_warning(
+      "{.arg single_file} and {.arg onefile} do not match."
+    )
   }
 
   # single_file <- onefile
 
-  if (!is.list(plot)) {
+  if (!is_gg_list(plot)) {
     cli_abort(
-      "{.arg plot} must be a {.cls list}."
+      c("{.arg plot} must be a list of {.cls gg} objects.",
+        "i" = "Use {.fn ggsave_ext} for a single plot."
+      )
     )
   }
 
-  rlang::check_installed("janitor")
+  check_installed("janitor")
 
   filename <-
     filenamr::make_filename(
@@ -356,7 +363,7 @@ map_ggsave_ext <- function(plot,
   is_patchwork_plot <- is_patchwork(plot)
 
   if ((single_file | onefile) & !is_patchwork_plot) {
-    rlang::check_installed("gridExtra")
+    check_installed("gridExtra")
 
     plot <-
       map(
@@ -376,7 +383,7 @@ map_ggsave_ext <- function(plot,
       ...
     )
 
-    return(invisible())
+    return(invisible(plot))
   }
 
   if (single_file | onefile) {
@@ -409,10 +416,10 @@ map_ggsave_ext <- function(plot,
   }
 
   if (!single_file) {
-    return(invisible())
+    return(invisible(plot))
   }
 
-  rlang::check_installed("qpdf")
+  check_installed("qpdf")
 
   input <-
     list.files(
@@ -427,7 +434,7 @@ map_ggsave_ext <- function(plot,
     ask = FALSE
   )
 
-  if (!is.null(output_path)) {
+  if (!is_null(output_path)) {
     output <- file.path(output_path, filename)
   }
 
