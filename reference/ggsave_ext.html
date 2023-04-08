@@ -180,11 +180,8 @@ date/time prefix; defaults to <code>NULL</code>.</p></dd>
 
 
 <dt>fileext</dt>
-<dd><p>File type or extension.</p></dd>
-
-
-<dt>filetype</dt>
-<dd><p>The file extension or file type; defaults to <code>NULL</code>.</p></dd>
+<dd><p>File type or extension. Optional if filename or path include a
+file extension.</p></dd>
 
 
 <dt>path</dt>
@@ -236,18 +233,18 @@ with the exifr package; defaults to <code>FALSE</code>.</p></dd>
 
 
 <dt>author</dt>
-<dd><p>Author to add to file metadata with exiftoolr, Default: <code>NULL</code>.</p></dd>
+<dd><p>Author to add to file metadata to the "Author" and
+"XMP-dc:creator" tags. Default: <code>NULL</code>.</p></dd>
 
 
 <dt>keywords</dt>
-<dd><p>Keyword(s) added to file metadata with with exiftoolr,
-Default: <code>NULL</code>.</p></dd>
+<dd><p>Keyword(s) added to file metadata to "IPTC:Keywords" and
+"XMP-dc:Subject" tags. Defaults to <code>NULL</code>.</p></dd>
 
 
 <dt>args</dt>
-<dd><p>Alternate arguments passed to <code>exiftoolr::exif_call()</code>. If args
-is not <code>NULL</code>, title, author, date, and keywords are ignored; defaults to
-<code>NULL</code>.</p></dd>
+<dd><p>Alternate arguments passed to <code>exiftoolr::exif_call()</code>. Other tag
+parameters are appended to args if they are not <code>NULL</code>.</p></dd>
 
 
 <dt>overwrite</dt>
