@@ -29,7 +29,7 @@ utils::globalVariables(
 
 # @staticimports pkg:isstatic
 #  is_unit is_gg is_units is_sf is_sf_ext is_patchwork as_orientation
-#  str_add_fileext str_remove_fileext str_extract_fileext
+#  str_add_fileext str_remove_fileext str_extract_fileext is_gg_list
 
 #' @noRd
 #' @importFrom rlang caller_arg
