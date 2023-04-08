@@ -3,59 +3,53 @@ test_that("ggsave_ext works", {
   p <- ggplot2::ggplot(ggplot2::mpg, ggplot2::aes(class)) +
     ggplot2::geom_bar()
 
-  withr::with_dir(
-    tempdir(),
-    {
-      suppressMessages(cliExtras::set_cli_quiet(TRUE))
+  withr::with_tempdir({
+    cliExtras::set_cli_quiet(TRUE)
 
-      ggsave_ext(
-        plot = p,
-        filename = "p_asp.png",
-        width = 5,
-        asp = 1,
-        units = "in"
-      )
-      expect_true(
-        file.exists("p_asp.png")
-      )
-      ggsave_ext(
-        plot = p,
-        filename = "p_paper.png",
-        paper = "letter"
-      )
-      expect_true(
-        file.exists("p_paper.png")
-      )
-      ggsave_social(
-        plot = p,
-        name = "P Social"
-      )
-      expect_true(
-        file.exists("p_social.jpeg")
-      )
-    }
-  )
+    ggsave_ext(
+      plot = p,
+      filename = "p_asp.png",
+      width = 5,
+      asp = 1,
+      units = "in"
+    )
+    expect_true(
+      file.exists("p_asp.png")
+    )
+    ggsave_ext(
+      plot = p,
+      filename = "p_paper.png",
+      paper = "letter"
+    )
+    expect_true(
+      file.exists("p_paper.png")
+    )
+    ggsave_social(
+      plot = p,
+      name = "P Social"
+    )
+    expect_true(
+      file.exists("p_social.jpeg")
+    )
+  })
 })
 
 test_that("ggsave_ext w/ magick works", {
-  withr::with_dir(
-    tempdir(),
-    {
-      suppressMessages(cliExtras::set_cli_quiet(TRUE))
+  withr::with_tempdir({
+    cliExtras::set_cli_quiet(TRUE)
 
-      skip_if_not_installed("magick")
-      ggsave_ext(
-        plot = magick::logo,
-        filename = "logo_image-magick.jpeg",
-        width = 500,
-        height = 500,
-        unit = "px"
-      )
-      expect_true(
-        file.exists("logo_image-magick.jpeg")
-      )
-    }
-  )
+    skip_if_not_installed("magick")
+    ggsave_ext(
+      plot = magick::logo,
+      filename = "logo_image-magick.jpeg",
+      width = 500,
+      height = 500,
+      unit = "px"
+    )
+    expect_true(
+      file.exists("logo_image-magick.jpeg")
+    )
+  })
 })
 
 test_that("map_ggsave_ext w/ gridExtra works", {
@@ -63,22 +57,19 @@ test_that("map_ggsave_ext w/ gridExtra works", {
   p <- ggplot2::ggplot(ggplot2::mpg, ggplot2::aes(class)) +
     ggplot2::geom_bar()
 
-  withr::with_dir(
-    tempdir(),
-    {
-      suppressMessages(cliExtras::set_cli_quiet(TRUE))
+  withr::with_tempdir({
+    cliExtras::set_cli_quiet(TRUE)
 
-      skip_if_not_installed("gridExtra")
-      map_ggsave_ext(
-        plot = list(p, p),
-        filename = "p_paper.pdf",
-        paper = "letter"
-      )
-      expect_true(
-        file.exists("p_paper.pdf")
-      )
-    }
-  )
+    skip_if_not_installed("gridExtra")
+    map_ggsave_ext(
+      plot = list(p, p),
+      filename = "p_paper.pdf",
+      paper = "letter"
+    )
+    expect_true(
+      file.exists("p_paper.pdf")
+    )
+  })
 })
 
 test_that("set_ggsave_dims helper works", {
@@ -117,22 +108,26 @@ test_that("map_ggsave_ext warns and errors", {
   p <- ggplot2::ggplot(ggplot2::mpg, ggplot2::aes(class)) +
     ggplot2::geom_bar()
 
-  expect_error(
-    map_ggsave_ext(
-      plot = p,
-      filename = "expect-error.png",
-      width = 6,
-      height = 4
+  suppressMessages(cliExtras::set_cli_quiet(FALSE))
+
+  withr::with_tempdir({
+    expect_error(
+      map_ggsave_ext(
+        plot = p,
+        filename = "expect-error.png",
+        width = 6,
+        height = 4
+      )
     )
-  )
-  expect_warning(
-    map_ggsave_ext(
-      plot = list(p),
-      filename = "expect-warning.png",
-      width = 6,
-      height = 4,
-      single_file = FALSE,
-      onefile = TRUE
+    expect_message(
+      map_ggsave_ext(
+        plot = list(p),
+        filename = "expect-warning.png",
+        width = 6,
+        height = 4,
+        single_file = FALSE,
+        onefile = TRUE
+      )
     )
-  )
+  })
 })

@@ -1,6 +1,10 @@
 test_that("is_dist_units works", {
-  is_dist_units(units::as_units(1, "m"))
-  is_dist_units(units::as_units(1, "km^2"))
+  expect_true(
+    is_dist_units(units::as_units(1, "m"))
+  )
+  expect_true(
+    is_dist_units(units::as_units(1, "km^2"))
+  )
 })
 
 test_that("get_dist_units works", {
