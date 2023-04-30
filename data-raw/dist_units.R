@@ -1,8 +1,8 @@
 select_unit_options <-
   c(
     "arc_degree", "arc_minute", "arc_second", "cm", "m", "metre", "meter",
-    "meters", "km", "kilometer", "kilometers", "inch", "in", "ft", "foot",
-    "feet", "yard", "yards", "mi", "mile", "miles", "nautical_mile", "nmile",
+    "meters", "km", "kilometer", "kilometers", "inch", "in", "inches", "ft",
+    "foot", "feet", "yard", "yards", "mi", "mile", "miles", "nautical_mile", "nmile",
     "radian", "mm", "millimeter", "millimeters", "millimetre", "millimetres",
     "US_survey_foot", "US_survey_feet", "US_survey_yard", "US_survey_mile",
     "US_statute_mile", "big_point", "barleycorn", "furlong", "rod", "fathom",
