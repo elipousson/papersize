@@ -19,7 +19,8 @@ page_layout(
   dims = NULL,
   images = FALSE,
   dpi = 120,
-  ...
+  ...,
+  call = caller_env()
 )
 }
 \arguments{

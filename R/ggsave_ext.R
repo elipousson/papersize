@@ -310,7 +310,8 @@ ggsave_social <- function(plot = ggplot2::last_plot(),
 #'   patchwork including inset maps created with the
 #'   [maplayer::layer_inset()] function.
 #' @export
-#' @importFrom cli cli_bullets
+#' @importFrom cli cli_alert_warning cli_bullets cli_progress_step
+#'   cli_progress_update
 map_ggsave_ext <- function(plot,
                            name = NULL,
                            label = NULL,
@@ -398,16 +399,24 @@ map_ggsave_ext <- function(plot,
     }
   }
 
-  for (pg in seq_along(plot)) {
-    pg_postfix <- glue("{postfix}{pg}")
+  n_plots <- seq_along(plot)
+  plot_nums <- glue("{postfix}{n_plots}")
 
-    ggsave_ext(
-      plot = plot[[pg]],
-      postfix = pg_postfix,
-      filename = filename,
-      path = path,
-      device = device,
-      ...
+  msg <- "1"
+  cli::cli_progress_step("Saving plot {msg} of {max(n_plots)}", spinner = TRUE)
+
+  for (i in n_plots) {
+    msg <- i
+    cli::cli_progress_update()
+    suppressMessages(
+      ggsave_ext(
+        plot = plot[[i]],
+        postfix = plot_nums[[i]],
+        filename = filename,
+        path = path,
+        device = device,
+        ...
+      )
     )
   }
 
@@ -424,7 +433,13 @@ map_ggsave_ext <- function(plot,
     ask = FALSE
   )
 
-  input <- file.path(input_path, filename)
+  # FIXME: Make sure the postfix separator is parameterized somewhere
+  input_filenames <- str_add_fileext(
+    paste0(str_remove_fileext(filename, fileext), "_", plot_nums),
+    str_extract_fileext(filename)
+  )
+
+  input <- file.path(input_path, input_filenames)
 
   qpdf::pdf_combine(
     input = input,
