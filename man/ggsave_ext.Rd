@@ -151,6 +151,8 @@ Based on \code{\link[=ggpreview]{ggpreview()}} from tjmisc package.}
 save images larger than 50x50 inches, to prevent the common error of
 specifying dimensions in pixels.}
 
+\item{quiet}{If \code{TRUE} (default), suppress function messages.}
+
 \item{...}{
   Arguments passed on to \code{\link[ggplot2:ggsave]{ggplot2::ggsave}}
   \describe{

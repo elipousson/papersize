@@ -432,4 +432,6 @@ map_ggsave_ext <- function(plot,
   )
 
   unlink(input, recursive = TRUE)
+
+  invisible(plot)
 }
