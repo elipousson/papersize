@@ -19,10 +19,12 @@ Imports:
     cli,
     cliExtras (>= 0.1.0),
     glue,
+    grDevices,
     grid,
     lifecycle,
     rlang (>= 1.1.0),
-    units
+    units,
+    utils
 Suggests: 
     covr,
     filenamr,
