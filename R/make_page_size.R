@@ -36,7 +36,6 @@
 #' @seealso [get_page_size()]
 #' @export
 #' @importFrom rlang check_required set_names arg_match
-#' @importFrom cliExtras cli_abort_ifnot
 make_page_size <- function(width = NULL,
                            height = NULL,
                            units,
@@ -68,9 +67,11 @@ make_page_size <- function(width = NULL,
   check_page_asp(width, height, asp)
   rlang::check_required(units)
 
-  cli_abort_ifnot(
+  cli_if(
     "{.arg width}, {.arg height}, and {.arg asp} must all be either
-    {.cls numeric} or {.code NULL}." = all(is.numeric(c(width, height, asp)))
+    {.cls numeric} or {.code NULL}.",
+    condition = all(is.numeric(c(width, height, asp))),
+    .fn = cli::cli_abort
   )
 
   width <- width %||% (height * asp)
@@ -131,21 +132,22 @@ page_to_list <- function(x) {
 #' Check if correct input args are provided
 #'
 #' @noRd
-#' @importFrom cliExtras cli_abort_if
 check_page_asp <- function(width = NULL,
                            height = NULL,
                            asp = NULL,
                            call = parent.frame()) {
-  cli_abort_if(
+  cli_if(
     "{.arg width} or {.arg height} must be provided.",
-    condition = is_null(width) & is_null(height),
+    condition = is_null(width) && is_null(height),
+    .fn = cli::cli_abort,
     call = call
   )
 
-  cli_abort_if(
+  cli_if(
     "{.arg asp} must be provided if only {.arg width} or only
     {.arg height} are provided.",
-    condition = is_null(asp) & (is_null(width) | is_null(height)),
+    condition = is_null(asp) && (is_null(width) || is_null(height)),
+    .fn = cli::cli_abort,
     call = call
   )
 }

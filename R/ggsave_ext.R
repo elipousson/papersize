@@ -40,7 +40,6 @@
 #'  [ggplot2::ggsave()]
 #' @rdname ggsave_ext
 #' @export
-#' @importFrom cliExtras set_cli_quiet
 #' @importFrom cli cli_alert_success
 ggsave_ext <- function(plot = ggplot2::last_plot(),
                        name = NULL,
@@ -72,16 +71,12 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
                        limitsize = TRUE,
                        quiet = FALSE,
                        ...) {
+  check_installed("filenamr")
+
   fileext <- fileext %||% filetype
   params <- rlang::list2(...)
 
-  if (quiet) {
-    existing_handler <- getOption("cli.default_handler")
-    cliExtras::set_cli_quiet(TRUE)
-    on.exit(options("cli.default_handler" = existing_handler))
-  }
-
-  check_installed("filenamr")
+  cli_quiet(quiet)
 
   dims <-
     set_ggsave_dims(
@@ -103,7 +98,7 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
   }
 
   if ((fileext == "pdf") & isTRUE(capabilities()[["cairo"]])) {
-    device <- device %||% cairo_pdf
+    device <- device %||% grDevices::cairo_pdf
     if (!is_patchwork(plot)) {
       params$symbolfamily <- params$symbolfamily %||% plot[["theme"]][["text"]][["family"]]
     } else {
@@ -360,7 +355,7 @@ map_ggsave_ext <- function(plot,
       prefix = prefix
     )
 
-  is_patchwork_plot <- is_patchwork(plot)
+  is_patchwork_plot <- is_patchwork(plot) || is_patchwork(plot[[1]])
 
   if ((single_file | onefile) & !is_patchwork_plot) {
     check_installed("gridExtra")
@@ -386,10 +381,11 @@ map_ggsave_ext <- function(plot,
     return(invisible(plot))
   }
 
-  if (single_file | onefile) {
+  if (single_file || onefile) {
     if (has_fileext(filename, "pdf")) {
-      output_path <- path
-      path <- tempdir()
+      output_path <- path %||% getwd()
+      input_path <- tempdir()
+      path <- input_path
     } else {
       cli::cli_bullets(
         c(
@@ -415,17 +411,11 @@ map_ggsave_ext <- function(plot,
     )
   }
 
-  if (!single_file) {
+  if (!single_file && !onefile) {
     return(invisible(plot))
   }
 
   check_installed("qpdf")
-
-  input <-
-    list.files(
-      path = path,
-      pattern = "*.pdf"
-    )
 
   filenamr::check_file_overwrite(
     filename = filename,
@@ -434,14 +424,12 @@ map_ggsave_ext <- function(plot,
     ask = FALSE
   )
 
-  if (!is_null(output_path)) {
-    output <- file.path(output_path, filename)
-  }
+  input <- file.path(input_path, filename)
 
   qpdf::pdf_combine(
     input = input,
-    output = output
+    output = file.path(output_path, filename)
   )
 
-  unlink(path, recursive = TRUE)
+  unlink(input, recursive = TRUE)
 }
