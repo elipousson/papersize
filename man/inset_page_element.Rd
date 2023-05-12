@@ -52,7 +52,9 @@ convert to \code{to} units with a warning.}
 Defaults to "dimension".}
     \item{\code{valueOnly}}{Passed to valueOnly parameter of \code{\link[grid:grid.convert]{grid::convertUnit()}}.
 Defaults to \code{FALSE}.}
-    \item{\code{x}}{A numeric vector.}
+    \item{\code{x}}{A numeric vector.
+
+    For \code{is.unit}, any R object.}
   }}
 }
 \value{

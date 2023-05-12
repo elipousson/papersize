@@ -40,7 +40,9 @@ is_unit_type(x, ...)
 is_same_unit_type(x, y, recurse = FALSE, data = NULL, valid_units = NULL)
 }
 \arguments{
-\item{x}{A numeric vector.}
+\item{x}{A numeric vector.
+
+    For \code{is.unit}, any R object.}
 
 \item{units}{A character vector specifying the units for the
     corresponding numeric values.}

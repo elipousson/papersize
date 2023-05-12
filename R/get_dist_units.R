@@ -12,6 +12,7 @@
 #' @param x,y objects to check
 #' @param arg Used internally and passed to [rlang::arg_match()] as error arg or
 #'   used by [cli::cli_abort()] to improve error messages.
+#' @inheritParams rlang::args_error_context
 #' @family dist
 #' @examples
 #'
@@ -113,21 +114,10 @@ get_dist_units <- function(x,
   )
 }
 
-#' @noRd
-# is_dist_unit_option <- function(x) {
-#   all(as.character(units(x)[["numerator"]]) %in% dist_unit_options) & !is_area_unit_option(x)
-# }
-
-#' @noRd
-# is_area_unit_option <- function(x) {
-#   as.character(units(x)) %in% area_unit_options
-# }
-
 #' @name as_dist_units
 #' @rdname is_dist_units
 #' @param units Distance units to convert to. Must be one of dist_unit_options
 #'   or area_unit_options.
-#' @param call Passed to error_call for [rlang::arg_match()]
 #' @export
 #' @importFrom rlang caller_arg check_installed is_interactive
 #' @importFrom cliExtras cli_abort_if cli_yesno
@@ -201,3 +191,13 @@ as_units_attr <- function(x) {
 
   units(x)
 }
+
+#' @noRd
+# is_dist_unit_option <- function(x) {
+#   all(as.character(units(x)[["numerator"]]) %in% dist_unit_options) & !is_area_unit_option(x)
+# }
+
+#' @noRd
+# is_area_unit_option <- function(x) {
+#   as.character(units(x)) %in% area_unit_options
+# }
