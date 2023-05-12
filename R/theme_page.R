@@ -9,7 +9,7 @@
 #' @return A ggplot `theme` class object with the aspect.ratio argument set to
 #'   match the page height / width.
 #' @seealso
-#'  \code{\link[ggplot2]{theme}}
+#'  [ggplot2::theme()]
 #' @rdname theme_page
 #' @export
 theme_page <- function(page, orientation = NULL, ...) {

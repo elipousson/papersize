@@ -29,7 +29,7 @@
 #' }
 #' }
 #' @seealso
-#'  \code{\link[patchwork]{inset_element}}
+#'  [patchwork::inset_element()]
 #' @rdname inset_page_element
 #' @export
 #' @importFrom rlang check_installed

@@ -163,5 +163,5 @@ aspect.ratio argument to force a plot to match the aspect ratio of the
 provided page.
 }
 \seealso{
-\code{\link[ggplot2]{theme}}
+\code{\link[ggplot2:theme]{ggplot2::theme()}}
 }
