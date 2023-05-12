@@ -17,6 +17,8 @@ page_layout(
   design = NULL,
   paginate = TRUE,
   dims = NULL,
+  images = FALSE,
+  dpi = 120,
   ...
 )
 }
@@ -58,11 +60,17 @@ Default to \code{TRUE}.}
 \item{dims}{Optional. Plot dimensions. If \code{NULL} (default), dims are inferred
 based on the dimensions of the first plot in plots.}
 
+\item{images}{If \code{TRUE} and dims is \code{NULL}, the input plots are assumed to be
+plots created with \code{\link[magick:image_ggplot]{magick::image_ggplot()}} and dpi is used to infer
+dimensions.}
+
+\item{dpi}{If images is \code{TRUE} and dims is \code{NULL},}
+
 \item{...}{Additional parameters passed to \code{\link[=get_page_size]{get_page_size()}} if dims is a
 character object.}
 }
 \value{
-A \code{patchwork} object
+A \code{patchwork} object or a list of \code{patchwork} objects.
 }
 \description{
 Use patchwork to lay out a list of fixed aspect plots on a larger page

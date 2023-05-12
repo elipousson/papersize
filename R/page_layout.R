@@ -13,9 +13,13 @@
 #'   Default to `TRUE`.
 #' @param dims Optional. Plot dimensions. If `NULL` (default), dims are inferred
 #'   based on the dimensions of the first plot in plots.
+#' @param images If `TRUE` and dims is `NULL`, the input plots are assumed to be
+#'   plots created with [magick::image_ggplot()] and dpi is used to infer
+#'   dimensions.
+#' @param dpi If images is `TRUE` and dims is `NULL`,
 #' @param ... Additional parameters passed to [get_page_size()] if dims is a
 #'   character object.
-#' @return A `patchwork` object
+#' @return A `patchwork` object or a list of `patchwork` objects.
 #' @examples
 #' page_layout(
 #'   plots = plot_cards("Poker", 6),
@@ -38,6 +42,8 @@ page_layout <- function(plots = NULL,
                         design = NULL,
                         paginate = TRUE,
                         dims = NULL,
+                        images = FALSE,
+                        dpi = 120,
                         ...) {
   check_installed(c("ggplot2", "patchwork"))
 
@@ -55,8 +61,23 @@ page_layout <- function(plots = NULL,
         {.cls numeric} object with plot width and height."
       )
     }
-  } else if (is_gg(plots[[1]])) {
-    plot_data <- ggplot2::layer_data(plots[[1]])
+  } else {
+    dims_plot <- plots[[1]]
+
+    if(!images) {
+      plot_data <- ggplot2::layer_data(dims_plot)
+    } else if (images && has_annotation(dims_plot)) {
+      plot_data <- dims_plot$layers[[2]]$computed_geom_params
+      plot_data <- c(
+        "xmin" = plot_data$xmin,
+        "xmax" = plot_data$xmax,
+        "ymin" =  plot_data$ymin,
+        "ymax" = plot_data$ymax
+        )
+      stopifnot(is.numeric(dpi))
+      plot_data <- as.list(plot_data / dpi)
+    }
+
     dims <-
       c(
         "width" = abs(diff(c(plot_data$xmin, plot_data$xmax))),
@@ -64,13 +85,15 @@ page_layout <- function(plots = NULL,
       )
   }
 
-  page_cols <- as.numeric(page_dims %/% dims)
+  page_grid <- as.numeric(page_dims %/% dims)
+
+  stopifnot(all(page_grid > 0))
 
   if (is_null(plots)) {
     patch_layout <-
       patchwork::plot_layout(
-        ncol = page_cols[[1]],
-        nrow = page_cols[[2]],
+        ncol = page_grid[[1]],
+        nrow = page_grid[[2]],
         byrow = byrow,
         guides = guides,
         tag_level = tag_level,
@@ -84,8 +107,8 @@ page_layout <- function(plots = NULL,
     patch_layout <-
       patchwork::wrap_plots(
         plots,
-        ncol = page_cols[[1]],
-        nrow = page_cols[[2]],
+        ncol = page_grid[[1]],
+        nrow = page_grid[[2]],
         byrow = byrow,
         guides = guides,
         tag_level = tag_level,
@@ -95,7 +118,7 @@ page_layout <- function(plots = NULL,
     return(patch_layout)
   }
 
-  plot_spaces <- page_cols[[1]] * page_cols[[2]]
+  plot_spaces <- page_grid[[1]] * page_grid[[2]]
 
   plots <-
     split(
@@ -108,8 +131,8 @@ page_layout <- function(plots = NULL,
     function(x) {
       patchwork::wrap_plots(
         x,
-        ncol = page_cols[[1]],
-        nrow = page_cols[[2]],
+        ncol = page_grid[[1]],
+        nrow = page_grid[[2]],
         guides = guides,
         tag_level = tag_level,
         design = design
