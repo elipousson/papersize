@@ -25,11 +25,35 @@ utils::globalVariables(
 #  map map_chr
 
 # @staticimports pkg:stringstatic
-#  str_detect str_extract str_remove
+#  str_detect str_extract str_remove str_pad
 
 # @staticimports pkg:isstatic
 #  is_unit is_gg is_units is_sf is_sf_ext is_patchwork as_orientation
 #  str_add_fileext str_remove_fileext str_extract_fileext is_gg_list
+
+
+#' Get the names of geoms from a ggplot
+#'
+#' Adapted from `ggcheck::get_geoms()`
+#'
+#' @noRd
+get_geoms <- function(p) {
+  vapply(seq_along(p$layers),
+         function(x) {
+           class(p$layers[[x]]$geom)[1]
+         },
+         character(1)
+  )
+}
+
+#' Does this plot use a raster annotation?
+#'
+#' Adapted from ggcheck::get_geoms
+#'
+#' @noRd
+has_annotation <- function(p) {
+  any("GeomRasterAnn" %in% get_geoms(p))
+}
 
 #' @noRd
 #' @importFrom rlang caller_arg
