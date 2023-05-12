@@ -4,7 +4,6 @@ test_that("ggsave_ext works", {
     ggplot2::geom_bar()
 
   withr::with_tempdir({
-    cliExtras::set_cli_quiet(TRUE)
 
     ggsave_ext(
       plot = p,
@@ -36,7 +35,6 @@ test_that("ggsave_ext works", {
 
 test_that("ggsave_ext w/ magick works", {
   withr::with_tempdir({
-    cliExtras::set_cli_quiet(TRUE)
 
     skip_if_not_installed("magick")
     ggsave_ext(
@@ -58,8 +56,6 @@ test_that("map_ggsave_ext w/ gridExtra works", {
     ggplot2::geom_bar()
 
   withr::with_tempdir({
-    cliExtras::set_cli_quiet(TRUE)
-
     skip_if_not_installed("gridExtra")
     map_ggsave_ext(
       plot = list(p, p),
@@ -107,8 +103,6 @@ test_that("map_ggsave_ext warns and errors", {
   skip_if_not_installed("ggplot2")
   p <- ggplot2::ggplot(ggplot2::mpg, ggplot2::aes(class)) +
     ggplot2::geom_bar()
-
-  suppressMessages(cliExtras::set_cli_quiet(FALSE))
 
   withr::with_tempdir({
     expect_error(
