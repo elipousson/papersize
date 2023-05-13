@@ -184,6 +184,10 @@ date/time prefix; defaults to <code>NULL</code>.</p></dd>
 file extension.</p></dd>
 
 
+<dt>filetype</dt>
+<dd><p>File type (used if fileext is <code>NULL</code>).</p></dd>
+
+
 <dt>path</dt>
 <dd><p>Path of the directory to save plot to: <code>path</code> and <code>filename</code>
 are combined to create the fully qualified file name. Defaults to the
@@ -294,7 +298,7 @@ Default: <code>NULL</code></p></dd>
 <dd><p>Image format, "post", "story", or "cover", Default: <code>NULL</code></p></dd>
 
 
-<dt>single_file</dt>
+<dt>single_file, onefile</dt>
 <dd><p>If <code>TRUE</code>, use <code><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html" class="external-link">gridExtra::arrangeGrob()</a></code> to create an
 arrangelist class object that <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggplot2::ggsave()</a></code> can save as a single
 multi-page file. Note: this does not work with plots modified with

@@ -62,10 +62,11 @@
 <span>  tag_level <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  design <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  paginate <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  ncol <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  nrow <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  dims <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  images <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  dpi <span class="op">=</span> <span class="fl">120</span>,</span>
-<span>  <span class="va">...</span>,</span>
 <span>  call <span class="op">=</span> <span class="fu">caller_env</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -124,24 +125,32 @@ number of plots is greater than the number of spaces in the plot layout.
 Default to <code>TRUE</code>.</p></dd>
 
 
+<dt>ncol, nrow</dt>
+<dd><p>The dimensions of the grid to create.  If both are <code>NULL</code>,
+dims will be used or dims will be determined based on the plot dimensions.</p></dd>
+
+
 <dt>dims</dt>
-<dd><p>Optional. Plot dimensions. If <code>NULL</code> (default), dims are inferred
-based on the dimensions of the first plot in plots.</p></dd>
+<dd><p>Optional. Plot dimensions. Ignored if ncol and nrow are supplied.
+Otherwise, if <code>NULL</code> (default), dims are inferred based on the dimensions
+of the first plot in plots.</p></dd>
 
 
 <dt>images</dt>
-<dd><p>If <code>TRUE</code> and dims is <code>NULL</code>, the input plots are assumed to be
-plots created with <code><a href="https://docs.ropensci.org/magick/reference/image_ggplot.html" class="external-link">magick::image_ggplot()</a></code> and dpi is used to infer
-dimensions.</p></dd>
+<dd><p>Not yet implemented. If <code>TRUE</code> and dims is <code>NULL</code>, the input
+plots are assumed to be plots created with <code><a href="https://docs.ropensci.org/magick/reference/image_ggplot.html" class="external-link">magick::image_ggplot()</a></code> and dpi
+is used to infer dimensions.</p></dd>
 
 
 <dt>dpi</dt>
-<dd><p>If images is <code>TRUE</code> and dims is <code>NULL</code>,</p></dd>
+<dd><p>Not yet implemented. Resolution.</p></dd>
 
 
-<dt>...</dt>
-<dd><p>Additional parameters passed to <code><a href="get_page_size.html">get_page_size()</a></code> if dims is a
-character object.</p></dd>
+<dt>call</dt>
+<dd><p>The execution environment of a currently
+running function, e.g. <code>caller_env()</code>. The function will be
+mentioned in error messages as the source of the error. See the
+<code>call</code> argument of <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">abort()</a></code> for more information.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -162,6 +171,7 @@ character object.</p></dd>
 <span class="r-in"><span>  plots <span class="op">=</span> <span class="fu"><a href="plot_cards.html">plot_cards</a></span><span class="op">(</span><span class="st">"Poker"</span>, <span class="fl">6</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  page <span class="op">=</span> <span class="st">"letter"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using `dims` from first plot in `plots`.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`1`</span>
 <span class="r-plt img"><img src="page_layout-1.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
