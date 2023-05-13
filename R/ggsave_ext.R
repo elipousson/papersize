@@ -35,6 +35,7 @@
 #' @inheritParams filenamr::write_exif
 #' @param preview If `TRUE`, open saved file in default system application.
 #'   Based on [ggpreview()] from tjmisc package.
+#' @param filetype File type (used if fileext is `NULL`).
 #' @inheritDotParams ggplot2::ggsave -width -height -units -bg
 #' @seealso
 #'  [ggplot2::ggsave()]
@@ -304,7 +305,7 @@ ggsave_social <- function(plot = ggplot2::last_plot(),
 
 #' @name map_ggsave_ext
 #' @rdname ggsave_ext
-#' @param single_file If `TRUE`, use [gridExtra::arrangeGrob()] to create an
+#' @param single_file,onefile If `TRUE`, use [gridExtra::arrangeGrob()] to create an
 #'   arrangelist class object that [ggplot2::ggsave()] can save as a single
 #'   multi-page file. Note: this does not work with plots modified with
 #'   patchwork including inset maps created with the
