@@ -6,15 +6,19 @@
 \usage{
 make_contact_sheets(
   images,
-  dims,
-  image_fileext = NULL,
-  tags = NULL,
-  captions = "file_name",
+  dims = NULL,
+  ncol = NULL,
+  nrow = NULL,
+  captions = "{file_name}\\n{date_created}",
   caption_size = 12,
   caption_position = "panel",
   image_margin = margins(0.1, unit = "in"),
   page = "letter",
   orientation = "portrait",
+  image_max = NULL,
+  image_fileext = NULL,
+  tags = NULL,
+  tz = NULL,
   save = FALSE,
   filename = NULL,
   ...
@@ -25,15 +29,14 @@ make_contact_sheets(
 
 \item{dims}{Image dimensions in same dimensions as page. Required.}
 
-\item{image_fileext}{Passed to fileext parameter of \code{\link[filenamr:read_exif]{filenamr::read_exif()}},
-Default: \code{NULL}}
+\item{ncol, nrow}{The dimensions of the grid to create.  If both are \code{NULL},
+dims will be used or dims will be determined based on the plot dimensions.}
 
-\item{tags}{Optional list of EXIF tags to read from files. Must include GPS
-tags if to create an \code{sf} object based on the resulting data.frame object.}
-
-\item{captions}{Template for caption, passed to \code{\link[glue:glue]{glue::glue()}} for execution
-within function environment. Default: '{images$file_name}
-'{images$create_date}'}
+\item{captions}{Template for caption, passed to \code{\link[glue:glue]{glue::glue_data()}} using the
+images data.frame as .x. Note that this template may vary if you are using
+a custom tags parameter or modify the "filenamr.exif_xwalk" option. See
+\code{\link[filenamr:read_exif]{filenamr::read_exif()}} for more details. Default:
+"{file_name}\n{date_created}"}
 
 \item{caption_size}{Caption size, passed to \code{\link[ggplot2:element]{ggplot2::element_text()}} for plot.caption
 for theme, Default: 12}
@@ -48,6 +51,18 @@ Optional if width and height are both provided, Default: \code{NULL}}
 
 \item{orientation}{Paper orientation, Optional if width and height are both
 provided, Default: 'landscape'}
+
+\item{image_max}{Maximum number of images to use for contact sheets.}
+
+\item{image_fileext}{Passed to fileext parameter of \code{\link[filenamr:read_exif]{filenamr::read_exif()}},
+Default: \code{NULL}}
+
+\item{tags}{List of EXIF tags to read from files. If
+\code{NULL} (default), set to option "filenamr.exif_tags" or default
+\code{default_exif_tags}.}
+
+\item{tz}{Time zone to pass to \code{\link[lubridate:ymd_hms]{lubridate::ymd_hms()}} if format_exif is
+\code{TRUE}. Typically set to \code{Sys.timezone()} to convert date/time columns.}
 
 \item{save}{If \code{TRUE}, save contact sheet to a file. filename may be required
 if save is \code{TRUE}. Default: \code{FALSE}}

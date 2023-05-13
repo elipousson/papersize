@@ -8,9 +8,11 @@
 #' @param image_fileext Passed to fileext parameter of [filenamr::read_exif()],
 #'   Default: `NULL`
 #' @inheritParams filenamr::read_exif
-#' @param captions Template for caption, passed to [glue::glue()] for execution
-#'   within function environment. Default: '{images$file_name}
-#'   '{images$create_date}'
+#' @param captions Template for caption, passed to [glue::glue_data()] using the
+#'   images data.frame as .x. Note that this template may vary if you are using
+#'   a custom tags parameter or modify the "filenamr.exif_xwalk" option. See
+#'   [filenamr::read_exif()] for more details. Default:
+#'   "{file_name}\n{date_created}"
 #' @param caption_size Caption size, passed to [ggplot2::element_text()] for plot.caption
 #'   for theme, Default: 12
 #' @param caption_position Caption position, passed to plot.caption.position for
@@ -18,6 +20,7 @@
 #' @param image_margin Image margin passed Default: `margins(0.1, unit = "in")`
 #' @inheritParams page_layout
 #' @inheritParams get_page_size
+#' @param image_max Maximum number of images to use for contact sheets.
 #' @param save If `TRUE`, save contact sheet to a file. filename may be required
 #'   if save is `TRUE`. Default: `FALSE`
 #' @inheritParams map_ggsave_ext
@@ -35,27 +38,42 @@
 #' @importFrom glue glue
 #' @importFrom cli cli_progress_step
 make_contact_sheets <- function(images,
-                                dims,
-                                image_fileext = NULL,
-                                tags = NULL,
-                                captions = "file_name",
+                                dims = NULL,
+                                ncol = NULL,
+                                nrow = NULL,
+                                captions = "{file_name}\n{date_created}",
                                 caption_size = 12,
                                 caption_position = "panel",
                                 image_margin = margins(0.1, unit = "in"),
                                 page = "letter",
                                 orientation = "portrait",
+                                image_max = NULL,
+                                image_fileext = NULL,
+                                tags = NULL,
+                                tz = NULL,
                                 save = FALSE,
                                 filename = NULL,
                                 ...) {
-  if (is.character(images)) {
+  if (is_character(images)) {
     check_installed("filenamr")
     cli::cli_progress_step("Reading image EXIF data")
-    images <- filenamr::read_exif(path = images, fileext = image_fileext, tags = tags)
+    images <-
+      filenamr::read_exif(
+        path = images,
+        fileext = image_fileext,
+        tags = tags,
+        tz = tz
+      )
   }
 
-  if (is_string(captions) && has_name(images, captions)) {
-    captions <- images[[captions]]
+  check_data_frame(images)
+
+  if (!is_null(image_max)) {
+    check_number_whole(image_max)
+    images <- images[seq.int(image_max), ]
   }
+
+  captions <- glue::glue_data(images, captions)
 
   # stopifnot(all(has_name(images, c("img_width", "img_height"))))
   # dims <- dims %||% ((max(images[["img_width"]]) / min(images[["img_height"]])) / dpi)
@@ -95,13 +113,15 @@ make_contact_sheets <- function(images,
       }
     )
 
-  cli::cli_progress_step("Creating contact sheets plots")
+  cli::cli_progress_step("Creating contact sheet plots")
 
   sheets <-
     page_layout(
       plots = plots,
       page = page,
       dims = dims,
+      ncol = ncol,
+      nrow = nrow,
       images = TRUE
     )
 

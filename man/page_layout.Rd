@@ -16,10 +16,11 @@ page_layout(
   tag_level = NULL,
   design = NULL,
   paginate = TRUE,
+  ncol = NULL,
+  nrow = NULL,
   dims = NULL,
   images = FALSE,
   dpi = 120,
-  ...,
   call = caller_env()
 )
 }
@@ -58,17 +59,18 @@ See the examples for further information on use.}
 number of plots is greater than the number of spaces in the plot layout.
 Default to \code{TRUE}.}
 
-\item{dims}{Optional. Plot dimensions. If \code{NULL} (default), dims are inferred
-based on the dimensions of the first plot in plots.}
+\item{ncol, nrow}{The dimensions of the grid to create.  If both are \code{NULL},
+dims will be used or dims will be determined based on the plot dimensions.}
 
-\item{images}{If \code{TRUE} and dims is \code{NULL}, the input plots are assumed to be
-plots created with \code{\link[magick:image_ggplot]{magick::image_ggplot()}} and dpi is used to infer
-dimensions.}
+\item{dims}{Optional. Plot dimensions. Ignored if ncol and nrow are supplied.
+Otherwise, if \code{NULL} (default), dims are inferred based on the dimensions
+of the first plot in plots.}
 
-\item{dpi}{If images is \code{TRUE} and dims is \code{NULL},}
+\item{images}{Not yet implemented. If \code{TRUE} and dims is \code{NULL}, the input
+plots are assumed to be plots created with \code{\link[magick:image_ggplot]{magick::image_ggplot()}} and dpi
+is used to infer dimensions.}
 
-\item{...}{Additional parameters passed to \code{\link[=get_page_size]{get_page_size()}} if dims is a
-character object.}
+\item{dpi}{Not yet implemented. Resolution.}
 }
 \value{
 A \code{patchwork} object or a list of \code{patchwork} objects.
