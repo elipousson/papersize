@@ -100,6 +100,8 @@ date/time prefix; defaults to \code{NULL}.}
 \item{fileext}{File type or extension. Optional if filename or path include a
 file extension.}
 
+\item{filetype}{File type (used if fileext is \code{NULL}).}
+
 \item{path}{Path of the directory to save plot to: \code{path} and \code{filename}
 are combined to create the fully qualified file name. Defaults to the
 working directory.}
@@ -166,7 +168,7 @@ Default: \code{NULL}}
 
 \item{format}{Image format, "post", "story", or "cover", Default: \code{NULL}}
 
-\item{single_file}{If \code{TRUE}, use \code{\link[gridExtra:arrangeGrob]{gridExtra::arrangeGrob()}} to create an
+\item{single_file, onefile}{If \code{TRUE}, use \code{\link[gridExtra:arrangeGrob]{gridExtra::arrangeGrob()}} to create an
 arrangelist class object that \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} can save as a single
 multi-page file. Note: this does not work with plots modified with
 patchwork including inset maps created with the

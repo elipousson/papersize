@@ -71,6 +71,11 @@ plots are assumed to be plots created with \code{\link[magick:image_ggplot]{magi
 is used to infer dimensions.}
 
 \item{dpi}{Not yet implemented. Resolution.}
+
+\item{call}{The execution environment of a currently
+running function, e.g. \code{caller_env()}. The function will be
+mentioned in error messages as the source of the error. See the
+\code{call} argument of \code{\link[rlang:abort]{abort()}} for more information.}
 }
 \value{
 A \code{patchwork} object or a list of \code{patchwork} objects.
