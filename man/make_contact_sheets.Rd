@@ -38,8 +38,8 @@ a custom tags parameter or modify the "filenamr.exif_xwalk" option. See
 \code{\link[filenamr:read_exif]{filenamr::read_exif()}} for more details. Default:
 "{file_name}\n{date_created}"}
 
-\item{caption_size}{Caption size, passed to \code{\link[ggplot2:element]{ggplot2::element_text()}} for plot.caption
-for theme, Default: 12}
+\item{caption_size}{Caption size, passed to \code{\link[ggplot2:element]{ggplot2::element_text()}} for
+plot.caption for theme, Default: 12}
 
 \item{caption_position}{Caption position, passed to plot.caption.position for
 theme, Default: 'panel'}

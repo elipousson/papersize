@@ -38,11 +38,12 @@ utils::globalVariables(
 #'
 #' @noRd
 get_geoms <- function(p) {
-  vapply(seq_along(p$layers),
-         function(x) {
-           class(p$layers[[x]]$geom)[1]
-         },
-         character(1)
+  vapply(
+    seq_along(p$layers),
+    function(x) {
+      class(p$layers[[x]]$geom)[1]
+    },
+    character(1)
   )
 }
 

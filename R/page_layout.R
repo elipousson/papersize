@@ -51,58 +51,54 @@ page_layout <- function(plots = NULL,
                         call = caller_env()) {
   check_installed(c("ggplot2", "patchwork"), call = call)
 
-  page_grid <-
-    set_page_grid(
-      plots = plots,
-      page = page,
-      width = width,
-      height = height,
-      orientation = orientation,
-      dims = dims,
-      ncol = ncol,
-      nrow = nrow,
-      images = images,
-      dpi = dpi
-    )
+  page_grid <- set_page_grid(
+    plots = plots,
+    page = page,
+    width = width,
+    height = height,
+    orientation = orientation,
+    dims = dims,
+    ncol = ncol,
+    nrow = nrow,
+    images = images,
+    dpi = dpi
+  )
 
   stopifnot(all(page_grid > 0))
 
   if (is_null(plots)) {
-    patch_layout <-
-      patchwork::plot_layout(
-        ncol = page_grid[[1]],
-        nrow = page_grid[[2]],
-        byrow = byrow,
-        guides = guides,
-        tag_level = tag_level,
-        design = design
-      )
+    patch_layout <- patchwork::plot_layout(
+      ncol = page_grid[[1]],
+      nrow = page_grid[[2]],
+      byrow = byrow,
+      guides = guides,
+      tag_level = tag_level,
+      design = design
+    )
 
     return(patch_layout)
   }
 
   if (!paginate) {
-    patch_layout <-
-      patchwork::wrap_plots(
-        plots,
-        ncol = page_grid[[1]],
-        nrow = page_grid[[2]],
-        byrow = byrow,
-        guides = guides,
-        tag_level = tag_level,
-        design = design
-      )
+    patch_layout <- patchwork::wrap_plots(
+      plots,
+      ncol = page_grid[[1]],
+      nrow = page_grid[[2]],
+      byrow = byrow,
+      guides = guides,
+      tag_level = tag_level,
+      design = design
+    )
 
     return(patch_layout)
   }
 
   plot_spaces <- page_grid[[1]] * page_grid[[2]]
 
-  plots <-
-    split(
-      plots,
-      ceiling(seq_along(plots) / plot_spaces)
-    )
+  plots <- split(
+    plots,
+    ceiling(seq_along(plots) / plot_spaces)
+  )
 
   map(
     plots,
@@ -188,11 +184,10 @@ set_page_grid <- function(plots = NULL,
     call = call
   )
 
-  dims <-
-    c(
-      "width" = abs(diff(c(plot_data$xmin, plot_data$xmax))),
-      "height" = abs(diff(c(plot_data$ymin, plot_data$ymax)))
-    )
+  dims <- c(
+    "width" = abs(diff(c(plot_data$xmin, plot_data$xmax))),
+    "height" = abs(diff(c(plot_data$ymin, plot_data$ymax)))
+  )
 
   as.numeric(page_dims %/% dims)
 }

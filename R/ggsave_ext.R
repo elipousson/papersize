@@ -204,12 +204,11 @@ set_ggsave_dims <- function(paper = NULL,
   if (!is_null(paper)) {
     paper <- get_page_size(paper, orientation = orientation)
 
-    dims <-
-      list(
-        "width" = paper[[cols[1]]],
-        "height" = paper[[cols[2]]],
-        "units" = paper[[units_col]]
-      )
+    dims <- list(
+      "width" = paper[[cols[1]]],
+      "height" = paper[[cols[2]]],
+      "units" = paper[[units_col]]
+    )
 
     return(dims)
   }

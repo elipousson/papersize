@@ -7,7 +7,6 @@ seq_number <- function(x,
                        pad = NULL,
                        side = "left",
                        base = 26) {
-
   num_style <- set_number_style(start, num_style)
 
   num <- set_start_number(seq_along(x), start, num_style)
@@ -128,7 +127,7 @@ int_to_alpha <- function(x,
       NA_character_,
       suffix, base, dict, strict,
       USE.NAMES = FALSE
-      )
+    )
 
     return(x)
   }

@@ -13,8 +13,8 @@
 #'   a custom tags parameter or modify the "filenamr.exif_xwalk" option. See
 #'   [filenamr::read_exif()] for more details. Default:
 #'   "{file_name}\n{date_created}"
-#' @param caption_size Caption size, passed to [ggplot2::element_text()] for plot.caption
-#'   for theme, Default: 12
+#' @param caption_size Caption size, passed to [ggplot2::element_text()] for
+#'   plot.caption for theme, Default: 12
 #' @param caption_position Caption position, passed to plot.caption.position for
 #'   theme, Default: 'panel'
 #' @param image_margin Image margin passed Default: `margins(0.1, unit = "in")`
@@ -57,13 +57,12 @@ make_contact_sheets <- function(images,
   if (is_character(images)) {
     check_installed("filenamr")
     cli::cli_progress_step("Reading image EXIF data")
-    images <-
-      filenamr::read_exif(
-        path = images,
-        fileext = image_fileext,
-        tags = tags,
-        tz = tz
-      )
+    images <- filenamr::read_exif(
+      path = images,
+      fileext = image_fileext,
+      tags = tags,
+      tz = tz
+    )
   }
 
   check_data_frame(images)
@@ -89,41 +88,53 @@ make_contact_sheets <- function(images,
     }
   )
 
-  image_theme <-
-    ggplot2::theme(
-      plot.caption = ggplot2::element_text(size = caption_size),
-      plot.caption.position = caption_position,
-      plot.margin = image_margin
-    )
+  image_theme <- ggplot2::theme(
+    plot.caption = ggplot2::element_text(size = caption_size),
+    plot.caption.position = caption_position,
+    plot.margin = image_margin
+  )
 
-  cli::cli_progress_step("Creating plots from images")
+  n_plots <- length(magick_images)
 
-  plots <-
-    map2(
-      magick_images,
-      captions,
-      function(x, y) {
-        x <- magick::image_ggplot(x)
+  cli::cli_progress_step("Creating plots from images", spinner = TRUE)
 
-        x +
-          ggplot2::labs(
-            caption = y
-          ) +
-          image_theme
-      }
-    )
+  plots <- vctrs::vec_init(list(NULL), n_plots)
+
+  for (i in seq_along(plots)) {
+    cli::cli_progress_update()
+
+    x <- magick::image_ggplot(magick_images[[i]])
+
+    cli::cli_progress_update()
+
+    plots[[i]] <- x +
+      ggplot2::labs(
+        caption = captions[[i]]
+      ) +
+      image_theme
+
+    cli::cli_progress_update()
+  }
+
+  # plots <-
+  #   map2(
+  #     magick_images,
+  #     n_plots,
+  #     function(x, y) {
+  #
+  #     }
+  #   )
 
   cli::cli_progress_step("Creating contact sheet plots")
 
-  sheets <-
-    page_layout(
-      plots = plots,
-      page = page,
-      dims = dims,
-      ncol = ncol,
-      nrow = nrow,
-      images = TRUE
-    )
+  sheets <- page_layout(
+    plots = plots,
+    page = page,
+    dims = dims,
+    ncol = ncol,
+    nrow = nrow,
+    images = TRUE
+  )
 
   if (!save) {
     return(sheets)

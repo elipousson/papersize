@@ -78,22 +78,20 @@ make_page_size <- function(width = NULL,
   height <- height %||% (width / asp)
   units <- as_unit_type(units, valid_units = valid_units)
 
-  pg <-
-    rlang::set_names(
-      data.frame(
-        "width" = width,
-        "height" = height,
-        "units" = units
-      ),
-      c(cols, get_units_col())
-    )
+  pg <- rlang::set_names(
+    data.frame(
+      "width" = width,
+      "height" = height,
+      "units" = units
+    ),
+    c(cols, get_units_col())
+  )
 
   if (!is_null(name)) {
-    pg <-
-      cbind(
-        data.frame("name" = name),
-        pg
-      )
+    pg <- cbind(
+      data.frame("name" = name),
+      pg
+    )
   }
 
   pg <- set_page_orientation(pg, cols = cols, orientation = orientation)
