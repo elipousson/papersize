@@ -79,18 +79,22 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
 
   cli_quiet(quiet)
 
-  dims <-
-    set_ggsave_dims(
-      paper = paper,
-      orientation = orientation,
-      width = width,
-      height = height,
-      asp = asp,
-      units = units,
-      limitsize = limitsize
-    )
+  dims <- set_ggsave_dims(
+    paper = paper,
+    orientation = orientation,
+    width = width,
+    height = height,
+    asp = asp,
+    units = units,
+    limitsize = limitsize
+  )
 
-  if (!is_null(fileext) | !is_null(filename)) {
+  if (has_fileext(name) && is_null(filename)) {
+    filename <- name
+    name <- NULL
+  }
+
+  if (!is_null(fileext) || !is_null(filename)) {
     fileext <- fileext %||% str_extract_fileext(filename)
 
     if (!is_null(filename)) {
@@ -98,27 +102,30 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
     }
   }
 
-  if ((fileext == "pdf") & isTRUE(capabilities()[["cairo"]])) {
+  if (identical(fileext, "pdf") && isTRUE(capabilities()[["cairo"]])) {
     device <- device %||% grDevices::cairo_pdf
+    # FIXME: This does the same thing regardless of whether plot is a patchwork
+    # object. Is that correct?
     if (!is_patchwork(plot)) {
-      params$symbolfamily <- params$symbolfamily %||% plot[["theme"]][["text"]][["family"]]
+      params$symbolfamily <- params$symbolfamily %||%
+        plot[["theme"]][["text"]][["family"]]
     } else {
-      params$symbolfamily <- params$symbolfamily %||% plot$theme$text$family
+      params$symbolfamily <- params$symbolfamily %||%
+        plot[["theme"]][["text"]][["family"]]
     }
   }
 
   check_installed("janitor")
 
-  filename <-
-    filenamr::make_filename(
-      name = name,
-      label = label,
-      filename = filename,
-      fileext = fileext,
-      path = path,
-      prefix = prefix,
-      postfix = postfix
-    )
+  filename <- filenamr::make_filename(
+    name = name,
+    label = label,
+    filename = filename,
+    fileext = fileext,
+    path = path,
+    prefix = prefix,
+    postfix = postfix
+  )
 
   filenamr::check_file_overwrite(
     filename = filename,
@@ -150,9 +157,7 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
     !!!params
   )
 
-  cli::cli_alert_success(
-    c("v" = "Saving {.path {filename}}.")
-  )
+  cli::cli_alert_success("Saving {.path {filename}}")
 
   if (exif) {
     filenamr::write_exif(
@@ -176,13 +181,12 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
 #' Units that work wth ggsave
 #'
 #' @noRd
-gg_units <-
-  list(
-    "in" = c("inch", "inches"),
-    "cm" = c("centimeter", "centimetre", "centimeters", "centimetres"),
-    "mm" = c("millimeter", "millimetre", "millimeters", "millimetres"),
-    "px" = c("pixel", "pixels")
-  )
+gg_units <- list(
+  "in" = c("inch", "inches"),
+  "cm" = c("centimeter", "centimetre", "centimeters", "centimetres"),
+  "mm" = c("millimeter", "millimetre", "millimeters", "millimetres"),
+  "px" = c("pixel", "pixels")
+)
 
 #' Set the dimensions of a plot for ggsave_ext()
 #'
@@ -210,26 +214,23 @@ set_ggsave_dims <- function(paper = NULL,
     return(dims)
   }
 
-  page <-
-    make_page_size(
-      width = width,
-      height = height,
-      asp = asp,
-      units = units,
-      valid_units = names(gg_units)
-    )
+  page <- make_page_size(
+    width = width,
+    height = height,
+    asp = asp,
+    units = units,
+    valid_units = names(gg_units)
+  )
 
-  page[[units_col]] <-
-    replace_with_gg_units(
-      page[[units_col]]
-    )
+  page[[units_col]] <- replace_with_gg_units(
+    page[[units_col]]
+  )
 
-  dims <-
-    list(
-      "width" = page[[cols[1]]],
-      "height" = page[[cols[2]]],
-      "units" = page[[units_col]]
-    )
+  dims <- list(
+    "width" = page[[cols[1]]],
+    "height" = page[[cols[2]]],
+    "units" = page[[units_col]]
+  )
 
   if (any((c(dims[["width"]], dims[["height"]]) > 50)) && (units == "in") && limitsize) {
     cli::cli_alert_warning(
@@ -276,26 +277,24 @@ ggsave_social <- function(plot = ggplot2::last_plot(),
                           ...) {
   fileext <- fileext %||% filetype
 
-  image_size <-
-    get_social_size(
-      name = image,
-      platform = platform,
-      format = format,
-      orientation = orientation
-    )
+  image_size <- get_social_size(
+    name = image,
+    platform = platform,
+    format = format,
+    orientation = orientation
+  )
 
-  params <-
-    modify_fn_fmls(
-      params = rlang::list2(...),
-      fn = ggsave_ext,
-      plot = plot,
-      width = image_size$width,
-      height = image_size$height,
-      name = name,
-      filename = filename,
-      fileext = fileext,
-      units = units
-    )
+  params <- modify_fn_fmls(
+    params = rlang::list2(...),
+    fn = ggsave_ext,
+    plot = plot,
+    width = image_size$width,
+    height = image_size$height,
+    name = name,
+    filename = filename,
+    fileext = fileext,
+    units = units
+  )
 
   rlang::exec(
     ggsave_ext,
@@ -347,28 +346,26 @@ map_ggsave_ext <- function(plot,
 
   check_installed("janitor")
 
-  filename <-
-    filenamr::make_filename(
-      name = name,
-      label = label,
-      filename = filename,
-      fileext = fileext,
-      path = NULL,
-      prefix = prefix
-    )
+  filename <- filenamr::make_filename(
+    name = name,
+    label = label,
+    filename = filename,
+    fileext = fileext,
+    path = NULL,
+    prefix = prefix
+  )
 
   is_patchwork_plot <- is_patchwork(plot) || is_patchwork(plot[[1]])
 
-  if ((single_file | onefile) & !is_patchwork_plot) {
+  if ((single_file || onefile) && !is_patchwork_plot) {
     check_installed("gridExtra")
 
-    plot <-
-      map(
-        seq(plot),
-        function(x) {
-          gridExtra::arrangeGrob(plot[[x]])
-        }
-      )
+    plot <- map(
+      seq(plot),
+      function(x) {
+        gridExtra::arrangeGrob(plot[[x]])
+      }
+    )
 
     class(plot) <- c("arrangelist", class(plot))
 

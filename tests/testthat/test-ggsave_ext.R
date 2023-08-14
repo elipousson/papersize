@@ -4,7 +4,6 @@ test_that("ggsave_ext works", {
     ggplot2::geom_bar()
 
   withr::with_tempdir({
-
     ggsave_ext(
       plot = p,
       filename = "p_asp.png",
@@ -35,7 +34,6 @@ test_that("ggsave_ext works", {
 
 test_that("ggsave_ext w/ magick works", {
   withr::with_tempdir({
-
     skip_if_not_installed("magick")
     ggsave_ext(
       plot = magick::logo,
