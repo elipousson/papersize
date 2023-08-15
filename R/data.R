@@ -5,7 +5,7 @@
 #' [visioguy/PaperSizes](https://github.com/visioguy/PaperSizes/) repo, [Adobe
 #' UK guide to photo
 #' sizes](https://www.adobe.com/uk/creativecloud/photography/discover/standard-photo-sizes.html)
-#' and other sources. Data is identical to data included with sfext package.
+#' and other sources. Data is identical to data included with `{sfext}` package.
 #'
 #' @format A data frame with 125 rows and 9 variables:
 #' \describe{
@@ -25,7 +25,7 @@
 #' Standard card sizes
 #'
 #' Reference table of common playing card sizes for [get_card()]. Data is a
-#' subset of `paper_sizes` which is to data included with sfext package.
+#' subset of `paper_sizes` which is also included with `{sfext}` package.
 #'
 #' @format A data frame with 5 rows and 6 variables:
 #' \describe{

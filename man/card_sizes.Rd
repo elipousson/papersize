@@ -20,6 +20,6 @@ card_sizes
 }
 \description{
 Reference table of common playing card sizes for \code{\link[=get_card]{get_card()}}. Data is a
-subset of \code{paper_sizes} which is to data included with sfext package.
+subset of \code{paper_sizes} which is also included with \code{{sfext}} package.
 }
 \keyword{datasets}
