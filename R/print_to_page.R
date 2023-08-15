@@ -1,12 +1,13 @@
 #' Explicitly draw plot using dimensions from page data.frame or list
 #'
+#' `r lifecycle::badge('experimental')`
 #' @param plot Plot to display
 #' @inheritParams ggplot2::print.ggplot
 #' @inheritParams page_to_viewport
 #' @inheritDotParams page_to_viewport
 #' @examples
 #' \dontrun{
-#' if (interactive() & is_installed("ggplot2")) {
+#' if (interactive() && is_installed("ggplot2")) {
 #'   library(ggplot2)
 #'
 #'   plot <-
@@ -34,19 +35,26 @@ print_to_page <- function(plot, page, newpage = TRUE, vp = NULL, ...) {
 
 #' @rdname print_to_page
 #' @name print_to_page_layout
-#' @param layout Passed to page_to_viewport with layout_position as
+#' @param layout Passed to [page_to_viewport()] with layout_position as
 #'   layout.pos.row and layout.pos.col if provided. Defaults to `NULL` where
 #'   layout is defined by page_to_layout using ncol, nrow, page and any
-#'   additional parameters passed to ....
+#'   additional parameters passed to `...`
+#' @param row_position,col_position Row and column position. If nrow is smaller
+#'   than row_position or ncol is smaller than col_position, row_position is
+#'   used for nrow or col_position is used for ncol instead.
+#' @param row_height,col_width Row height and column width.
+#' @inheritParams grid::vpTree
 #' @inheritParams page_to_layout
+#' @inheritParams page_to_viewport
+#' @inheritParams ggplot2::ggsave
 #' @inheritDotParams page_to_layout
 #' @export
 print_to_page_layout <- function(plot,
                                  page,
                                  row_position = 1,
                                  col_position = 1,
-                                 col_width = NULL,
                                  row_height = NULL,
+                                 col_width = NULL,
                                  nrow = 1,
                                  ncol = 1,
                                  layout = NULL,
@@ -64,15 +72,13 @@ print_to_page_layout <- function(plot,
     ...
   )
 
-  parent <-
-    parent %||%
+  parent <- parent %||%
     page_to_viewport(
       page,
       layout = layout
     )
 
-  children <-
-    children %||% grid::vpList(
+  children <- children %||% grid::vpList(
       grid::viewport(
         name = paste0(paste0("Row", row_position), paste0("Col", col_position)),
         layout.pos.row = row_position,
@@ -80,8 +86,7 @@ print_to_page_layout <- function(plot,
       )
     )
 
-  page_vp <-
-    grid::vpTree(
+  page_vp <- grid::vpTree(
       parent = parent,
       children = children
     )
@@ -135,11 +140,11 @@ check_ggplot <- function(plot, class = NULL) {
 
   if (!is_null(class)) {
     message <- "{.arg plot} must be a {.cls ggplot} object or an object with class {.cls {class}}."
-    inherits_class <- rlang::inherits_any(plot, class)
+    inherits_class <- inherits_any(plot, class)
   }
 
   cli_abort_ifnot(
     message = message,
-    condition = ggplot2::is.ggplot(plot) | inherits_class
+    condition = ggplot2::is.ggplot(plot) || inherits_class
   )
 }

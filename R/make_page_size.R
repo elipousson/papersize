@@ -59,7 +59,7 @@ make_page_size <- function(width = NULL,
       asp <- asp %||% as.numeric(dims[[get_asp_col()]])
     }
 
-    if (missing(units) & has_name(dims, get_units_col())) {
+    if (missing(units) && has_name(dims, get_units_col())) {
       units <- dims[[get_units_col()]]
     }
   }
@@ -78,7 +78,7 @@ make_page_size <- function(width = NULL,
   height <- height %||% (width / asp)
   units <- as_unit_type(units, valid_units = valid_units)
 
-  pg <- rlang::set_names(
+  pg <- set_names(
     data.frame(
       "width" = width,
       "height" = height,

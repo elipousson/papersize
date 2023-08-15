@@ -33,15 +33,15 @@ convert_dist_units <- function(dist,
     {.cls units} object." = any(c(is_bare_numeric(dist), is_units(dist)))
   )
 
-  if (!is_null(from) & !is_character(from)) {
+  if (!is_null(from) && !is_character(from)) {
     from <- get_dist_units(from)
   }
 
-  if (!is_null(to) & !is_character(to)) {
+  if (!is_null(to) && !is_character(to)) {
     to <- get_dist_units(to)
   }
 
-  if (is_units(dist) | is_unit(dist)) {
+  if (is_units(dist) || is_unit(dist)) {
     dist_from <- get_dist_units(dist)
 
     if (!is_null(from)) {
@@ -115,7 +115,7 @@ try_as_units <- function(x, arg = caller_arg(x), call = parent.frame()) {
   rlang::try_fetch(
     units::as_units(x),
     error = function(cnd) {
-      cli::cli_abort(
+      cli_abort(
         "{.arg {arg}} must be a valid unit symbol or name.",
         parent = cnd,
         call = call

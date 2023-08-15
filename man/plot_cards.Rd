@@ -63,7 +63,7 @@ Make a plot of cards.
 \examples{
 #'
 \dontrun{
-if (interactive() & is_installed("ggplot2")) {
+if (interactive() && is_installed("ggplot2")) {
   plot_cards("Tarot", n = 2, number = TRUE)[[2]]
 
   plot_cards("Poker", n = 1, number = TRUE, text = "♡️")

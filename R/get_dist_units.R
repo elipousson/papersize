@@ -51,7 +51,7 @@ get_dist_units <- function(x,
 
   if (is_character(x)) {
     x <- underscore(x)
-    x <- rlang::arg_match(
+    x <- arg_match(
       arg = x,
       values = c(dist_unit_options, area_unit_options),
       error_arg = arg,
@@ -83,7 +83,7 @@ get_dist_units <- function(x,
           error_call = call
         ),
         error = function(cnd) {
-          cli::cli_abort(
+          cli_abort(
             c("i" = "{.arg {arg}} is a {.cls unit} object and the provided
             {.val {unit_type}} unit type can't be used."),
             parent = cnd,
@@ -96,7 +96,7 @@ get_dist_units <- function(x,
   }
 
   if (is_bare_numeric(x)) {
-    cli::cli_warn(
+    cli_warn(
       "units can't be determined for a numeric vector
       that is not a {.cls unit} or {.cls units} object."
     )
@@ -104,7 +104,7 @@ get_dist_units <- function(x,
     return(invisible(NULL))
   }
 
-  cli::cli_abort(
+  cli_abort(
     c("{.arg {arg}} must be a {.cls character} string matching a value from
     {.code dist_unit_options} or {.code area_unit_options}, a {.cls units}
     object, or a {.cls sf} object with a valid crs.",
@@ -128,7 +128,7 @@ as_dist_units <- function(x,
                           call = parent.frame()) {
   units <- get_dist_units(units, call = call)
 
-  if (is_bare_numeric(x) & !is_units(x)) {
+  if (is_bare_numeric(x) && !is_units(x)) {
     cliExtras::cli_abort_if(
       "{.arg units} must be length 1,
       not length {length(units)}." = length(units) > 1
@@ -138,11 +138,10 @@ as_dist_units <- function(x,
   }
 
   convert_dist <- TRUE
-  if (rlang::is_interactive()) {
-    convert_dist <-
-      cliExtras::cli_yesno(
-        "Did you mean to convert {.arg {arg}} to {.val {units}}?"
-      )
+  if (is_interactive()) {
+    convert_dist <- cliExtras::cli_yesno(
+      "Did you mean to convert {.arg {arg}} to {.val {units}}?"
+    )
   }
 
   if (convert_dist) {
@@ -157,7 +156,7 @@ as_dist_units <- function(x,
 #' @rdname  is_dist_units
 #' @export
 is_same_units <- function(x, y = NULL) {
-  if (is_null(x) | is_null(y)) {
+  if (is_null(x) || is_null(y)) {
     return(FALSE)
   }
 
@@ -174,7 +173,7 @@ is_same_units <- function(x, y = NULL) {
   if (any(
     c(all(nums %in% in_opts), all(nums %in% ft_opts), all(nums %in% yd_opts))
   ) && (
-    all(dens == character(0)) | (dens[1] == dens[2])
+    all(dens == character(0)) || (dens[1] == dens[2])
   )) {
     return(TRUE)
   }

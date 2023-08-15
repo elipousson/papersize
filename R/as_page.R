@@ -26,15 +26,15 @@ as_page <- function(x,
                     ...,
                     cols = c("width", "height"),
                     class = "data.frame") {
-  if (is_character(x) & all(tolower(x) %in% tolower(paper_sizes[["name"]]))) {
+  if (is_character(x) && all(tolower(x) %in% tolower(paper_sizes[["name"]]))) {
     page <- get_page_size(x, ...)
     if (class == "list") {
       page <- page_to_list(page)
     }
-  } else if (rlang::is_named(x)) {
+  } else if (is_named(x)) {
     page <- make_page_size(dims = x, ..., cols = cols, class = class)
   } else if (is_bare_numeric(x) && has_length(x, 2)) {
-    params <- rlang::list2(...)
+    params <- list2(...)
     page <- make_page_size(
       width = x[[1]],
       height = x[[2]],

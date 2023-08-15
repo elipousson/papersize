@@ -63,7 +63,7 @@ get_page_size <- function(name = NULL,
   }
 
   if (!is_null(name) && !(tolower(name) %in% tolower(pg$name))) {
-    name <- rlang::arg_match(
+    name <- arg_match(
       name,
       values = as.character(pg$name),
       multiple = TRUE
@@ -77,7 +77,7 @@ get_page_size <- function(name = NULL,
   pg <- filter_data(pg, height)
 
   if (!is_null(type) && !(tolower(type) %in% tolower(pg$type))) {
-    type <- rlang::arg_match(
+    type <- arg_match(
       type,
       values = as.character(pg$type),
       multiple = TRUE
@@ -161,7 +161,6 @@ get_card <- function(name = NULL,
 #' @param ... Additional parameters passed by [get_page_dims()] to [get_page_size()]
 #'   if page is a character object.
 #' @export
-#' @importFrom rlang caller_arg set_names
 #' @importFrom cli cli_abort
 get_page_dims <- function(page = NULL,
                           width = NULL,
@@ -184,16 +183,16 @@ get_page_dims <- function(page = NULL,
   if (is.data.frame(page)) {
     check_page(page, cols[1:2], n = 1, call = call)
 
-    return(rlang::set_names(c(page[[cols[1]]], page[[cols[2]]]), cols[1:2]))
+    return(set_names(c(page[[cols[1]]], page[[cols[2]]]), cols[1:2]))
   }
 
   nm <- check_dims_cols(cols, width, height)
 
   if (all(is_bare_numeric(c(width, height)))) {
-    return(rlang::set_names(c(width, height), nm))
+    return(set_names(c(width, height), nm))
   }
 
-  cli::cli_abort(
+  cli_abort(
     "{.arg {arg}} must be a character with a name from {.code paper_sizes},
     a {.cls data.frame} with columns {.val {cols}},
     or a {.cls numeric} vector in the form {.code c(<width>, <height>)}.",
@@ -212,7 +211,7 @@ check_dims_cols <- function(cols = c("width", "height"),
   }
 
   if (all(is.numeric(c(width, height)))) {
-    cli::cli_warn(
+    cli_warn(
       c("{cols} must be {.val {default}} when {.arg width} and {.arg height} are provided.",
         "i" = "Replacing {.val {cols}} with {.val {default}}."
       )
@@ -221,8 +220,8 @@ check_dims_cols <- function(cols = c("width", "height"),
     return(default)
   }
 
-  if ((length(cols) != 2) | !is_character(cols)) {
-    cli::cli_warn(
+  if ((length(cols) != 2) || !is_character(cols)) {
+    cli_warn(
       c(
         "{.arg cols} must be a length 2 {.cls character} vector.",
         "i" = "Replacing {.val {cols}} with {.val {default}}."
@@ -284,8 +283,8 @@ check_page <- function(page,
                        n = NULL,
                        arg = caller_arg(page),
                        call = parent.frame()) {
-  if ((!is.data.frame(page) & !is.list(page)) | !all(has_name(page, cols))) {
-    cli::cli_abort(
+  if ((!is.data.frame(page) && !is.list(page)) || !all(has_name(page, cols))) {
+    cli_abort(
       "{.arg {arg}} must be a {.cls data.frame} or {.cls list} with columns
       or names {.val {cols}}.",
       call = call
@@ -295,7 +294,7 @@ check_page <- function(page,
   pg_n <- nrow(page)
 
   if (is.data.frame(page) && !is_null(n) && (pg_n > n)) {
-    cli::cli_abort(
+    cli_abort(
       "{.arg {arg}} must have no more than {.val {n}} rows,
       and {.arg {arg}} has {.val {pg_n}}.",
       call = call

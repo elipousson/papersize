@@ -88,7 +88,7 @@ as_unit_type <- function(x,
                          valid_units = NULL,
                          arg = caller_arg(x),
                          call = parent.frame()) {
-  if (!is_null(valid_units) & all(x %in% valid_units)) {
+  if (!is_null(valid_units) && all(x %in% valid_units)) {
     return(x)
   }
 
@@ -105,7 +105,7 @@ as_unit_type <- function(x,
   rlang::try_fetch(
     grid::unitType(grid::unit(1, x, data), recurse),
     error = function(cnd) {
-      cli::cli_abort(
+      cli_abort(
         "{.arg {arg}} ({.val {x}}) can't be coerced to a grid unit type.",
         call = call,
         parent = cnd
@@ -141,13 +141,13 @@ convert_unit_type <- function(x,
 
   nm <- NULL
 
-  if (rlang::is_named(x)) {
+  if (is_named(x)) {
     nm <- names(x)
-    x <- rlang::set_names(x, NA)
+    x <- set_names(x, NA)
   }
 
   if (!is_unit(x) && is_null(from)) {
-    cli::cli_warn(
+    cli_warn(
       "{.arg from} is {.code NULL}, converting {.arg x} to {.val {to}}."
     )
 
@@ -155,11 +155,11 @@ convert_unit_type <- function(x,
       x <- as_unit(x, to)
     }
 
-    return(rlang::set_names(x, nm))
+    return(set_names(x, nm))
   }
 
   if (is_unit(x) && is_unit_type(from) && !is_same_unit_type(x, from)) {
-    cli::cli_warn(
+    cli_warn(
       "Existing {.arg x} unit type {.val {as_unit_type(x)}} is ignored
         when {.arg from} is provided."
     )

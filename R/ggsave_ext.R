@@ -75,7 +75,7 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
   check_installed("filenamr")
 
   fileext <- fileext %||% filetype
-  params <- rlang::list2(...)
+  params <- list2(...)
 
   cli_quiet(quiet)
 

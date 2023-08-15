@@ -36,7 +36,7 @@ dims will be used or dims will be determined based on the plot dimensions.}
 images data.frame as .x. Note that this template may vary if you are using
 a custom tags parameter or modify the "filenamr.exif_xwalk" option. See
 \code{\link[filenamr:read_exif]{filenamr::read_exif()}} for more details. Default:
-"{file_name}\n{date_created}"}
+"{file_name}\\n{date_created}"}
 
 \item{caption_size}{Caption size, passed to \code{\link[ggplot2:element]{ggplot2::element_text()}} for
 plot.caption for theme, Default: 12}
@@ -77,6 +77,7 @@ A list of patchwork object or (if save = TRUE) invisibly return the
 list and save a file.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 Wraps \code{\link[filenamr:read_exif]{filenamr::read_exif()}}, \code{\link[magick:image_ggplot]{magick::image_ggplot()}}, and \code{\link[=page_layout]{page_layout()}}
 to create contact shets for a folder of images.
 }

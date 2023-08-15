@@ -1,6 +1,4 @@
 .onLoad <- function(lib, pkg) {
-  rlang::run_on_load()
-
   utils::data(
     list = c(
       "paper_sizes",
@@ -133,7 +131,7 @@ modify_fn_fmls <- function(params,
                            keep_missing = FALSE,
                            keep.null = FALSE,
                            ...) {
-  fmls <- rlang::fn_fmls(fn)
+  fmls <- fn_fmls(fn)
 
   if (!keep_missing) {
     fmls <- discard(fmls, rlang::is_missing)

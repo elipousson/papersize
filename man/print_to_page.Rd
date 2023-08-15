@@ -12,8 +12,8 @@ print_to_page_layout(
   page,
   row_position = 1,
   col_position = 1,
-  col_width = NULL,
   row_height = NULL,
+  col_width = NULL,
   nrow = 1,
   ncol = 1,
   layout = NULL,
@@ -73,25 +73,37 @@ and height are used as the column width and row height.}
     parent viewport.}
   }}
 
+\item{row_position, col_position}{Row and column position. If nrow is smaller
+than row_position or ncol is smaller than col_position, row_position is
+used for nrow or col_position is used for ncol instead.}
+
+\item{row_height, col_width}{Row height and column width.}
+
 \item{nrow}{An integer describing the number of rows in the layout.}
 
 \item{ncol}{An integer describing the number of columns in the layout.}
 
-\item{layout}{Passed to page_to_viewport with layout_position as
+\item{layout}{Passed to \code{\link[=page_to_viewport]{page_to_viewport()}} with layout_position as
 layout.pos.row and layout.pos.col if provided. Defaults to \code{NULL} where
 layout is defined by page_to_layout using ncol, nrow, page and any
-additional parameters passed to ....}
+additional parameters passed to \code{...}}
+
+\item{parent}{A grid viewport object.}
+
+\item{children}{A vpList object.}
+
+\item{filename}{File name to create on disk.}
 }
 \value{
 Invisibly returns the original plot using a viewport from
 \code{\link[=page_to_viewport]{page_to_viewport()}}.
 }
 \description{
-Explicitly draw plot using dimensions from page data.frame or list
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 \dontrun{
-if (interactive() & is_installed("ggplot2")) {
+if (interactive() && is_installed("ggplot2")) {
   library(ggplot2)
 
   plot <-

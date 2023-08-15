@@ -13,7 +13,7 @@
 #' @inherit patchwork::inset_element return
 #' @examples
 #' \dontrun{
-#' if (interactive() & is_installed("ggplot2")) {
+#' if (interactive() && is_installed("ggplot2")) {
 #'   library(ggplot2)
 #'   p <- ggplot(mpg, aes(displ, fill = class)) +
 #'     geom_bar()
@@ -49,22 +49,22 @@ inset_page_element <- function(p,
     pg_w <- as_unit(inset_page[["width"]], pg_unit)
     pg_h <- as_unit(inset_page[["height"]], pg_unit)
 
-    if (!is_null(left) & is_null(right)) {
+    if (!is_null(left) && is_null(right)) {
       left <- convert_unit_type(left, to = pg_unit, ...)
       right <- left + pg_w
     }
 
-    if (!is_null(bottom) & is_null(top)) {
+    if (!is_null(bottom) && is_null(top)) {
       bottom <- convert_unit_type(bottom, to = pg_unit, ...)
       top <- bottom + pg_h
     }
 
-    if (!is_null(right) & is_null(left)) {
+    if (!is_null(right) && is_null(left)) {
       right <- convert_unit_type(right, to = pg_unit, ...)
       left <- right - pg_w
     }
 
-    if (!is_null(top) & is_null(bottom)) {
+    if (!is_null(top) && is_null(bottom)) {
       top <- convert_unit_type(top, to = pg_unit, ...)
       bottom <- top - pg_h
     }

@@ -70,7 +70,7 @@ convert_dist_scale <- function(dist = NULL,
     cliExtras::cli_warn_ifnot(
       c("{.arg scale_unit} and {.arg scale_factor} are ignored if {.arg paper}
         is provided."),
-      condition = is_null(scale_unit) | is_null(scale_factor) |
+      condition = is_null(scale_unit) || is_null(scale_factor) |
         (!is_null(scale_unit) && scale_unit == paper$units)
     )
 

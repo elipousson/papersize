@@ -145,7 +145,7 @@ set_page_grid <- function(plots = NULL,
     } else if (is_character(dims)) {
       dims <- get_page_dims(get_page_size(dims))
     } else if (!is_bare_numeric(dims)) {
-      cli::cli_abort(
+      cli_abort(
         "A {.arg dims} must be a a {.cls data.frame} with plot dimensions,
         a {.cls character} string with the name of a paper size, or a
         {.cls numeric} object with plot width and height.",

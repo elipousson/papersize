@@ -65,7 +65,7 @@ Create an inset with page size dimensions be added on top of the previous plot
 }
 \examples{
 \dontrun{
-if (interactive() & is_installed("ggplot2")) {
+if (interactive() && is_installed("ggplot2")) {
   library(ggplot2)
   p <- ggplot(mpg, aes(displ, fill = class)) +
     geom_bar()

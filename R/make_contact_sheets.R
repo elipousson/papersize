@@ -1,5 +1,6 @@
 #' Use `magick::image_ggplot()` to make contact sheets for images
 #'
+#' `r lifecycle::badge('experimental')`
 #' Wraps [filenamr::read_exif()], [magick::image_ggplot()], and [page_layout()]
 #' to create contact shets for a folder of images.
 #'
@@ -12,7 +13,7 @@
 #'   images data.frame as .x. Note that this template may vary if you are using
 #'   a custom tags parameter or modify the "filenamr.exif_xwalk" option. See
 #'   [filenamr::read_exif()] for more details. Default:
-#'   "{file_name}\n{date_created}"
+#'   "{file_name}\\n{date_created}"
 #' @param caption_size Caption size, passed to [ggplot2::element_text()] for
 #'   plot.caption for theme, Default: 12
 #' @param caption_position Caption position, passed to plot.caption.position for
@@ -37,6 +38,7 @@
 #' @export
 #' @importFrom glue glue
 #' @importFrom cli cli_progress_step
+#' @importFrom vctrs vec_init
 make_contact_sheets <- function(images,
                                 dims = NULL,
                                 ncol = NULL,

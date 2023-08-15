@@ -5,12 +5,15 @@
 
 <!-- badges: start -->
 
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![License:
-MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://cran.r-project.org/web/licenses/MIT)
-[![Project Status: WIP - Initial development is in progress, but there
+MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Project Status: WIP – Initial development is in progress, but there
 has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
-[![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)\`
+[![Codecov test
+coverage](https://codecov.io/gh/elipousson/papersize/branch/main/graph/badge.svg)](https://app.codecov.io/gh/elipousson/papersize?branch=main)
 <!-- badges: end -->
 
 The goal of papersize is to provide you with convenience functions
@@ -38,22 +41,20 @@ playing cards.
 
 ``` r
 get_paper("Letter")
-#> # A tibble: 1 × 9
-#>   name      series size   standard units width height orientation type 
-#>   <list>    <chr>  <list> <chr>    <chr> <dbl>  <dbl> <chr>       <chr>
-#> 1 <chr [1]> <NA>   <NULL> ANSI     in      8.5     11 portrait    paper
+#>      name series size standard units width height orientation  type       asp
+#> 19 Letter   <NA> <NA>     ANSI    in   8.5     11    portrait paper 0.7727273
 
 get_paper("Letter", orientation = "landscape")
-#> # A tibble: 1 × 9
-#>   name      series size   standard units width height orientation type 
-#>   <list>    <chr>  <list> <chr>    <chr> <dbl>  <dbl> <chr>       <chr>
-#> 1 <chr [1]> <NA>   <NULL> ANSI     in       11    8.5 landscape   paper
+#> # A data frame: 1 × 10
+#>   name   series size  standard units width height orientation type    asp
+#> * <chr>  <chr>  <chr> <chr>    <chr> <dbl>  <dbl> <chr>       <chr> <dbl>
+#> 1 Letter <NA>   <NA>  ANSI     in       11    8.5 landscape   paper  1.29
 
 get_card("Poker")
-#> # A tibble: 1 × 9
-#>   name      series size   standard units width height orientation type 
-#>   <list>    <chr>  <list> <chr>    <chr> <dbl>  <dbl> <chr>       <chr>
-#> 1 <chr [1]> <NA>   <NULL> <NA>     in      2.5    3.5 portrait    card
+#> # A data frame: 1 × 10
+#>   name       series size  standard units width height orientation type    asp
+#> * <chr>      <chr>  <chr> <chr>    <chr> <dbl>  <dbl> <chr>       <chr> <dbl>
+#> 1 Poker card <NA>   <NA>  <NA>     in      2.5    3.5 portrait    card  0.714
 ```
 
 papersize includes plotting functions that create lists of ggplot2 plots
@@ -86,6 +87,7 @@ page_layout(
   page = "Letter",
   orientation = "landscape"
 )
+#> ℹ Using `dims` from first plot in `plots`.
 #> $`1`
 ```
 

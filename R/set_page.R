@@ -15,7 +15,7 @@ set_page_dims <- function(page,
   if (!is_null(dims)) {
     stopifnot(has_length(dims, 2))
 
-    if (rlang::is_named(dims)) {
+    if (is_named(dims)) {
       dims <- c(dims[cols[1]], dims[cols[2]])
     }
 
@@ -48,7 +48,7 @@ set_page_orientation <- function(page,
                                  cols = c("width", "height")) {
   has_orientation_col <- has_name(page, get_orientation_col())
 
-  if (is_null(orientation) & has_orientation_col) {
+  if (is_null(orientation) && has_orientation_col) {
     return(page)
   }
 
@@ -101,7 +101,7 @@ set_page_orientation <- function(page,
     )
 
   if (any(!(orientation == page[[orientation_col]]))) {
-    cli::cli_warn(
+    cli_warn(
       c("{.arg orientation} can't be set to {.val {orientation}}
         when the page width is {.val {pg_in[[cols[1]]]}} and height
         is {.val {pg_in[[cols[2]]]}}.",

@@ -42,7 +42,7 @@ margins <- function(margin = NULL, ..., unit = "in") {
 
   if (is_margin(margin)) {
     if (!is_same_unit_type(margin, unit)) {
-      cli::cli_warn(
+      cli_warn(
         "{.arg margin} uses {.val {as_unit_type(margin)}} but
         the provided {.arg unit} is {.val {unit}}."
       )
@@ -71,7 +71,7 @@ margins <- function(margin = NULL, ..., unit = "in") {
     return(margin(margin[1], margin[2], margin[1], margin[2], unit))
   }
 
-  cli::cli_abort(
+  cli_abort(
     "{.arg margin} must be a length 1, 2, or 4 {.cls numeric} vector."
   )
 }
@@ -110,7 +110,7 @@ get_margin <- function(margin = NULL,
 
   if (is_character(margin)) {
     extra_margins <- page_extras[["margins"]]
-    margin <- rlang::arg_match(margin, unique(extra_margins[["name"]]))
+    margin <- arg_match(margin, unique(extra_margins[["name"]]))
     margin <- filter_data(extra_margins, margin, "name")
     margin <- filter_data(margin, unit)
     margin <- c(margin["t"], margin["r"], margin["b"], margin["l"])

@@ -24,7 +24,8 @@ Imports:
     lifecycle,
     rlang (>= 1.1.0),
     units,
-    utils
+    utils,
+    vctrs
 Suggests: 
     covr,
     filenamr,
