@@ -79,17 +79,17 @@ print_to_page_layout <- function(plot,
     )
 
   children <- children %||% grid::vpList(
-      grid::viewport(
-        name = paste0(paste0("Row", row_position), paste0("Col", col_position)),
-        layout.pos.row = row_position,
-        layout.pos.col = col_position
-      )
+    grid::viewport(
+      name = paste0(paste0("Row", row_position), paste0("Col", col_position)),
+      layout.pos.row = row_position,
+      layout.pos.col = col_position
     )
+  )
 
   page_vp <- grid::vpTree(
-      parent = parent,
-      children = children
-    )
+    parent = parent,
+    children = children
+  )
 
   print_to_page(
     plot,
