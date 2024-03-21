@@ -34,7 +34,7 @@
 #'   Defaults to `FALSE`. Passed to [filenamr::check_file_overwrite()].
 #' @inheritParams filenamr::write_exif
 #' @param preview If `TRUE`, open saved file in default system application.
-#'   Based on [ggpreview()] from tjmisc package.
+#'   Based on ggpreview from tjmisc package.
 #' @param filetype File type (used if fileext is `NULL`).
 #' @inheritDotParams ggplot2::ggsave -width -height -units -bg
 #' @seealso
@@ -47,6 +47,7 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
                        label = NULL,
                        prefix = NULL,
                        postfix = NULL,
+                       increment = NULL,
                        filename = NULL,
                        device = NULL,
                        fileext = NULL,
@@ -124,7 +125,8 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
     fileext = fileext,
     path = path,
     prefix = prefix,
-    postfix = postfix
+    postfix = postfix,
+    increment = increment
   )
 
   filenamr::check_file_overwrite(
@@ -133,8 +135,7 @@ ggsave_ext <- function(plot = ggplot2::last_plot(),
     ask = ask
   )
 
-  if (inherits(plot, "magick-image")) {
-    check_installed("magick")
+  if (inherits(plot, "magick-image") && is_installed("magick")) {
     cli::cli_alert_success(
       "Converting {.arg plot} from {.cls magick-image} to {.cls ggplot}."
     )

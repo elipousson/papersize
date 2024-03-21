@@ -12,6 +12,7 @@ ggsave_ext(
   label = NULL,
   prefix = NULL,
   postfix = NULL,
+  increment = NULL,
   filename = NULL,
   device = NULL,
   fileext = NULL,
@@ -91,11 +92,16 @@ date/time prefix; defaults to \code{NULL}.}
 
 \item{postfix}{File name postfix; defaults to \code{NULL}.}
 
+\item{increment}{If \code{TRUE}, increment digits in string by 1. If numeric,
+increment digits in string by value. If \code{NULL}, 0, or if no digits are
+present in string, return string as is.}
+
 \item{filename}{File name to create on disk.}
 
 \item{device}{Device to use. Can either be a device function
 (e.g. \link{png}), or one of "eps", "ps", "tex" (pictex),
-"pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf" (windows only).}
+"pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf" (windows only). If
+\code{NULL} (default), the device is guessed based on the \code{filename} extension.}
 
 \item{fileext}{File type or extension. Optional if filename or path include a
 file extension.}
@@ -111,11 +117,14 @@ sensitive.}
 
 \item{orientation}{Page orientation ("portrait", "landscape", or "square").}
 
-\item{width, height, units}{Plot size in \code{units} ("in", "cm", "mm", or "px").
-If not supplied, uses the size of current graphics device.}
+\item{width, height}{Plot size in units expressed by the \code{units} argument.
+If not supplied, uses the size of the current graphics device.}
 
 \item{asp}{Numeric aspect ratio used to determine width or height if only one
 of the two arguments is provided; defaults to \code{NULL}.}
+
+\item{units}{One of the following units in which the \code{width} and \code{height}
+arguments are expressed: \code{"in"}, \code{"cm"}, \code{"mm"} or \code{"px"}.}
 
 \item{scale}{Multiplicative scaling factor.}
 
@@ -147,7 +156,7 @@ same name or ask to overwrite if \code{ask = TRUE}. Passed to
 Defaults to \code{FALSE}. Passed to \code{\link[filenamr:check_file_overwrite]{filenamr::check_file_overwrite()}}.}
 
 \item{preview}{If \code{TRUE}, open saved file in default system application.
-Based on \code{\link[=ggpreview]{ggpreview()}} from tjmisc package.}
+Based on ggpreview from tjmisc package.}
 
 \item{limitsize}{When \code{TRUE} (the default), \code{ggsave()} will not
 save images larger than 50x50 inches, to prevent the common error of
@@ -158,7 +167,10 @@ specifying dimensions in pixels.}
 \item{...}{
   Arguments passed on to \code{\link[ggplot2:ggsave]{ggplot2::ggsave}}
   \describe{
-    \item{\code{}}{}
+    \item{\code{create.dir}}{Whether to create new directories if a non-existing
+directory is specified in the \code{filename} or \code{path} (\code{TRUE}) or return an
+error (\code{FALSE}, default). If \code{FALSE} and run in an interactive session,
+a prompt will appear asking to create a new directory when necessary.}
   }}
 
 \item{image}{Image name passed to name parameter of \code{\link[=get_social_size]{get_social_size()}}.}
