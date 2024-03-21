@@ -1,5 +1,5 @@
-#' Create an inset with page size dimensions be added on top of the previous plot
-#'
+#' Create an inset with page size dimensions be added on top of the previous
+#' plot
 #'
 #' @param inset_page Page size data.frame to use for inset, Default: `NULL`
 #' @param left,bottom,right,top numerics or units giving the location of the

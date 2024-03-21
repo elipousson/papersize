@@ -2,7 +2,8 @@
 % Please edit documentation in R/inset_page_element.R
 \name{inset_page_element}
 \alias{inset_page_element}
-\title{Create an inset with page size dimensions be added on top of the previous plot}
+\title{Create an inset with page size dimensions be added on top of the previous
+plot}
 \usage{
 inset_page_element(
   p,
@@ -61,7 +62,8 @@ Defaults to \code{FALSE}.}
 A \code{inset_path} object
 }
 \description{
-Create an inset with page size dimensions be added on top of the previous plot
+Create an inset with page size dimensions be added on top of the previous
+plot
 }
 \examples{
 \dontrun{

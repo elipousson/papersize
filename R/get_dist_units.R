@@ -33,7 +33,8 @@
 #' @export
 #' @importFrom rlang caller_arg
 is_dist_units <- function(x, arg = caller_arg(x)) {
-  is_units(x) && (get_dist_units(x, arg) %in% c(dist_unit_options, area_unit_options))
+  is_units(x) &&
+    (get_dist_units(x, arg) %in% c(dist_unit_options, area_unit_options))
 }
 
 #' @name get_dist_units

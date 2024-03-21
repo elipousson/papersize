@@ -2,7 +2,8 @@
 % Please edit documentation in R/as_asp.R
 \name{as_asp}
 \alias{as_asp}
-\title{Convert character string, page name, or page data.frame to numeric aspect ratio}
+\title{Convert character string, page name, or page data.frame to numeric aspect
+ratio}
 \usage{
 as_asp(
   asp = NULL,

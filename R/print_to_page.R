@@ -139,7 +139,8 @@ check_ggplot <- function(plot, class = NULL) {
   inherits_class <- FALSE
 
   if (!is_null(class)) {
-    message <- "{.arg plot} must be a {.cls ggplot} object or an object with class {.cls {class}}."
+    message <- "{.arg plot} must be a {.cls ggplot} object or
+    an object with class {.cls {class}}."
     inherits_class <- inherits_any(plot, class)
   }
 

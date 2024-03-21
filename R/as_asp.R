@@ -1,4 +1,5 @@
-#' Convert character string, page name, or page data.frame to numeric aspect ratio
+#' Convert character string, page name, or page data.frame to numeric aspect
+#' ratio
 #'
 #' Convert a character vector with an aspect ratio to a numeric aspect ratio or
 #' get the aspect ratio for a given page that has an aspect ratio column.

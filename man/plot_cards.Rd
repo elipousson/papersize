@@ -43,8 +43,8 @@ to be the inset border fill. Default: 'gray20'}
 \item{border}{If TRUE, add a border to the card. Default: FALSE}
 
 \item{inset}{Unit or numeric vector with inset distance for card border,
-Default: \code{grid::unit(c(5, 5), "mm")}. If inset is a numeric vector, it is expected
-to be a percent relative to the card width and height.}
+Default: \code{grid::unit(c(5, 5), "mm")}. If inset is a numeric vector, it is
+expected to be a percent relative to the card width and height.}
 
 \item{linetype}{linetype for card border, Default: 'dashed'}
 

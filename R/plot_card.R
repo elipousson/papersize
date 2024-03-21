@@ -14,8 +14,8 @@
 #'   to be the inset border fill. Default: 'gray20'
 #' @param border If TRUE, add a border to the card. Default: FALSE
 #' @param inset Unit or numeric vector with inset distance for card border,
-#'   Default: `grid::unit(c(5, 5), "mm")`. If inset is a numeric vector, it is expected
-#'   to be a percent relative to the card width and height.
+#'   Default: `grid::unit(c(5, 5), "mm")`. If inset is a numeric vector, it is
+#'   expected to be a percent relative to the card width and height.
 #' @param linetype linetype for card border, Default: 'dashed'
 #' @param linewidth linewidth for card border, Default: 2
 #' @param text Character vector with card text, Default: NULL
