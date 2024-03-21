@@ -1,4 +1,6 @@
-<!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
+# papersize (development)
+
+- Add `increment` parameter to `ggsave_ext()`.
 
 # papersize 0.1.0.9001 (2023-04-07)
 
