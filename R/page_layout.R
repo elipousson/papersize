@@ -178,8 +178,8 @@ set_page_grid <- function(plots = NULL,
   }
 
   cli_ifnot(
+    x = all(has_name(plot_data, c("xmin", "xmax", "ymin", "ymax"))),
     "{.arg dims} can't be determined from {.arg plot} and must be supplied.",
-    condition = all(has_name(plot_data, c("xmin", "xmax", "ymin", "ymax"))),
     .fn = cli::cli_abort,
     call = call
   )

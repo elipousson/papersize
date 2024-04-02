@@ -45,7 +45,8 @@ make_page_size <- function(width = NULL,
                            dims = NULL,
                            valid_units = NULL,
                            cols = c("width", "height"),
-                           class = "data.frame") {
+                           class = "data.frame",
+                           call = caller_env()) {
   if (is_named(dims)) {
     if (has_name(dims, cols[1])) {
       width <- width %||% as.numeric(dims[[cols[1]]])
@@ -64,13 +65,13 @@ make_page_size <- function(width = NULL,
     }
   }
 
-  check_page_asp(width, height, asp)
+  check_page_asp(width = width, height = height, asp = asp, call = call)
   rlang::check_required(units)
 
   cli_if(
+    x = all(is.numeric(c(width, height, asp))),
     "{.arg width}, {.arg height}, and {.arg asp} must all be either
     {.cls numeric} or {.code NULL}.",
-    condition = all(is.numeric(c(width, height, asp))),
     .fn = cli::cli_abort
   )
 
@@ -133,18 +134,18 @@ page_to_list <- function(x) {
 check_page_asp <- function(width = NULL,
                            height = NULL,
                            asp = NULL,
-                           call = parent.frame()) {
+                           call = caller_env()) {
   cli_if(
+    x = is_null(width) && is_null(height),
     "{.arg width} or {.arg height} must be provided.",
-    condition = is_null(width) && is_null(height),
     .fn = cli::cli_abort,
     call = call
   )
 
   cli_if(
+    x = is_null(asp) && (is_null(width) || is_null(height)),
     "{.arg asp} must be provided if only {.arg width} or only
     {.arg height} are provided.",
-    condition = is_null(asp) && (is_null(width) || is_null(height)),
     .fn = cli::cli_abort,
     call = call
   )

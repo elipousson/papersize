@@ -14,7 +14,8 @@ make_page_size(
   dims = NULL,
   valid_units = NULL,
   cols = c("width", "height"),
-  class = "data.frame"
+  class = "data.frame",
+  call = caller_env()
 )
 }
 \arguments{
@@ -48,6 +49,20 @@ as as the width name and the second as the height.}
 
 \item{class}{Class of return object: "data.frame" (default) or "list" (only
 supported when input page size is a single row).}
+
+\item{call}{The execution environment of a currently running
+function, e.g. \code{call = caller_env()}. The corresponding function
+call is retrieved and mentioned in error messages as the source
+of the error.
+
+You only need to supply \code{call} when throwing a condition from a
+helper function which wouldn't be relevant to mention in the
+message.
+
+Can also be \code{NULL} or a \link[rlang:topic-defuse]{defused function call} to
+respectively not display any call or hard-code a code to display.
+
+For more information about error calls, see \ifelse{html}{\link[rlang:topic-error-call]{Including function calls in error messages}}{\link[rlang:topic-error-call]{Including function calls in error messages}}.}
 }
 \value{
 A data.frame with columns named (by default) width, height, units,

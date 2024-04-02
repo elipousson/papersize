@@ -200,7 +200,8 @@ set_ggsave_dims <- function(paper = NULL,
                             asp = NULL,
                             units = getOption("papersize.ggsave_units", "in"),
                             limitsize = TRUE,
-                            cols = c("width", "height")) {
+                            cols = c("width", "height"),
+                            call = caller_env()) {
   units_col <- get_units_col()
   if (!is_null(paper)) {
     paper <- get_page_size(paper, orientation = orientation)
@@ -219,7 +220,8 @@ set_ggsave_dims <- function(paper = NULL,
     height = height,
     asp = asp,
     units = units,
-    valid_units = names(gg_units)
+    valid_units = names(gg_units),
+    call = call
   )
 
   page[[units_col]] <- replace_with_gg_units(

@@ -35,6 +35,19 @@ reversed so the page dimensions match the provided orientation.}
     \item{\code{valid_units}}{Character vector with name or symbols for valid units.
 Defaults to \code{NULL} but any other unit name or symbol, e.g. "px", is
 permitted.}
+    \item{\code{call}}{The execution environment of a currently running
+function, e.g. \code{call = caller_env()}. The corresponding function
+call is retrieved and mentioned in error messages as the source
+of the error.
+
+You only need to supply \code{call} when throwing a condition from a
+helper function which wouldn't be relevant to mention in the
+message.
+
+Can also be \code{NULL} or a \link[rlang:topic-defuse]{defused function call} to
+respectively not display any call or hard-code a code to display.
+
+For more information about error calls, see \ifelse{html}{\link[rlang:topic-error-call]{Including function calls in error messages}}{\link[rlang:topic-error-call]{Including function calls in error messages}}.}
   }}
 
 \item{cols}{Column names to use for width and height columns. Defaults to
