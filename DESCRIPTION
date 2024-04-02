@@ -16,7 +16,7 @@ BugReports: https://github.com/elipousson/papersize/issues
 Depends: 
     R (>= 2.10)
 Imports: 
-    cli,
+    cli (>= 3.4.0),
     cliExtras (>= 0.1.0),
     glue,
     grDevices,
