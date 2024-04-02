@@ -151,13 +151,29 @@ orientation, and asp or a list with those same names.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">make_page_size</span><span class="op">(</span><span class="fl">48</span>, <span class="fl">24</span>, <span class="st">"in"</span>, name <span class="op">=</span> <span class="st">"Tabletop map"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in make_page_size(48, 24, "in", name = "Tabletop map"):</span> `width`, `height`, and `asp` must all be either <span style="color: #0000BB;">&lt;numeric&gt;</span> or `NULL`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           name width height  units orientation asp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Tabletop map    48     24 inches   landscape   2</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">make_page_size</span><span class="op">(</span><span class="fl">8.5</span>, <span class="fl">8.5</span>, <span class="st">"in"</span>, name <span class="op">=</span> <span class="st">"Trimmed letter"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in make_page_size(8.5, 8.5, "in", name = "Trimmed letter"):</span> `width`, `height`, and `asp` must all be either <span style="color: #0000BB;">&lt;numeric&gt;</span> or `NULL`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             name width height  units orientation asp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Trimmed letter   8.5    8.5 inches      square   1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">make_page_size</span><span class="op">(</span><span class="fl">5</span>, asp <span class="op">=</span> <span class="fl">1.25</span>, units <span class="op">=</span> <span class="st">"cm"</span>, class <span class="op">=</span> <span class="st">"list"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in make_page_size(5, asp = 1.25, units = "cm", class = "list"):</span> `width`, `height`, and `asp` must all be either <span style="color: #0000BB;">&lt;numeric&gt;</span> or `NULL`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $width</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $height</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $units</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "cm"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $orientation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "landscape"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $asp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
