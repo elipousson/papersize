@@ -67,7 +67,8 @@ reversed to match the provided orientation.</p>
 <span>  dims <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  valid_units <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"width"</span>, <span class="st">"height"</span><span class="op">)</span>,</span>
-<span>  class <span class="op">=</span> <span class="st">"data.frame"</span></span>
+<span>  class <span class="op">=</span> <span class="st">"data.frame"</span>,</span>
+<span>  call <span class="op">=</span> <span class="fu">caller_env</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -121,6 +122,19 @@ as as the width name and the second as the height.</p></dd>
 <dd><p>Class of return object: "data.frame" (default) or "list" (only
 supported when input page size is a single row).</p></dd>
 
+
+<dt>call</dt>
+<dd><p>The execution environment of a currently running
+function, e.g. <code>call = caller_env()</code>. The corresponding function
+call is retrieved and mentioned in error messages as the source
+of the error.</p>
+<p>You only need to supply <code>call</code> when throwing a condition from a
+helper function which wouldn't be relevant to mention in the
+message.</p>
+<p>Can also be <code>NULL</code> or a <a href="https://rlang.r-lib.org/reference/topic-defuse.html" class="external-link">defused function call</a> to
+respectively not display any call or hard-code a code to display.</p>
+<p>For more information about error calls, see <a href="https://rlang.r-lib.org/reference/topic-error-call.html" class="external-link">Including function calls in error messages</a>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -137,29 +151,13 @@ orientation, and asp or a list with those same names.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">make_page_size</span><span class="op">(</span><span class="fl">48</span>, <span class="fl">24</span>, <span class="st">"in"</span>, name <span class="op">=</span> <span class="st">"Tabletop map"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           name width height  units orientation asp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Tabletop map    48     24 inches   landscape   2</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in make_page_size(48, 24, "in", name = "Tabletop map"):</span> `width`, `height`, and `asp` must all be either <span style="color: #0000BB;">&lt;numeric&gt;</span> or `NULL`.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">make_page_size</span><span class="op">(</span><span class="fl">8.5</span>, <span class="fl">8.5</span>, <span class="st">"in"</span>, name <span class="op">=</span> <span class="st">"Trimmed letter"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             name width height  units orientation asp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Trimmed letter   8.5    8.5 inches      square   1</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in make_page_size(8.5, 8.5, "in", name = "Trimmed letter"):</span> `width`, `height`, and `asp` must all be either <span style="color: #0000BB;">&lt;numeric&gt;</span> or `NULL`.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">make_page_size</span><span class="op">(</span><span class="fl">5</span>, asp <span class="op">=</span> <span class="fl">1.25</span>, units <span class="op">=</span> <span class="st">"cm"</span>, class <span class="op">=</span> <span class="st">"list"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $width</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $height</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $units</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "cm"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $orientation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "landscape"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $asp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in make_page_size(5, asp = 1.25, units = "cm", class = "list"):</span> `width`, `height`, and `asp` must all be either <span style="color: #0000BB;">&lt;numeric&gt;</span> or `NULL`.</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
