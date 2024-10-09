@@ -58,7 +58,8 @@ expected to be a percent relative to the card width and height.}
 A list of plot objects where each item on the list is a card.
 }
 \description{
-Make a plot of cards.
+\code{\link[=plot_cards]{plot_cards()}} takes a card that defines the dimensions of a card and creates
+a list of plots using the specified aesthetics.
 }
 \examples{
 #'
@@ -70,3 +71,4 @@ if (interactive() && is_installed("ggplot2")) {
 }
 }
 }
+\keyword{card}
