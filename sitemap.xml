@@ -1,117 +1,45 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://elipousson.github.io/papersize/404.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/index.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/area_unit_options.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/as_asp.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/as_page.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/as_unit.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/card_sizes.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/convert_dist_scale.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/convert_dist_units.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/dist_unit_options.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/dist_units.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/get_page_size.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/get_scale.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/get_social_size.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/ggsave_ext.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/grid_units.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/inset_page_element.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/is_dist_units.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/make_contact_sheets.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/make_page_size.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/margins.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/page_extras.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/page_layout.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/page_to_layout.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/page_to_viewport.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/paper_sizes.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/papersize-package.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/plot_cards.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/print_to_page.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/set_page_dims.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/set_page_margin.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/standard_scales.html</loc>
-  </url>
-  <url>
-    <loc>https://elipousson.github.io/papersize/reference/theme_page.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://elipousson.github.io/papersize/404.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/LICENSE-text.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/LICENSE.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/authors.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/index.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/news/index.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/add_card_border.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/add_card_number.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/add_card_text.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/area_unit_options.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/as_asp.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/as_page.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/as_unit.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/card_sizes.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/convert_dist_scale.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/convert_dist_units.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/dist_unit_options.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/dist_units.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/get_page_size.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/get_scale.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/get_social_size.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/ggsave_ext.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/grid_units.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/index.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/inset_page.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/inset_page_element.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/is_dist_units.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/make_contact_sheets.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/make_page_size.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/margins.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/page_extras.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/page_layout.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/page_to_layout.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/page_to_viewport.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/paper_sizes.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/papersize-package.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/plot_cards.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/print_to_page.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/set_page_dims.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/set_page_margin.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/standard_scales.html</loc></url>
+<url><loc>https://elipousson.github.io/papersize/reference/theme_page.html</loc></url>
 </urlset>
+
