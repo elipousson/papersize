@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">papersize</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,6 +32,14 @@
       <small>Source: <a href="https://github.com/elipousson/papersize/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.1" id="papersize-011-2024-10-08">papersize 0.1.1 (2024-10-08)<a class="anchor" aria-label="anchor" href="#papersize-011-2024-10-08"></a></h2>
+<ul><li>Add <code>increment</code> parameter to <code><a href="../reference/ggsave_ext.html">ggsave_ext()</a></code>.</li>
+<li>Avoid using <code>.onLoad</code> to load package data (use namespacing instead per <a href="https://r-pkgs.org/data.html#sec-data-data" class="external-link">guidance in R Packages book</a>)</li>
+<li>Fix input checks for <code><a href="../reference/make_page_size.html">make_page_size()</a></code> and <code>set_page_grid()</code>
+</li>
+<li>Export <code><a href="../reference/inset_page.html">inset_page()</a></code>, <code><a href="../reference/add_card_border.html">add_card_border()</a></code>, <code><a href="../reference/add_card_text.html">add_card_text()</a></code>, and <code><a href="../reference/add_card_number.html">add_card_number()</a></code> as internal functions.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0.9001" id="papersize-0109001-2023-04-07">papersize 0.1.0.9001 (2023-04-07)<a class="anchor" aria-label="anchor" href="#papersize-0109001-2023-04-07"></a></h2>
 <ul><li>Add <code><a href="../reference/set_page_dims.html">set_page_dims()</a></code>and related functions.</li>
