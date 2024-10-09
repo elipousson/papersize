@@ -107,27 +107,37 @@ make_card_plots <- function(card,
 #' Helper to create a ggplot for a single card
 #'
 #' @noRd
-setup_card_plot <- function(card,
-                            fill = "gray20",
-                            tile = TRUE,
-                            fixed = TRUE) {
+setup_card_plot <- function(
+    card,
+    fill = "gray20",
+    color = "gray90",
+    linetype = "solid",
+    linewidth = 0,
+    fixed = TRUE,
+    card_theme = ggplot2::theme_void()) {
   check_installed("ggplot2")
   check_page(card, cols = c("width", "height", "x", "y"))
 
-  plot <-
-    ggplot2::ggplot()
-
-  if (tile) {
-    plot <- plot +
-      ggplot2::geom_tile(
-        data = card,
-        ggplot2::aes(x = x, y = y, width = width, height = height),
-        fill = fill
+  plot <- ggplot2::ggplot() +
+    ggplot2::geom_tile(
+      data = card,
+      ggplot2::aes(
+        x = x,
+        y = y,
+        width = width,
+        height = height
+      ),
+      fill = fill,
+      color = color,
+      linetype = linetype,
+      linewidth = linewidth
+    ) +
+    card_theme +
+    ggplot2::theme(
+      plot.background = ggplot2::element_rect(
+        color = "black"
       )
-  }
-
-  plot <- plot +
-    ggplot2::theme_void()
+    )
 
   if (fixed) {
     return(plot + ggplot2::coord_fixed())
@@ -196,7 +206,8 @@ add_card_border <- function(plots,
     ggplot2::geom_tile(
       data = inset_card,
       ggplot2::aes(
-        x = x, y = y,
+        x = x,
+        y = y,
         width = width,
         height = height
       ),
