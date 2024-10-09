@@ -1,18 +1,3 @@
-.onLoad <- function(lib, pkg) {
-  utils::data(
-    list = c(
-      "paper_sizes",
-      "dist_unit_options",
-      "area_unit_options",
-      "grid_units",
-      "page_extras",
-      "standard_scales"
-    ),
-    package = pkg,
-    envir = parent.env(environment())
-  )
-}
-
 utils::globalVariables(
   c(
     "height", "label", "width", "x", "y"

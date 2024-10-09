@@ -55,7 +55,7 @@ get_page_size <- function(name = NULL,
                           units = NULL,
                           type = NULL,
                           ignore.case = TRUE) {
-  pg <- paper_sizes
+  pg <- papersize::paper_sizes
 
   if (is.data.frame(name)) {
     check_page(name)

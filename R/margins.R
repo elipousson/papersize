@@ -109,7 +109,7 @@ get_margin <- function(margin = NULL,
   }
 
   if (is_character(margin)) {
-    extra_margins <- page_extras[["margins"]]
+    extra_margins <- papersize::page_extras[["margins"]]
     margin <- arg_match(margin, unique(extra_margins[["name"]]))
     margin <- filter_data(extra_margins, margin, "name")
     margin <- filter_data(margin, unit)

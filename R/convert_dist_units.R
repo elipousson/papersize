@@ -96,10 +96,14 @@ set_dist_units <- function(x = NULL,
 
   value <- underscore(value)
 
-  value <-
-    rlang::arg_match(
+  allowed_units <- c(
+    papersize::dist_unit_options,
+    papersize::area_unit_options
+  )
+
+  value <- rlang::arg_match(
       value,
-      c(dist_unit_options, area_unit_options),
+      values = allowed_units,
       error_call = call
     )
 

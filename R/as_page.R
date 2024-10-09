@@ -26,7 +26,10 @@ as_page <- function(x,
                     ...,
                     cols = c("width", "height"),
                     class = "data.frame") {
-  if (is_character(x) && all(tolower(x) %in% tolower(paper_sizes[["name"]]))) {
+  is_page_nm <- is_character(x) &&
+    all(tolower(x) %in% tolower(papersize::paper_sizes[["name"]]))
+
+  if (is_page_nm) {
     page <- get_page_size(x, ...)
     if (class == "list") {
       page <- page_to_list(page)

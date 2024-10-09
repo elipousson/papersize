@@ -33,8 +33,12 @@
 #' @export
 #' @importFrom rlang caller_arg
 is_dist_units <- function(x, arg = caller_arg(x)) {
-  is_units(x) &&
-    (get_dist_units(x, arg) %in% c(dist_unit_options, area_unit_options))
+  allowed_units <- c(
+    papersize::dist_unit_options,
+    papersize::area_unit_options
+  )
+
+  is_units(x) && (get_dist_units(x, arg) %in% allowed_units)
 }
 
 #' @name get_dist_units
@@ -52,9 +56,14 @@ get_dist_units <- function(x,
 
   if (is_character(x)) {
     x <- underscore(x)
+    allowed_units <- c(
+      papersize::dist_unit_options,
+      papersize::area_unit_options
+    )
+
     x <- arg_match(
       arg = x,
-      values = c(dist_unit_options, area_unit_options),
+      values = allowed_units,
       error_arg = arg,
       multiple = TRUE,
       call = call
@@ -79,7 +88,7 @@ get_dist_units <- function(x,
       rlang::try_fetch(
         rlang::arg_match(
           arg = unit_type,
-          values = grid_units[c(2:13)],
+          values = papersize::grid_units[c(2:13)],
           error_arg = arg,
           error_call = call
         ),
@@ -194,10 +203,10 @@ as_units_attr <- function(x) {
 
 #' @noRd
 # is_dist_unit_option <- function(x) {
-#   all(as.character(units(x)[["numerator"]]) %in% dist_unit_options) & !is_area_unit_option(x)
+#   all(as.character(units(x)[["numerator"]]) %in% papersize::dist_unit_options) & !is_area_unit_option(x)
 # }
 
 #' @noRd
 # is_area_unit_option <- function(x) {
-#   as.character(units(x)) %in% area_unit_options
+#   as.character(units(x)) %in% papersize::area_unit_options
 # }

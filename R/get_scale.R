@@ -17,7 +17,7 @@
 get_scale <- function(scale = NULL,
                       standard = NULL,
                       series = NULL) {
-  scales <- filter_data(standard_scales, scale)
+  scales <- filter_data(papersize::standard_scales, scale)
 
   if (!is_null(standard)) {
     standard <- arg_match(
@@ -29,11 +29,14 @@ get_scale <- function(scale = NULL,
   }
 
   if (!is_null(series)) {
+    allowed_series <- unique(papersize::standard_scales[["series"]])
+
     series <- arg_match(
       series,
-      unique(standard_scales$series),
+      allowed_series,
       multiple = TRUE
     )
+
     scales <- filter_data(scales, series)
   }
 

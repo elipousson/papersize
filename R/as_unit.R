@@ -187,7 +187,7 @@ is_unit_type <- function(x, ...) {
     return(FALSE)
   }
 
-  if (all(x %in% grid_units[1:27])) {
+  if (all(x %in% papersize::grid_units[1:27])) {
     return(TRUE)
   }
 
