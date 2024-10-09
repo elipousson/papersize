@@ -30,6 +30,7 @@
 #' }
 #' @seealso
 #'  [patchwork::inset_element()]
+#' @seealso [inset_page()]
 #' @rdname inset_page_element
 #' @export
 #' @importFrom rlang check_installed

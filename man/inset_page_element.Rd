@@ -85,4 +85,6 @@ if (interactive() && is_installed("ggplot2")) {
 }
 \seealso{
 \code{\link[patchwork:inset_element]{patchwork::inset_element()}}
+
+\code{\link[=inset_page]{inset_page()}}
 }
