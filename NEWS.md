@@ -1,6 +1,9 @@
 # papersize (development)
 
 - Add `increment` parameter to `ggsave_ext()`.
+- Avoid using `.onLoad` to load package data (use namespacing instead per [guidance in R Packages book](https://r-pkgs.org/data.html#sec-data-data))
+- Fix input checks for `make_page_size()` and `set_page_grid()`
+- Export `inset_page()`, `add_card_border()`, `add_card_text()`, and `add_card_number()` as internal functions.
 
 # papersize 0.1.0.9001 (2023-04-07)
 
