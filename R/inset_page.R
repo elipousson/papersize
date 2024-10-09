@@ -1,6 +1,12 @@
 #' Apply numeric or unit class inset to width/height dimensions of page
 #'
-#' @noRd
+#' [inset_page()] applies a set inset distance value or percent distance to
+#' modify the dimensions of the input page list or data frame.
+#'
+#' @param inset Numeric distance to inset an input page.
+#' @param pct_inset Percent inset based on existing page dimensions.
+#' @inheritParams as_unit
+#' @keywords internal
 inset_page <- function(page,
                        inset = 0.1,
                        units = "in",

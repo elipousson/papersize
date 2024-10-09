@@ -1,6 +1,7 @@
 #' Use ggplot to plot for one or more cards
 #'
-#' Make a plot of cards.
+#' [plot_cards()] takes a card that defines the dimensions of a card and creates
+#' a list of plots using the specified aesthetics.
 #'
 #' @param card Card name or data.frame with width and height columns.
 #' @param n Number of cards to plot, Default: 1
@@ -31,6 +32,7 @@
 #' }
 #' }
 #' @rdname plot_cards
+#' @keywords card
 #' @export
 #' @importFrom grid unit
 #' @importFrom rlang has_name
@@ -148,7 +150,12 @@ setup_card_plot <- function(
 
 #' Helper to add a number to each card plot in a list
 #'
-#' @noRd
+#' [add_card_number()] is a helper function used internally by [plot_cards()] to
+#' apply a number to each card in a list of plots.
+#'
+#' @inheritParams ggplot2::geom_text
+#' @keywords internal card
+#' @export
 add_card_number <- function(plots,
                             card = NULL,
                             n = 1,
@@ -183,7 +190,14 @@ add_card_number <- function(plots,
 
 #' Helper to add a border to each card plot in a list
 #'
-#' @noRd
+#' [add_card_border()] is a helper function used internally by [plot_cards()]
+#' and can be used to further modify output plots.
+#'
+#' @inheritParams inset_page
+#' @param fill,color,linetype,linewidth Fixed aesthetics passsed to
+#'   [ggplot2::geom_tile()]
+#' @keywords internal card
+#' @export
 add_card_border <- function(plots,
                             card = NULL,
                             inset = grid::unit(c(5, 5), "mm"),
@@ -221,7 +235,11 @@ add_card_border <- function(plots,
 
 #' Helper to add text to each card plot in a list
 #'
-#' @noRd
+#' [add_card_text()] is a helper function used internally by [plot_cards()].
+#'
+#' @inheritParams ggplot2::geom_text
+#' @keywords internal card
+#' @export
 add_card_text <- function(plots,
                           card = NULL,
                           text = NULL,
@@ -254,24 +272,23 @@ add_card_text <- function(plots,
         "y" = rep(card$y + nudge_y, n)
       )
 
-    plots <-
-      map(
-        c(1:n),
-        function(i) {
-          plots[[i]] +
-            geom_text_if_family(
-              data = text[i, ],
-              mapping = ggplot2::aes(
-                x = x,
-                y = y,
-                label = label
-              ),
-              size = size,
-              color = color,
-              family = family
-            )
-        }
-      )
+    plots <- map(
+      c(1:n),
+      function(i) {
+        plots[[i]] +
+          geom_text_if_family(
+            data = text[i, ],
+            mapping = ggplot2::aes(
+              x = x,
+              y = y,
+              label = label
+            ),
+            size = size,
+            color = color,
+            family = family
+          )
+      }
+    )
 
     return(plots)
   }
