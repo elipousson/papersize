@@ -1,4 +1,4 @@
-# papersize (development)
+# papersize 0.1.1 (2024-10-08)
 
 - Add `increment` parameter to `ggsave_ext()`.
 - Avoid using `.onLoad` to load package data (use namespacing instead per [guidance in R Packages book](https://r-pkgs.org/data.html#sec-data-data))
