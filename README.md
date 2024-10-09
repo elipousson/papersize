@@ -59,9 +59,10 @@ get_card("Poker")
 
 papersize includes plotting functions that create lists of ggplot2 plots
 with repeated elements that can be assembled with patchwork into page
-layouts for print. For example, `plot_cards()` creates a list of
-Poker-card sized plots that can be tiled onto a letter-size patchwork to
-save and print.
+layouts for print.
+
+For example, `plot_cards()` creates a list of Poker-card sized plots
+that can be tiled onto a letter-size patchwork to save and print.
 
 ``` r
 papersize <-
@@ -93,7 +94,82 @@ page_layout(
 
 <img src="man/figures/README-layout_cards-1.png" width="100%" />
 
-papersize currently has very limited features but additional features
-are expected to include better support for multi-page layouts, control
-over the position of card elements, preset card formats/designs, and
+This more involved example uses the internal `add_card_border()`
+function to apply rectangular elements to the card plot:
+
+``` r
+card <- get_card("Poker card")
+
+card_center <- card
+card_center[["x"]] <- 0
+card_center[["y"]] <- 0
+card_offset <- card_center
+card_offset[["y"]] <- 0.75
+
+card_plots <- plot_cards(
+  "Poker card",
+  fill = "white",
+  linetype = "solid",
+  color = "black",
+  linewidth = 0.45,
+  n = 8,
+  border = TRUE,
+  inset = 0
+)
+
+card_plots[[1]]
+```
+
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+
+``` r
+# Add outline of image
+bordered_cards <- add_card_border(
+  card_plots,
+  card = card_offset,
+  color = "black",
+  linewidth = 0.25,
+  linetype = "solid",
+  inset = c(0.2, 1)
+)
+
+bordered_cards[[1]]
+```
+
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+
+``` r
+bordered_cards <- bordered_cards |>
+  add_card_border(
+    card = card_center,
+    color = "gray50",
+    linewidth = 0.25,
+    linetype = "solid",
+    inset = c(0.1, 0.1)
+  )
+
+bordered_cards[[1]]
+```
+
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+
+Card plots are then assembled in a page ready for export, printing, and
+cutting:
+
+``` r
+card_page <- page_layout(
+  plots = bordered_cards,
+  page = "Letter",
+  orientation = "landscape"
+)
+#> ℹ Using `dims` from first plot in `plots`.
+
+card_page[[1]]
+```
+
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+
+papersize currently has limited features but additional features are
+expected to include better support for multi-page layouts, control over
+the position of card elements, preset card formats/designs, and
 appropriate handling of cut-lines for DIY card printing.
