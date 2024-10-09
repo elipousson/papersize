@@ -36,7 +36,7 @@ dims will be used or dims will be determined based on the plot dimensions.}
 images data.frame as .x. Note that this template may vary if you are using
 a custom tags parameter or modify the "filenamr.exif_xwalk" option. See
 \code{\link[filenamr:read_exif]{filenamr::read_exif()}} for more details. Default:
-"{file_name}\\n{date_created}"}
+"\{file_name\}\\n\{date_created\}"}
 
 \item{caption_size}{Caption size, passed to \code{\link[ggplot2:element]{ggplot2::element_text()}} for
 plot.caption for theme, Default: 12}
