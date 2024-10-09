@@ -102,10 +102,10 @@ set_dist_units <- function(x = NULL,
   )
 
   value <- rlang::arg_match(
-      value,
-      values = allowed_units,
-      error_call = call
-    )
+    value,
+    values = allowed_units,
+    error_call = call
+  )
 
   units::set_units(
     x = x,
