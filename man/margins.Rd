@@ -3,18 +3,12 @@
 \name{margins}
 \alias{margins}
 \alias{is_margin}
-\alias{margin}
 \alias{get_margin}
 \title{Specify the margins of a page or element}
-\source{
-ggplot2 package
-}
 \usage{
 margins(margin = NULL, ..., unit = "in")
 
 is_margin(x)
-
-margin(t = 0, r = 0, b = 0, l = 0, unit = "pt")
 
 get_margin(margin = NULL, ..., unit = "in")
 }
@@ -28,12 +22,9 @@ get_margin(margin = NULL, ..., unit = "in")
 \item{unit}{Default units for margins (ignored if margin is a margin class
 object). Passed to \code{\link[=as_unit_type]{as_unit_type()}} so units class objects as well as unit
 names supported \code{\link[grid:unit]{grid::unit()}} are allowed. Defaults to "in" except for
-\code{\link[=margin]{margin()}} where unit defaults to "pt" to match \code{\link[ggplot2:element]{ggplot2::margin()}}.}
+\code{\link[ggplot2:element]{ggplot2::margin()}} where unit defaults to "pt" to match \code{\link[ggplot2:element]{ggplot2::margin()}}.}
 
 \item{x}{Object to check for class margin and unit}
-
-\item{t, r, b, l}{Dimensions of each margin: top, right, bottom, and left. (To
-remember order, think trouble).}
 }
 \description{
 An extended version of \code{\link[ggplot2:element]{ggplot2::margin()}} with more flexibility in
