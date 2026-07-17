@@ -33,7 +33,7 @@ test_that("convert_unit_type works", {
     grid::unit(1, "in")
   )
   expect_identical(
-    as_unit_type(margins(1, unit = "cm")),
+    unique(as_unit_type(margins(1, unit = "cm"))),
     "cm"
   )
   expect_false(
