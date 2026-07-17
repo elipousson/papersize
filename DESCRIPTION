@@ -2,7 +2,7 @@ Type: Package
 Package: papersize
 Title: Sizing Plots and Files for Paper
 Version: 0.1.1
-Authors@R: 
+Authors@R:
     person("Eli", "Pousson", , "eli.pousson@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-8280-1706"))
 Maintainer: Eli Pousson <eli.pousson@gmail.com>
@@ -13,23 +13,23 @@ License: MIT + file LICENSE
 URL: https://github.com/elipousson/papersize,
     https://elipousson.github.io/papersize/
 BugReports: https://github.com/elipousson/papersize/issues
-Depends: 
+Depends:
     R (>= 2.10)
-Imports: 
+Imports:
     cli (>= 3.4.0),
     cliExtras (>= 0.1.0),
     glue,
     grDevices,
     grid,
     lifecycle,
-    rlang (>= 1.1.0),
+    rlang,
     units,
     utils,
     vctrs
-Suggests: 
+Suggests:
     covr,
     filenamr,
-    ggplot2,
+    ggplot2 (>= 4.0.0),
     gridExtra,
     janitor,
     magick,
@@ -39,7 +39,7 @@ Suggests:
     sf,
     testthat (>= 3.0.0),
     withr
-Remotes: 
+Remotes:
     elipousson/cliExtras,
     elipousson/filenamr
 Config/testthat/edition: 3
@@ -47,4 +47,4 @@ Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3

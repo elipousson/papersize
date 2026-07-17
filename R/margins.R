@@ -36,6 +36,8 @@
 #' @importFrom rlang has_name
 #' @importFrom cli cli_abort
 margins <- function(margin = NULL, ..., unit = "in") {
+  check_installed("ggplot2")
+
   if (!missing(...)) {
     margin <- c(margin, ...)
   }
@@ -59,16 +61,16 @@ margins <- function(margin = NULL, ..., unit = "in") {
   }
 
   if (has_length(margin, 1)) {
-    margin <- rep(margin, 4)
+    return(ggplot2::margin_auto(margin, unit = unit))
   }
 
   if (has_length(margin, 4)) {
-    return(margin(margin[1], margin[2], margin[3], margin[4], unit))
+    return(ggplot2::margin(margin[1], margin[2], margin[3], margin[4], unit))
   }
 
   if (has_length(margin, 2)) {
     margin <- margin / 2
-    return(margin(margin[1], margin[2], margin[1], margin[2], unit))
+    return(ggplot2::margin(margin[1], margin[2], margin[1], margin[2], unit))
   }
 
   cli_abort(
@@ -81,29 +83,16 @@ margins <- function(margin = NULL, ..., unit = "in") {
 #' @param x Object to check for class margin and unit
 #' @export
 is_margin <- function(x) {
-  inherits(x, "margin") & inherits(x, "unit")
-}
-
-#' @name margin
-#' @rdname margins
-#' @param t,r,b,l Dimensions of each margin: top, right, bottom, and left. (To
-#'   remember order, think trouble).
-#' @source ggplot2 package
-#' @export
-#' @importFrom grid unit
-margin <- function(t = 0, r = 0, b = 0, l = 0, unit = "pt") {
-  u <- grid::unit(c(t, r, b, l), units = unit)
-  class(u) <- c("margin", class(u))
-  u
+  (inherits(x, "ggplot2::margin") |
+    inherits(x, "margin")) &
+    inherits(x, "unit")
 }
 
 #' @name get_margin
 #' @rdname margins
 #' @export
 #' @importFrom rlang arg_match
-get_margin <- function(margin = NULL,
-                       ...,
-                       unit = "in") {
+get_margin <- function(margin = NULL, ..., unit = "in") {
   if (is_margin(margin)) {
     return(margin)
   }
