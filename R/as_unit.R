@@ -48,12 +48,14 @@
 #' @importFrom rlang try_fetch
 #' @importFrom grid unit
 #' @importFrom cli cli_abort
-as_unit <- function(x,
-                    units = NULL,
-                    data = NULL,
-                    recurse = FALSE,
-                    arg = caller_arg(x),
-                    call = parent.frame()) {
+as_unit <- function(
+  x,
+  units = NULL,
+  data = NULL,
+  recurse = FALSE,
+  arg = caller_arg(x),
+  call = parent.frame()
+) {
   num <- suppressWarnings(as.numeric(x))
 
   cliExtras::cli_abort_if(
@@ -82,12 +84,14 @@ as_unit <- function(x,
 #' @importFrom rlang check_installed try_fetch
 #' @importFrom grid unitType unit
 #' @importFrom cli cli_abort
-as_unit_type <- function(x,
-                         recurse = FALSE,
-                         data = NULL,
-                         valid_units = NULL,
-                         arg = caller_arg(x),
-                         call = parent.frame()) {
+as_unit_type <- function(
+  x,
+  recurse = FALSE,
+  data = NULL,
+  valid_units = NULL,
+  arg = caller_arg(x),
+  call = parent.frame()
+) {
   if (!is_null(valid_units) && all(x %in% valid_units)) {
     return(x)
   }
@@ -129,12 +133,14 @@ as_unit_type <- function(x,
 #' @importFrom rlang check_installed is_named set_names
 #' @importFrom cli cli_warn
 #' @importFrom grid convertUnit
-convert_unit_type <- function(x,
-                              from = NULL,
-                              to = NULL,
-                              typeFrom = "dimension",
-                              valueOnly = FALSE,
-                              ...) {
+convert_unit_type <- function(
+  x,
+  from = NULL,
+  to = NULL,
+  typeFrom = "dimension",
+  valueOnly = FALSE,
+  ...
+) {
   if (is_null(to)) {
     return(x)
   }
@@ -167,14 +173,13 @@ convert_unit_type <- function(x,
 
   x <- as_unit(x, from)
 
-  x <-
-    grid::convertUnit(
-      x,
-      unitTo = as_unit_type(to),
-      valueOnly = valueOnly,
-      typeFrom = typeFrom,
-      ...
-    )
+  x <- grid::convertUnit(
+    x,
+    unitTo = as_unit_type(to),
+    valueOnly = valueOnly,
+    typeFrom = typeFrom,
+    ...
+  )
 
   rlang::set_names(x, nm)
 }
@@ -203,11 +208,13 @@ is_unit_type <- function(x, ...) {
 #' @rdname as_unit
 #' @param y Object to compare to x.
 #' @export
-is_same_unit_type <- function(x,
-                              y,
-                              recurse = FALSE,
-                              data = NULL,
-                              valid_units = NULL) {
+is_same_unit_type <- function(
+  x,
+  y,
+  recurse = FALSE,
+  data = NULL,
+  valid_units = NULL
+) {
   x <- as_unit_type(x, recurse, data, valid_units)
   y <- as_unit_type(y, recurse, data, valid_units)
   x == y

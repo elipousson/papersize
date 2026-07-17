@@ -106,12 +106,11 @@ Invisibly returns the original plot using a viewport from
 if (interactive() && is_installed("ggplot2")) {
   library(ggplot2)
 
-  plot <-
-    ggplot(mpg, aes(displ, hwy, colour = class)) +
+  p <- ggplot(mpg, aes(displ, hwy, colour = class)) +
     geom_point()
 
   print_to_page(
-    plot,
+    p,
     page = get_page_size("Tarot card")
   )
 }

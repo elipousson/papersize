@@ -36,20 +36,22 @@
 #' @export
 #' @importFrom grid unit
 #' @importFrom rlang has_name
-plot_cards <- function(card,
-                       n = 1,
-                       orientation = "portrait",
-                       number = FALSE,
-                       color = "white",
-                       size = 5,
-                       family = NULL,
-                       fill = "gray20",
-                       border = FALSE,
-                       inset = grid::unit(c(5, 5), "mm"),
-                       linetype = "dashed",
-                       linewidth = 1,
-                       text = NULL,
-                       center = NULL) {
+plot_cards <- function(
+  card,
+  n = 1,
+  orientation = "portrait",
+  number = FALSE,
+  color = "white",
+  size = 5,
+  family = NULL,
+  fill = "gray20",
+  border = FALSE,
+  inset = grid::unit(c(5, 5), "mm"),
+  linetype = "dashed",
+  linewidth = 1,
+  text = NULL,
+  center = NULL
+) {
   if (is_character(card)) {
     card <- get_card(card, orientation = orientation)
   }
@@ -88,10 +90,7 @@ plot_cards <- function(card,
 #' Helper to create a list of plots for n cards
 #'
 #' @noRd
-make_card_plots <- function(card,
-                            n = 1,
-                            fill = "gray20",
-                            fixed = TRUE) {
+make_card_plots <- function(card, n = 1, fill = "gray20", fixed = TRUE) {
   n <- c(1:n)
 
   if (has_length(fill, 2)) {
@@ -110,13 +109,14 @@ make_card_plots <- function(card,
 #'
 #' @noRd
 setup_card_plot <- function(
-    card,
-    fill = "gray20",
-    color = "gray90",
-    linetype = "solid",
-    linewidth = 0,
-    fixed = TRUE,
-    card_theme = ggplot2::theme_void()) {
+  card,
+  fill = "gray20",
+  color = "gray90",
+  linetype = "solid",
+  linewidth = 0,
+  fixed = TRUE,
+  card_theme = ggplot2::theme_void()
+) {
   check_installed("ggplot2")
   check_page(card, cols = c("width", "height", "x", "y"))
 
@@ -156,12 +156,14 @@ setup_card_plot <- function(
 #' @inheritParams ggplot2::geom_text
 #' @keywords internal card
 #' @export
-add_card_number <- function(plots,
-                            card = NULL,
-                            n = 1,
-                            color = "white",
-                            size = 5,
-                            family = NULL) {
+add_card_number <- function(
+  plots,
+  card = NULL,
+  n = 1,
+  color = "white",
+  size = 5,
+  family = NULL
+) {
   check_installed("ggplot2")
 
   n <- c(1:n)
@@ -171,18 +173,19 @@ add_card_number <- function(plots,
   map(
     n,
     function(i) {
-      card_number <-
-        data.frame(
-          "x" = card$x,
-          "y" = card$y,
-          "label" = i
-        )
+      card_number <- data.frame(
+        "x" = card$x,
+        "y" = card$y,
+        "label" = i
+      )
 
       plots[[i]] +
         geom_text_if_family(
           data = card_number,
           mapping = ggplot2::aes(x = x, y = y, label = label),
-          color = color, size = size, family = family
+          color = color,
+          size = size,
+          family = family
         )
     }
   )
@@ -198,13 +201,15 @@ add_card_number <- function(plots,
 #'   [ggplot2::geom_tile()]
 #' @keywords internal card
 #' @export
-add_card_border <- function(plots,
-                            card = NULL,
-                            inset = grid::unit(c(5, 5), "mm"),
-                            fill = NA,
-                            color = "white",
-                            linetype = "dashed",
-                            linewidth = 1) {
+add_card_border <- function(
+  plots,
+  card = NULL,
+  inset = grid::unit(c(5, 5), "mm"),
+  fill = NA,
+  color = "white",
+  linetype = "dashed",
+  linewidth = 1
+) {
   check_installed("ggplot2")
 
   inset_card <- inset_page(card, inset)
@@ -240,14 +245,16 @@ add_card_border <- function(plots,
 #' @inheritParams ggplot2::geom_text
 #' @keywords internal card
 #' @export
-add_card_text <- function(plots,
-                          card = NULL,
-                          text = NULL,
-                          color = "white",
-                          size = 5,
-                          family = NULL,
-                          nudge_x = 0,
-                          nudge_y = 0.5) {
+add_card_text <- function(
+  plots,
+  card = NULL,
+  text = NULL,
+  color = "white",
+  size = 5,
+  family = NULL,
+  nudge_x = 0,
+  nudge_y = 0.5
+) {
   check_installed("ggplot2")
 
   if (is_null(text)) {
@@ -265,12 +272,11 @@ add_card_text <- function(plots,
       length(text) == n
     )
 
-    text <-
-      data.frame(
-        "label" = text,
-        "x" = rep(card$x + nudge_x, n),
-        "y" = rep(card$y + nudge_y, n)
-      )
+    text <- data.frame(
+      "label" = text,
+      "x" = rep(card$x + nudge_x, n),
+      "y" = rep(card$y + nudge_y, n)
+    )
 
     plots <- map(
       c(1:n),

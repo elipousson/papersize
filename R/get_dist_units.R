@@ -46,9 +46,7 @@ is_dist_units <- function(x, arg = caller_arg(x)) {
 #' @export
 #' @importFrom rlang check_installed arg_match caller_arg
 #' @importFrom cliExtras cli_warn_ifnot cli_abort_ifnot
-get_dist_units <- function(x,
-                           arg = caller_arg(x),
-                           call = parent.frame()) {
+get_dist_units <- function(x, arg = caller_arg(x), call = parent.frame()) {
   rlang::check_required(x)
   if (is_null(x)) {
     return(x)
@@ -84,23 +82,24 @@ get_dist_units <- function(x,
   if (is_unit(x)) {
     unit_type <- as_unit_type(x)
 
-    unit_type <-
-      rlang::try_fetch(
-        rlang::arg_match(
-          arg = unit_type,
-          values = papersize::grid_units[c(2:13)],
-          error_arg = arg,
-          error_call = call
-        ),
-        error = function(cnd) {
-          cli_abort(
-            c("i" = "{.arg {arg}} is a {.cls unit} object and the provided
-            {.val {unit_type}} unit type can't be used."),
-            parent = cnd,
-            call = call
-          )
-        }
-      )
+    unit_type <- rlang::try_fetch(
+      rlang::arg_match(
+        arg = unit_type,
+        values = papersize::grid_units[c(2:13)],
+        error_arg = arg,
+        error_call = call
+      ),
+      error = function(cnd) {
+        cli_abort(
+          c(
+            "i" = "{.arg {arg}} is a {.cls unit} object and the provided
+            {.val {unit_type}} unit type can't be used."
+          ),
+          parent = cnd,
+          call = call
+        )
+      }
+    )
 
     return(unit_type)
   }
@@ -115,7 +114,8 @@ get_dist_units <- function(x,
   }
 
   cli_abort(
-    c("{.arg {arg}} must be a {.cls character} string matching a value from
+    c(
+      "{.arg {arg}} must be a {.cls character} string matching a value from
     {.code dist_unit_options} or {.code area_unit_options}, a {.cls units}
     object, or a {.cls sf} object with a valid crs.",
       "i" = "{.arg {arg}} is a {.cls {class(x)}} class object."
@@ -132,10 +132,12 @@ get_dist_units <- function(x,
 #' @importFrom rlang caller_arg check_installed is_interactive
 #' @importFrom cliExtras cli_abort_if cli_yesno
 #' @importFrom units as_units
-as_dist_units <- function(x,
-                          units = NULL,
-                          arg = caller_arg(x),
-                          call = parent.frame()) {
+as_dist_units <- function(
+  x,
+  units = NULL,
+  arg = caller_arg(x),
+  call = parent.frame()
+) {
   units <- get_dist_units(units, call = call)
 
   if (is_bare_numeric(x) && !is_units(x)) {
@@ -173,18 +175,31 @@ is_same_units <- function(x, y = NULL) {
   x <- as_units_attr(x)
   y <- as_units_attr(y)
 
-  in_opts <- c("in", "inch", "inches", "international_inch", "international_inches")
+  in_opts <- c(
+    "in",
+    "inch",
+    "inches",
+    "international_inch",
+    "international_inches"
+  )
   ft_opts <- c("ft", "foot", "feet", "international_foot", "international_feet")
-  yd_opts <- c("yd", "yard", "yards", "international_yard", "international_yards")
+  yd_opts <- c(
+    "yd",
+    "yard",
+    "yards",
+    "international_yard",
+    "international_yards"
+  )
 
   nums <- c(x[["numerator"]], y[["numerator"]])
   dens <- c(x[["denominator"]], y[["denominator"]])
 
-  if (any(
-    c(all(nums %in% in_opts), all(nums %in% ft_opts), all(nums %in% yd_opts))
-  ) && (
-    all(dens == character(0)) || (dens[1] == dens[2])
-  )) {
+  if (
+    any(
+      c(all(nums %in% in_opts), all(nums %in% ft_opts), all(nums %in% yd_opts))
+    ) &&
+      (all(dens == character(0)) || (dens[1] == dens[2]))
+  ) {
     return(TRUE)
   }
 

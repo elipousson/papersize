@@ -42,37 +42,39 @@
 #' @rdname ggsave_ext
 #' @export
 #' @importFrom cli cli_alert_success
-ggsave_ext <- function(plot = ggplot2::last_plot(),
-                       name = NULL,
-                       label = NULL,
-                       prefix = NULL,
-                       postfix = NULL,
-                       increment = NULL,
-                       filename = NULL,
-                       device = NULL,
-                       fileext = NULL,
-                       filetype = NULL,
-                       path = NULL,
-                       paper = NULL,
-                       orientation = NULL,
-                       width = NULL,
-                       height = NULL,
-                       asp = NULL,
-                       units = getOption("papersize.ggsave_units", "in"),
-                       scale = 1,
-                       dpi = 300,
-                       bgcolor = NULL,
-                       exif = FALSE,
-                       title = NULL,
-                       author = NULL,
-                       keywords = NULL,
-                       args = NULL,
-                       overwrite = TRUE,
-                       ask = FALSE,
-                       preview = FALSE,
-                       limitsize = TRUE,
-                       quiet = FALSE,
-                       ...) {
+ggsave_ext <- function(
+  plot = ggplot2::last_plot(),
+  name = NULL,
+  label = NULL,
+  prefix = NULL,
+  postfix = NULL,
+  increment = NULL,
+  filename = NULL,
+  device = NULL,
+  fileext = NULL,
+  filetype = NULL,
+  path = NULL,
+  paper = NULL,
+  orientation = NULL,
+  width = NULL,
+  height = NULL,
+  asp = NULL,
+  units = getOption("papersize.ggsave_units", "in"),
+  scale = 1,
+  dpi = 300,
+  bgcolor = NULL,
+  exif = FALSE,
+  title = NULL,
+  author = NULL,
+  keywords = NULL,
+  args = NULL,
+  overwrite = TRUE,
+  ask = FALSE,
+  preview = FALSE,
+  limitsize = TRUE,
+  quiet = FALSE,
+  ...
+) {
   check_installed("filenamr")
 
   fileext <- fileext %||% filetype
@@ -193,15 +195,17 @@ gg_units <- list(
 #'
 #' @noRd
 #' @importFrom cli cli_alert_warning
-set_ggsave_dims <- function(paper = NULL,
-                            orientation = NULL,
-                            width = NULL,
-                            height = NULL,
-                            asp = NULL,
-                            units = getOption("papersize.ggsave_units", "in"),
-                            limitsize = TRUE,
-                            cols = c("width", "height"),
-                            call = caller_env()) {
+set_ggsave_dims <- function(
+  paper = NULL,
+  orientation = NULL,
+  width = NULL,
+  height = NULL,
+  asp = NULL,
+  units = getOption("papersize.ggsave_units", "in"),
+  limitsize = TRUE,
+  cols = c("width", "height"),
+  call = caller_env()
+) {
   units_col <- get_units_col()
   if (!is_null(paper)) {
     paper <- get_page_size(paper, orientation = orientation)
@@ -234,7 +238,11 @@ set_ggsave_dims <- function(paper = NULL,
     "units" = page[[units_col]]
   )
 
-  if (any((c(dims[["width"]], dims[["height"]]) > 50)) && (units == "in") && limitsize) {
+  if (
+    any((c(dims[["width"]], dims[["height"]]) > 50)) &&
+      (units == "in") &&
+      limitsize
+  ) {
     cli::cli_alert_warning(
       "Switching {.arg units} from default {.val in} to {.val px} when
       dimensions exceed 50 inches and {.code limitsize = TRUE}."
@@ -263,20 +271,22 @@ replace_with_gg_units <- function(x) {
 #' @inheritParams get_social_size
 #' @export
 #' @importFrom rlang exec list2
-ggsave_social <- function(plot = ggplot2::last_plot(),
-                          image = "Instagram post",
-                          platform = NULL,
-                          format = NULL,
-                          orientation = NULL,
-                          name = NULL,
-                          filename = NULL,
-                          fileext = "jpeg",
-                          filetype = NULL,
-                          dpi = 72,
-                          width = 1080,
-                          height = 1080,
-                          units = "px",
-                          ...) {
+ggsave_social <- function(
+  plot = ggplot2::last_plot(),
+  image = "Instagram post",
+  platform = NULL,
+  format = NULL,
+  orientation = NULL,
+  name = NULL,
+  filename = NULL,
+  fileext = "jpeg",
+  filetype = NULL,
+  dpi = 72,
+  width = 1080,
+  height = 1080,
+  units = "px",
+  ...
+) {
   fileext <- fileext %||% filetype
 
   image_size <- get_social_size(
@@ -314,20 +324,22 @@ ggsave_social <- function(plot = ggplot2::last_plot(),
 #' @export
 #' @importFrom cli cli_alert_warning cli_bullets cli_progress_step
 #'   cli_progress_update
-map_ggsave_ext <- function(plot,
-                           name = NULL,
-                           label = NULL,
-                           prefix = NULL,
-                           postfix = "pg_",
-                           filename = NULL,
-                           device = NULL,
-                           fileext = NULL,
-                           filetype = NULL,
-                           path = NULL,
-                           overwrite = TRUE,
-                           ...,
-                           single_file = TRUE,
-                           onefile = TRUE) {
+map_ggsave_ext <- function(
+  plot,
+  name = NULL,
+  label = NULL,
+  prefix = NULL,
+  postfix = "pg_",
+  filename = NULL,
+  device = NULL,
+  fileext = NULL,
+  filetype = NULL,
+  path = NULL,
+  overwrite = TRUE,
+  ...,
+  single_file = TRUE,
+  onefile = TRUE
+) {
   fileext <- fileext %||% filetype
 
   if (!identical(single_file, onefile)) {
@@ -340,7 +352,8 @@ map_ggsave_ext <- function(plot,
 
   if (!is_gg_list(plot)) {
     cli_abort(
-      c("{.arg plot} must be a list of {.cls gg} objects.",
+      c(
+        "{.arg plot} must be a list of {.cls gg} objects.",
         "i" = "Use {.fn ggsave_ext} for a single plot."
       )
     )

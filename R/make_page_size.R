@@ -36,17 +36,19 @@
 #' @seealso [get_page_size()]
 #' @export
 #' @importFrom rlang check_required set_names arg_match
-make_page_size <- function(width = NULL,
-                           height = NULL,
-                           units,
-                           asp = NULL,
-                           orientation = NULL,
-                           name = NULL,
-                           dims = NULL,
-                           valid_units = NULL,
-                           cols = c("width", "height"),
-                           class = "data.frame",
-                           call = caller_env()) {
+make_page_size <- function(
+  width = NULL,
+  height = NULL,
+  units,
+  asp = NULL,
+  orientation = NULL,
+  name = NULL,
+  dims = NULL,
+  valid_units = NULL,
+  cols = c("width", "height"),
+  class = "data.frame",
+  call = caller_env()
+) {
   if (is_named(dims)) {
     if (has_name(dims, cols[1])) {
       width <- width %||% as.numeric(dims[[cols[1]]])
@@ -131,10 +133,12 @@ page_to_list <- function(x) {
 #' Check if correct input args are provided
 #'
 #' @noRd
-check_page_asp <- function(width = NULL,
-                           height = NULL,
-                           asp = NULL,
-                           call = caller_env()) {
+check_page_asp <- function(
+  width = NULL,
+  height = NULL,
+  asp = NULL,
+  call = caller_env()
+) {
   cli_if(
     x = is_null(width) && is_null(height),
     "{.arg width} or {.arg height} must be provided.",

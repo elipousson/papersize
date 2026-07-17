@@ -17,7 +17,12 @@
 #'
 #' @seealso [get_page_size()]
 #' @export
-get_social_size <- function(name = NULL, platform = NULL, format = NULL, orientation = NULL) {
+get_social_size <- function(
+  name = NULL,
+  platform = NULL,
+  format = NULL,
+  orientation = NULL
+) {
   image_sizes <- get_page_size(type = "social")
 
   if (!is_null(platform)) {
@@ -37,11 +42,10 @@ get_social_size <- function(name = NULL, platform = NULL, format = NULL, orienta
     name_opts <- tolower(as.character(image_sizes$name))
     name <- arg_match(name, name_opts)
 
-    image_sizes <-
-      filter_data(
-        image_sizes,
-        name
-      )
+    image_sizes <- filter_data(
+      image_sizes,
+      name
+    )
   }
 
   set_page_orientation(

@@ -17,10 +17,12 @@
 #' @export
 #' @importFrom rlang check_required
 #' @importFrom grid viewport
-page_to_viewport <- function(page,
-                             name = NULL,
-                             cols = c("width", "height"),
-                             ...) {
+page_to_viewport <- function(
+  page,
+  name = NULL,
+  cols = c("width", "height"),
+  ...
+) {
   rlang::check_required(page)
   check_page(page, cols, n = 1)
 

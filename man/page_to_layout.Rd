@@ -78,8 +78,7 @@ units as the input page size.
 Convert a page size data.frame to a Grid layout object
 }
 \examples{
-a8_layout <-
-  page_to_layout(
+a8_layout <- page_to_layout(
     get_paper("A8", orientation = "landscape"),
     ncol = 2,
     nrow = 2

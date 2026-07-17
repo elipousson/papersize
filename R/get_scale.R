@@ -14,9 +14,7 @@
 #'   match parameters.
 #' @export
 #' @importFrom rlang arg_match
-get_scale <- function(scale = NULL,
-                      standard = NULL,
-                      series = NULL) {
+get_scale <- function(scale = NULL, standard = NULL, series = NULL) {
   scales <- filter_data(papersize::standard_scales, scale)
 
   if (!is_null(standard)) {

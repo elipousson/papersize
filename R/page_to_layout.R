@@ -11,8 +11,7 @@
 #' @inheritParams grid::grid.layout
 #' @inheritParams make_page_size
 #' @examples
-#' a8_layout <-
-#'   page_to_layout(
+#' a8_layout <- page_to_layout(
 #'     get_paper("A8", orientation = "landscape"),
 #'     ncol = 2,
 #'     nrow = 2
@@ -24,18 +23,20 @@
 #'   units as the input page size.
 #' @export
 #' @importFrom grid unit grid.layout
-page_to_layout <- function(page,
-                           margins = NULL,
-                           region = NULL,
-                           ncol = 1,
-                           nrow = 1,
-                           gutter = NULL,
-                           widths = NULL,
-                           heights = NULL,
-                           units = "in",
-                           respect = TRUE,
-                           just = "center",
-                           cols = c("width", "height")) {
+page_to_layout <- function(
+  page,
+  margins = NULL,
+  region = NULL,
+  ncol = 1,
+  nrow = 1,
+  gutter = NULL,
+  widths = NULL,
+  heights = NULL,
+  units = "in",
+  respect = TRUE,
+  just = "center",
+  cols = c("width", "height")
+) {
   check_page(page, cols, n = 1)
 
   page_units <- as.character(page[[get_units_col()]])
@@ -65,7 +66,8 @@ page_to_layout <- function(page,
 
   if (sum_num(widths) > page_width) {
     cli_abort(
-      c("Column widths must be less than {.arg page} width ({page_width}).",
+      c(
+        "Column widths must be less than {.arg page} width ({page_width}).",
         "i" = "Use a smaller {.arg ncol} value."
       )
     )
@@ -73,7 +75,8 @@ page_to_layout <- function(page,
 
   if (sum_num(heights) > page_height) {
     cli_abort(
-      c("Row heights must be less than {.arg page} height ({page_height}).",
+      c(
+        "Row heights must be less than {.arg page} height ({page_height}).",
         "i" = "Use a smaller {.arg nrow} value."
       )
     )

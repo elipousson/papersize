@@ -1,26 +1,28 @@
 #' @noRd
-seq_number <- function(x,
-                       start = NULL,
-                       num_prefix = NULL,
-                       num_suffix = NULL,
-                       num_style = NULL,
-                       pad = NULL,
-                       side = "left",
-                       base = 26) {
+seq_number <- function(
+  x,
+  start = NULL,
+  num_prefix = NULL,
+  num_suffix = NULL,
+  num_style = NULL,
+  pad = NULL,
+  side = "left",
+  base = 26
+) {
   num_style <- set_number_style(start, num_style)
 
   num <- set_start_number(seq_along(x), start, num_style)
 
-  num <-
-    switch(num_style,
-      "arabic" = num,
-      "alph" = int_to_alpha(num, base = base, dict = letters),
-      "alpha" = int_to_alpha(num, base = base, dict = letters),
-      "Alph" = int_to_alpha(num, base = base),
-      "Alpha" = int_to_alpha(num, base = base),
-      "roman" = int_to_roman(num, FALSE),
-      "Roman" = int_to_roman(num)
-    )
+  num <- switch(
+    num_style,
+    "arabic" = num,
+    "alph" = int_to_alpha(num, base = base, dict = letters),
+    "alpha" = int_to_alpha(num, base = base, dict = letters),
+    "Alph" = int_to_alpha(num, base = base),
+    "Alpha" = int_to_alpha(num, base = base),
+    "roman" = int_to_roman(num, FALSE),
+    "Roman" = int_to_roman(num)
+  )
 
   if (!is.null(pad)) {
     num <- str_pad(num, max(nchar(num)), side, pad)
@@ -36,11 +38,10 @@ seq_number <- function(x,
 #' @noRd
 set_number_style <- function(start = NULL, num_style = NULL) {
   if (!is.null(num_style)) {
-    num_style <-
-      match.arg(
-        num_style,
-        c("arabic", "alph", "Alph", "alpha", "Alpha", "roman", "Roman")
-      )
+    num_style <- match.arg(
+      num_style,
+      c("arabic", "alph", "Alph", "alpha", "Alpha", "roman", "Roman")
+    )
 
     return(num_style)
   }
@@ -52,7 +53,6 @@ set_number_style <- function(start = NULL, num_style = NULL) {
   if (start == "i") {
     return("roman")
   }
-
 
   if (start == "I") {
     return("Roman")
@@ -88,7 +88,6 @@ set_start_number <- function(x, start = NULL, num_style = "arabic") {
     stopifnot(is.integer(start))
   }
 
-
   x + (start - 1)
 }
 
@@ -115,17 +114,22 @@ set_start_number <- function(x, start = NULL, num_style = "arabic") {
 #' @returns An integer vector composed of objects between 1 and 26 with the same
 #'   length as x.
 #' @noRd
-int_to_alpha <- function(x,
-                         suffix = NULL,
-                         base = 26,
-                         dict = LETTERS,
-                         strict = FALSE) {
+int_to_alpha <- function(
+  x,
+  suffix = NULL,
+  base = 26,
+  dict = LETTERS,
+  strict = FALSE
+) {
   if (length(x) > 1) {
     x <- vapply(
       x,
       int_to_alpha,
       NA_character_,
-      suffix, base, dict, strict,
+      suffix,
+      base,
+      dict,
+      strict,
       USE.NAMES = FALSE
     )
 
@@ -171,9 +175,7 @@ int_to_alpha <- function(x,
 #'   to improve error messages.
 #' @returns A length 1 integer between 1 and 26.
 #' @noRd
-alpha_to_int <- function(x,
-                         dict = LETTERS,
-                         strict = FALSE) {
+alpha_to_int <- function(x, dict = LETTERS, strict = FALSE) {
   if (strict) {
     stopifnot(
       max(nchar(x)) == max(nchar(dict)),

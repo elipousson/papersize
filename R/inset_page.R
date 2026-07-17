@@ -7,11 +7,13 @@
 #' @param pct_inset Percent inset based on existing page dimensions.
 #' @inheritParams as_unit
 #' @keywords internal
-inset_page <- function(page,
-                       inset = 0.1,
-                       units = "in",
-                       pct_inset = NULL,
-                       cols = c("width", "height")) {
+inset_page <- function(
+  page,
+  inset = 0.1,
+  units = "in",
+  pct_inset = NULL,
+  cols = c("width", "height")
+) {
   units_col <- get_units_col()
 
   if (!is_unit(inset) && is_null(pct_inset)) {
@@ -19,7 +21,11 @@ inset_page <- function(page,
   }
 
   if (is_unit(inset)) {
-    dims <- get_inset_dims(c(page[[cols[1]]], page[[cols[2]]]), page[[units_col]], inset)
+    dims <- get_inset_dims(
+      c(page[[cols[1]]], page[[cols[2]]]),
+      page[[units_col]],
+      inset
+    )
     return(set_page_dims(page, dims, cols = cols))
   }
 
@@ -40,10 +46,12 @@ inset_page <- function(page,
 #' @noRd
 #' @importFrom grid unit
 #' @importFrom rlang set_names
-get_inset_dims <- function(dims,
-                           units = "in",
-                           inset = unit(1, "in"),
-                           nm = c("width", "height")) {
+get_inset_dims <- function(
+  dims,
+  units = "in",
+  inset = unit(1, "in"),
+  nm = c("width", "height")
+) {
   inset <- convert_unit_type(inset, to = units, valueOnly = TRUE)
 
   if (has_length(inset, 1)) {

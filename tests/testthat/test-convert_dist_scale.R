@@ -5,12 +5,19 @@ test_that("convert_dist_scale works", {
   )
 
   expect_equal(
-    convert_dist_scale(paper = "letter", scale = "1 in = 10 feet")[["actual_width"]],
+    convert_dist_scale(paper = "letter", scale = "1 in = 10 feet")[[
+      "actual_width"
+    ]],
     units::as_units(85, "ft")
   )
 
   expect_equal(
-    convert_dist_scale(dist = 100, scale_unit = "mm", actual_unit = "km", scale_factor = 1),
+    convert_dist_scale(
+      dist = 100,
+      scale_unit = "mm",
+      actual_unit = "km",
+      scale_factor = 1
+    ),
     units::as_units(10, "km")
   )
 })

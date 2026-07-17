@@ -1,6 +1,10 @@
 utils::globalVariables(
   c(
-    "height", "label", "width", "x", "y"
+    "height",
+    "label",
+    "width",
+    "x",
+    "y"
   )
 )
 
@@ -13,7 +17,6 @@ utils::globalVariables(
 # @staticimports pkg:isstatic
 #  is_unit is_gg is_units is_sf is_sf_ext is_patchwork as_orientation
 #  str_add_fileext str_remove_fileext str_extract_fileext is_gg_list
-
 
 #' Get the names of geoms from a ggplot
 #'
@@ -41,7 +44,12 @@ has_annotation <- function(p) {
 
 #' @noRd
 #' @importFrom rlang caller_arg
-filter_data <- function(x, y = NULL, col = rlang::caller_arg(y), ignore.case = TRUE) {
+filter_data <- function(
+  x,
+  y = NULL,
+  col = rlang::caller_arg(y),
+  ignore.case = TRUE
+) {
   if (is_null(y)) {
     return(x)
   }
@@ -80,21 +88,24 @@ sum_num <- function(x) {
 #' Helper to passed family as fixed aesthetic conditionally
 #'
 #' @noRd
-geom_text_if_family <- function(data,
-                                mapping = ggplot2::aes(
-                                  x = x,
-                                  y = y,
-                                  label = label
-                                ),
-                                family = NULL,
-                                ...) {
+geom_text_if_family <- function(
+  data,
+  mapping = ggplot2::aes(
+    x = x,
+    y = y,
+    label = label
+  ),
+  family = NULL,
+  ...
+) {
   check_installed("ggplot2")
 
   if (!is_null(family)) {
     ggplot2::geom_text(
       data = data,
       mapping = mapping,
-      family = family, ...
+      family = family,
+      ...
     )
   } else {
     ggplot2::geom_text(
@@ -111,11 +122,13 @@ geom_text_if_family <- function(data,
 #' @noRd
 #' @importFrom rlang fn_fmls is_missing list2
 #' @importFrom utils modifyList
-modify_fn_fmls <- function(params,
-                           fn,
-                           keep_missing = FALSE,
-                           keep.null = FALSE,
-                           ...) {
+modify_fn_fmls <- function(
+  params,
+  fn,
+  keep_missing = FALSE,
+  keep.null = FALSE,
+  ...
+) {
   fmls <- fn_fmls(fn)
 
   if (!keep_missing) {

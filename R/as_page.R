@@ -22,10 +22,7 @@
 #' @returns A data.frame or list object with one or more page dimensions.
 #' @export
 #' @importFrom rlang is_character is_named is_bare_numeric has_length list2
-as_page <- function(x,
-                    ...,
-                    cols = c("width", "height"),
-                    class = "data.frame") {
+as_page <- function(x, ..., cols = c("width", "height"), class = "data.frame") {
   is_page_nm <- is_character(x) &&
     all(tolower(x) %in% tolower(papersize::paper_sizes[["name"]]))
 

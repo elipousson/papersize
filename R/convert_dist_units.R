@@ -23,11 +23,13 @@
 #' @seealso [is_same_unit_type()]
 #' @export
 #' @importFrom units drop_units
-convert_dist_units <- function(dist,
-                               from = NULL,
-                               to = "meter",
-                               drop = FALSE,
-                               digits = NULL) {
+convert_dist_units <- function(
+  dist,
+  from = NULL,
+  to = "meter",
+  drop = FALSE,
+  digits = NULL
+) {
   cliExtras::cli_abort_ifnot(
     "{.arg dist} must be a {.cls numeric} or
     {.cls units} object." = any(c(is_bare_numeric(dist), is_units(dist)))
@@ -46,7 +48,8 @@ convert_dist_units <- function(dist,
 
     if (!is_null(from)) {
       cliExtras::cli_warn_ifnot(
-        message = c("{.arg dist} is class {.cls units} and has different units than
+        message = c(
+          "{.arg dist} is class {.cls units} and has different units than
         {.arg from} ({.val {from}}).",
           "*" = "Replacing {.arg from} with {.val {dist_from}}."
         ),
@@ -86,10 +89,12 @@ convert_dist_units <- function(dist,
 #' @noRd
 #' @importFrom rlang caller_env arg_match
 #' @importFrom units set_units
-set_dist_units <- function(x = NULL,
-                           value = NULL,
-                           mode = "standard",
-                           call = caller_env()) {
+set_dist_units <- function(
+  x = NULL,
+  value = NULL,
+  mode = "standard",
+  call = caller_env()
+) {
   if (is_null(value)) {
     return(x)
   }

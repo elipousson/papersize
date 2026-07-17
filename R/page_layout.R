@@ -33,22 +33,24 @@
 #' @rdname page_layout
 #' @aliases layout_cards
 #' @export
-page_layout <- function(plots = NULL,
-                        page = NULL,
-                        width = NULL,
-                        height = NULL,
-                        orientation = "landscape",
-                        byrow = FALSE,
-                        guides = NULL,
-                        tag_level = NULL,
-                        design = NULL,
-                        paginate = TRUE,
-                        ncol = NULL,
-                        nrow = NULL,
-                        dims = NULL,
-                        images = FALSE,
-                        dpi = 120,
-                        call = caller_env()) {
+page_layout <- function(
+  plots = NULL,
+  page = NULL,
+  width = NULL,
+  height = NULL,
+  orientation = "landscape",
+  byrow = FALSE,
+  guides = NULL,
+  tag_level = NULL,
+  design = NULL,
+  paginate = TRUE,
+  ncol = NULL,
+  nrow = NULL,
+  dims = NULL,
+  images = FALSE,
+  dpi = 120,
+  call = caller_env()
+) {
   check_installed(c("ggplot2", "patchwork"), call = call)
 
   page_grid <- set_page_grid(
@@ -116,15 +118,17 @@ page_layout <- function(plots = NULL,
 }
 
 #' @noRd
-set_page_grid <- function(plots = NULL,
-                          page = NULL,
-                          ncol = NULL,
-                          nrow = NULL,
-                          dims = NULL,
-                          images = FALSE,
-                          dpi = 120,
-                          ...,
-                          call = caller_env()) {
+set_page_grid <- function(
+  plots = NULL,
+  page = NULL,
+  ncol = NULL,
+  nrow = NULL,
+  dims = NULL,
+  images = FALSE,
+  dpi = 120,
+  ...,
+  call = caller_env()
+) {
   if (!is_null(ncol) && !is_null(nrow)) {
     if (!is_null(dims)) {
       cli_alert_warning(

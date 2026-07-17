@@ -34,17 +34,19 @@
 #' @rdname inset_page_element
 #' @export
 #' @importFrom rlang check_installed
-inset_page_element <- function(p,
-                               inset_page = NULL,
-                               left = NULL,
-                               bottom = NULL,
-                               right = NULL,
-                               top = NULL,
-                               align_to = "panel",
-                               on_top = TRUE,
-                               clip = TRUE,
-                               ignore_tag = FALSE,
-                               ...) {
+inset_page_element <- function(
+  p,
+  inset_page = NULL,
+  left = NULL,
+  bottom = NULL,
+  right = NULL,
+  top = NULL,
+  align_to = "panel",
+  on_top = TRUE,
+  clip = TRUE,
+  ignore_tag = FALSE,
+  ...
+) {
   if (!is_null(inset_page)) {
     pg_unit <- inset_page[[get_units_col()]]
     pg_w <- as_unit(inset_page[["width"]], pg_unit)

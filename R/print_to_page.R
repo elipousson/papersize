@@ -10,12 +10,11 @@
 #' if (interactive() && is_installed("ggplot2")) {
 #'   library(ggplot2)
 #'
-#'   plot <-
-#'     ggplot(mpg, aes(displ, hwy, colour = class)) +
+#'   p <- ggplot(mpg, aes(displ, hwy, colour = class)) +
 #'     geom_point()
 #'
 #'   print_to_page(
-#'     plot,
+#'     p,
 #'     page = get_page_size("Tarot card")
 #'   )
 #' }
@@ -49,28 +48,31 @@ print_to_page <- function(plot, page, newpage = TRUE, vp = NULL, ...) {
 #' @inheritParams ggplot2::ggsave
 #' @inheritDotParams page_to_layout
 #' @export
-print_to_page_layout <- function(plot,
-                                 page,
-                                 row_position = 1,
-                                 col_position = 1,
-                                 row_height = NULL,
-                                 col_width = NULL,
-                                 nrow = 1,
-                                 ncol = 1,
-                                 layout = NULL,
-                                 parent = NULL,
-                                 children = NULL,
-                                 filename = NULL,
-                                 ...) {
+print_to_page_layout <- function(
+  plot,
+  page,
+  row_position = 1,
+  col_position = 1,
+  row_height = NULL,
+  col_width = NULL,
+  nrow = 1,
+  ncol = 1,
+  layout = NULL,
+  parent = NULL,
+  children = NULL,
+  filename = NULL,
+  ...
+) {
   nrow <- max(nrow, row_position)
   ncol <- max(ncol, col_position)
 
-  layout <- layout %||% page_to_layout(
-    page,
-    ncol = ncol,
-    nrow = nrow,
-    ...
-  )
+  layout <- layout %||%
+    page_to_layout(
+      page,
+      ncol = ncol,
+      nrow = nrow,
+      ...
+    )
 
   parent <- parent %||%
     page_to_viewport(
@@ -78,13 +80,14 @@ print_to_page_layout <- function(plot,
       layout = layout
     )
 
-  children <- children %||% grid::vpList(
-    grid::viewport(
-      name = paste0(paste0("Row", row_position), paste0("Col", col_position)),
-      layout.pos.row = row_position,
-      layout.pos.col = col_position
+  children <- children %||%
+    grid::vpList(
+      grid::viewport(
+        name = paste0(paste0("Row", row_position), paste0("Col", col_position)),
+        layout.pos.row = row_position,
+        layout.pos.col = col_position
+      )
     )
-  )
 
   page_vp <- grid::vpTree(
     parent = parent,
@@ -110,19 +113,22 @@ print_to_page_layout <- function(plot,
 }
 
 #' @noRd
-get_region_dims <- function(page,
-                            cols = NULL,
-                            rows = NULL,
-                            layout = NULL,
-                            ncol = 1,
-                            nrow = 1,
-                            ...) {
-  layout <- layout %||% page_to_layout(
-    page,
-    ncol = max(cols, ncol),
-    nrow = max(rows, nrow),
-    ...
-  )
+get_region_dims <- function(
+  page,
+  cols = NULL,
+  rows = NULL,
+  layout = NULL,
+  ncol = 1,
+  nrow = 1,
+  ...
+) {
+  layout <- layout %||%
+    page_to_layout(
+      page,
+      ncol = max(cols, ncol),
+      nrow = max(rows, nrow),
+      ...
+    )
 
   c(
     sum_num(layout[["widths"]][cols %||% 1]),
@@ -146,6 +152,6 @@ check_ggplot <- function(plot, class = NULL) {
 
   cli_abort_ifnot(
     message = message,
-    condition = ggplot2::is.ggplot(plot) || inherits_class
+    condition = ggplot2::is_ggplot(plot) || inherits_class
   )
 }

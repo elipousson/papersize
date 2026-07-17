@@ -13,11 +13,13 @@
 #' @seealso [ggplot2::margin()]; [set_page_dims()]; [set_page_orientation()];
 #'   [set_page_asp()]
 #' @export
-set_page_margin <- function(page = NULL,
-                            margins,
-                            unit = "in",
-                            cols = c("width", "height"),
-                            ...) {
+set_page_margin <- function(
+  page = NULL,
+  margins,
+  unit = "in",
+  cols = c("width", "height"),
+  ...
+) {
   page <- as_page(page, ..., cols = cols)
   rlang::check_required(margins)
   margin <- get_margin(margins, unit = unit)
@@ -31,12 +33,16 @@ set_page_margin <- function(page = NULL,
 
   cli_abort_if(
     "Combined l and r margin value ({width_margin}) must be less than
-    the {.arg page} width ({page[[cols[1]]]})." = all(width_margin >= page[[cols[1]]])
+    the {.arg page} width ({page[[cols[1]]]})." = all(
+      width_margin >= page[[cols[1]]]
+    )
   )
 
   cli_abort_if(
     "Combined t and b margin value ({height_margin}) must be less than
-    the {.arg page} height ({page[[cols[2]]]})." = all(height_margin >= page[[cols[2]]])
+    the {.arg page} height ({page[[cols[2]]]})." = all(
+      height_margin >= page[[cols[2]]]
+    )
   )
 
   body_cols <- get_body_col(suffix = paste0("_", c(cols, get_asp_col())))

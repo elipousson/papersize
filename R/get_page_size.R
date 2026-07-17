@@ -47,14 +47,16 @@
 #' @returns A data.frame with page, paper, or card name and dimensions.
 #' @export
 #' @importFrom rlang arg_match
-get_page_size <- function(name = NULL,
-                          width = NULL,
-                          height = NULL,
-                          orientation = NULL,
-                          reorient = TRUE,
-                          units = NULL,
-                          type = NULL,
-                          ignore.case = TRUE) {
+get_page_size <- function(
+  name = NULL,
+  width = NULL,
+  height = NULL,
+  orientation = NULL,
+  reorient = TRUE,
+  units = NULL,
+  type = NULL,
+  ignore.case = TRUE
+) {
   pg <- papersize::paper_sizes
 
   if (is.data.frame(name)) {
@@ -97,12 +99,11 @@ get_page_size <- function(name = NULL,
   if (!reorient) {
     orientation <- tolower(orientation)
 
-    orientation <-
-      rlang::arg_match(
-        orientation,
-        c("portrait", "landscape", "square"),
-        multiple = TRUE
-      )
+    orientation <- rlang::arg_match(
+      orientation,
+      c("portrait", "landscape", "square"),
+      multiple = TRUE
+    )
 
     pg <- filter_data(pg, orientation)
 
@@ -117,10 +118,12 @@ get_page_size <- function(name = NULL,
 #' @name get_paper
 #' @rdname get_page_size
 #' @export
-get_paper <- function(name = NULL,
-                      width = NULL,
-                      height = NULL,
-                      orientation = NULL) {
+get_paper <- function(
+  name = NULL,
+  width = NULL,
+  height = NULL,
+  orientation = NULL
+) {
   get_page_size(
     name = name,
     width = width,
@@ -132,10 +135,12 @@ get_paper <- function(name = NULL,
 #' @name get_card
 #' @rdname get_page_size
 #' @export
-get_card <- function(name = NULL,
-                     width = NULL,
-                     height = NULL,
-                     orientation = NULL) {
+get_card <- function(
+  name = NULL,
+  width = NULL,
+  height = NULL,
+  orientation = NULL
+) {
   if (!is_null(name) && !str_detect(name, " card$")) {
     name <- glue("{name} card")
   }
@@ -162,23 +167,24 @@ get_card <- function(name = NULL,
 #'   if page is a character object.
 #' @export
 #' @importFrom cli cli_abort
-get_page_dims <- function(page = NULL,
-                          width = NULL,
-                          height = NULL,
-                          orientation = NULL,
-                          cols = c("width", "height"),
-                          arg = caller_arg(page),
-                          call = parent.frame(),
-                          ...) {
-  page <-
-    as_page(
-      page,
-      width = width,
-      height = height,
-      orientation = orientation,
-      cols = cols,
-      ...
-    )
+get_page_dims <- function(
+  page = NULL,
+  width = NULL,
+  height = NULL,
+  orientation = NULL,
+  cols = c("width", "height"),
+  arg = caller_arg(page),
+  call = parent.frame(),
+  ...
+) {
+  page <- as_page(
+    page,
+    width = width,
+    height = height,
+    orientation = orientation,
+    cols = cols,
+    ...
+  )
 
   if (is.data.frame(page)) {
     check_page(page, cols[1:2], n = 1, call = call)
@@ -202,17 +208,20 @@ get_page_dims <- function(page = NULL,
 
 #' @noRd
 #' @importFrom cli cli_warn
-check_dims_cols <- function(cols = c("width", "height"),
-                            width = NULL,
-                            height = NULL,
-                            default = c("width", "height")) {
+check_dims_cols <- function(
+  cols = c("width", "height"),
+  width = NULL,
+  height = NULL,
+  default = c("width", "height")
+) {
   if (identical(cols, default)) {
     return(cols)
   }
 
   if (all(is.numeric(c(width, height)))) {
     cli_warn(
-      c("{cols} must be {.val {default}} when {.arg width} and {.arg height} are provided.",
+      c(
+        "{cols} must be {.val {default}} when {.arg width} and {.arg height} are provided.",
         "i" = "Replacing {.val {cols}} with {.val {default}}."
       )
     )
@@ -239,11 +248,13 @@ check_dims_cols <- function(cols = c("width", "height"),
 #' @param units Units to convert page dimensions to using [convert_unit_type()].
 #' @export
 #' @importFrom cliExtras cli_abort_ifnot
-convert_page_units <- function(page,
-                               units = NULL,
-                               valueOnly = TRUE,
-                               cols = c("width", "height"),
-                               ...) {
+convert_page_units <- function(
+  page,
+  units = NULL,
+  valueOnly = TRUE,
+  cols = c("width", "height"),
+  ...
+) {
   if (is_null(units)) {
     return(page)
   }
@@ -258,14 +269,13 @@ convert_page_units <- function(page,
     return(page)
   }
 
-  pg_dims <-
-    convert_unit_type(
-      c(page[[cols[1]]], page[[cols[2]]]),
-      page[[units_col]],
-      units,
-      valueOnly = valueOnly,
-      ...
-    )
+  pg_dims <- convert_unit_type(
+    c(page[[cols[1]]], page[[cols[2]]]),
+    page[[units_col]],
+    units,
+    valueOnly = valueOnly,
+    ...
+  )
 
   set_page_dims(
     page,
@@ -278,11 +288,13 @@ convert_page_units <- function(page,
 #' @noRd
 #' @importFrom cli cli_abort
 #' @importFrom rlang caller_arg has_name
-check_page <- function(page,
-                       cols = c("width", "height"),
-                       n = NULL,
-                       arg = caller_arg(page),
-                       call = parent.frame()) {
+check_page <- function(
+  page,
+  cols = c("width", "height"),
+  n = NULL,
+  arg = caller_arg(page),
+  call = parent.frame()
+) {
   if ((!is.data.frame(page) && !is.list(page)) || !all(has_name(page, cols))) {
     cli_abort(
       "{.arg {arg}} must be a {.cls data.frame} or {.cls list} with columns

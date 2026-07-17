@@ -106,12 +106,11 @@ test_that("helpers work", {
     get_paper("letter")
   )
 
-  test_df <-
-    data.frame(
-      name = "letter",
-      w = 8.5,
-      h = 11
-    )
+  test_df <- data.frame(
+    name = "letter",
+    w = 8.5,
+    h = 11
+  )
   expect_error(
     check_page(test_df$name)
   )

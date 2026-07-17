@@ -39,23 +39,25 @@
 #' @importFrom glue glue
 #' @importFrom cli cli_progress_step
 #' @importFrom vctrs vec_init
-make_contact_sheets <- function(images,
-                                dims = NULL,
-                                ncol = NULL,
-                                nrow = NULL,
-                                captions = "{file_name}\n{date_created}",
-                                caption_size = 12,
-                                caption_position = "panel",
-                                image_margin = margins(0.1, unit = "in"),
-                                page = "letter",
-                                orientation = "portrait",
-                                image_max = NULL,
-                                image_fileext = NULL,
-                                tags = NULL,
-                                tz = NULL,
-                                save = FALSE,
-                                filename = NULL,
-                                ...) {
+make_contact_sheets <- function(
+  images,
+  dims = NULL,
+  ncol = NULL,
+  nrow = NULL,
+  captions = "{file_name}\n{date_created}",
+  caption_size = 12,
+  caption_position = "panel",
+  image_margin = margins(0.1, unit = "in"),
+  page = "letter",
+  orientation = "portrait",
+  image_max = NULL,
+  image_fileext = NULL,
+  tags = NULL,
+  tz = NULL,
+  save = FALSE,
+  filename = NULL,
+  ...
+) {
   if (is_character(images)) {
     check_installed("filenamr")
     cli::cli_progress_step("Reading image EXIF data")

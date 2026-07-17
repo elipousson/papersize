@@ -15,11 +15,6 @@ add_card_text(
   nudge_y = 0.5
 )
 }
-\arguments{
-\item{nudge_x, nudge_y}{Horizontal and vertical adjustment to nudge labels by.
-Useful for offsetting text from points, particularly on discrete scales.
-Cannot be jointly specified with \code{position}.}
-}
 \description{
 \code{\link[=add_card_text]{add_card_text()}} is a helper function used internally by \code{\link[=plot_cards]{plot_cards()}}.
 }

@@ -1,6 +1,10 @@
 test_that("margins and is_margin works", {
-  standard_margin <- margin(
-    t = 1, r = 1, b = 1, l = 1, unit = "in"
+  standard_margin <- ggplot2::margin(
+    t = 1,
+    r = 1,
+    b = 1,
+    l = 1,
+    unit = "in"
   )
   expect_identical(
     margins(1, unit = "in"),
@@ -21,7 +25,11 @@ test_that("margins and is_margin works", {
   expect_identical(
     margins(list(1, 1, 1.5, 1), unit = "cm"),
     ggplot2::margin(
-      t = 1, r = 1, b = 1.5, l = 1, unit = "cm"
+      t = 1,
+      r = 1,
+      b = 1.5,
+      l = 1,
+      unit = "cm"
     )
   )
   expect_identical(
@@ -38,8 +46,12 @@ test_that("margins and is_margin works", {
 })
 
 test_that("margins warns and errors", {
-  standard_margin <- margin(
-    t = 1, r = 1, b = 1, l = 1, unit = "in"
+  standard_margin <- ggplot2::margin(
+    t = 1,
+    r = 1,
+    b = 1,
+    l = 1,
+    unit = "in"
   )
   expect_warning(
     margins(margin = standard_margin, unit = "cm")

@@ -20,7 +20,7 @@ inset_page_element(
 )
 }
 \arguments{
-\item{p}{A grob, ggplot, patchwork, formula, raster, or nativeRaster object
+\item{p}{A grob, ggplot, patchwork, formula, raster, nativeRaster, or gt object
 to add as an inset}
 
 \item{inset_page}{Page size data.frame to use for inset, Default: \code{NULL}}

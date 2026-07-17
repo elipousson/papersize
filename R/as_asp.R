@@ -34,13 +34,15 @@
 #'
 #' @export
 #' @importFrom rlang is_null is_string is_bare_numeric is_character has_name
-as_asp <- function(asp = NULL,
-                   page = NULL,
-                   orientation = NULL,
-                   flipped = FALSE,
-                   sep = ":",
-                   cols = c("width", "height"),
-                   ...) {
+as_asp <- function(
+  asp = NULL,
+  page = NULL,
+  orientation = NULL,
+  flipped = FALSE,
+  sep = ":",
+  cols = c("width", "height"),
+  ...
+) {
   if (is_null(asp) && is_null(page)) {
     return(asp)
   }

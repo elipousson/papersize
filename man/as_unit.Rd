@@ -52,7 +52,7 @@ is_same_unit_type(x, y, recurse = FALSE, data = NULL, valid_units = NULL)
 
 \item{recurse}{Whether to recurse into complex units.}
 
-\item{arg}{Passed to \code{\link[=cli_abort]{cli_abort()}} to improve internal error messages.}
+\item{arg}{Passed to \code{\link[cli:cli_abort]{cli::cli_abort()}} to improve internal error messages.}
 
 \item{call}{The execution environment of a currently running
 function, e.g. \code{call = caller_env()}. The corresponding function

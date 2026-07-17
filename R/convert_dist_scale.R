@@ -26,25 +26,30 @@
 #' @export
 #' @importFrom rlang has_length
 #' @importFrom cliExtras cli_abort_ifnot cli_warn_ifnot
-convert_dist_scale <- function(dist = NULL,
-                               scale = NULL,
-                               standard = NULL,
-                               series = NULL,
-                               scale_unit = "in",
-                               scale_factor = NULL,
-                               actual_unit = NULL,
-                               dpi = 120,
-                               paper = NULL,
-                               orientation = NULL,
-                               ...) {
+convert_dist_scale <- function(
+  dist = NULL,
+  scale = NULL,
+  standard = NULL,
+  series = NULL,
+  scale_unit = "in",
+  scale_factor = NULL,
+  actual_unit = NULL,
+  dpi = 120,
+  paper = NULL,
+  orientation = NULL,
+  ...
+) {
   if (is_character(scale) && has_length(scale, 1)) {
     scale_nm <- scale
     scale <- get_scale(scale = scale, standard = standard, series = series)
 
     cliExtras::cli_abort_ifnot(
-      c("{.arg scale} {.val {scale_nm}} returned {nrow(scale)} scales from
-        {.code standard_scales}.", "i" = "Provide {.arg scale_standard} and
-        {.arg scale_series} parameters to return only 1 scale."),
+      c(
+        "{.arg scale} {.val {scale_nm}} returned {nrow(scale)} scales from
+        {.code standard_scales}.",
+        "i" = "Provide {.arg scale_standard} and
+        {.arg scale_series} parameters to return only 1 scale."
+      ),
       condition = nrow(scale) == 1
     )
 
@@ -68,23 +73,26 @@ convert_dist_scale <- function(dist = NULL,
     dist <- c(paper$width, paper$height)
 
     cliExtras::cli_warn_ifnot(
-      c("{.arg scale_unit} and {.arg scale_factor} are ignored if {.arg paper}
-        is provided."),
-      condition = is_null(scale_unit) || is_null(scale_factor) |
+      c(
+        "{.arg scale_unit} and {.arg scale_factor} are ignored if {.arg paper}
+        is provided."
+      ),
+      condition = is_null(scale_unit) ||
+        is_null(scale_factor) |
         (!is_null(scale_unit) && scale_unit == paper$units)
     )
 
     scale_unit <- paper$units
   }
 
-  dist <-
-    switch(scale_unit,
-      "mm" = dist / 10,
-      "cm" = dist,
-      # FIXME: Double-check how this handles px
-      "px" = dist / dpi,
-      "in" = dist
-    )
+  dist <- switch(
+    scale_unit,
+    "mm" = dist / 10,
+    "cm" = dist,
+    # FIXME: Double-check how this handles px
+    "px" = dist / dpi,
+    "in" = dist
+  )
 
   if (scale_unit %in% c("mm", "cm")) {
     scale_unit <- "cm"
@@ -102,11 +110,10 @@ convert_dist_scale <- function(dist = NULL,
     )
   }
 
-  dist <-
-    convert_dist_units(
-      dist = as.numeric(dist * scale_factor),
-      to = actual_unit
-    )
+  dist <- convert_dist_units(
+    dist = as.numeric(dist * scale_factor),
+    to = actual_unit
+  )
 
   if (is_null(paper)) {
     return(dist)
