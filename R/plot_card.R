@@ -162,14 +162,16 @@ add_card_number <- function(
   n = 1,
   color = "white",
   size = 5,
-  family = NULL
+  family = NULL,
+  sequence = TRUE
 ) {
   check_installed("ggplot2")
 
-  n <- c(1:n)
+  if (sequence && has_length(n, 1)) {
+    n <- seq(n)
+  }
 
   # repeat card function to copy layout rows
-
   map(
     n,
     function(i) {
@@ -264,12 +266,10 @@ add_card_text <- function(
   n <- length(plots)
 
   if (is_character(text)) {
-    if (has_length(text, 1)) {
-      text <- rep(text, n)
-    }
-
-    stopifnot(
-      length(text) == n
+    text <- vctrs::vec_recycle(
+      text,
+      size = n,
+      x_arg = "text"
     )
 
     text <- data.frame(
@@ -279,7 +279,7 @@ add_card_text <- function(
     )
 
     plots <- map(
-      c(1:n),
+      seq(n),
       function(i) {
         plots[[i]] +
           geom_text_if_family(
