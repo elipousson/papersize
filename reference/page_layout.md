@@ -19,6 +19,9 @@ page_layout(
   ncol = NULL,
   nrow = NULL,
   dims = NULL,
+  margin = NULL,
+  unit = "in",
+  marks = FALSE,
   images = FALSE,
   dpi = 120,
   call = caller_env()
@@ -94,6 +97,31 @@ page_layout(
   Otherwise, if `NULL` (default), dims are inferred based on the
   dimensions of the first plot in plots.
 
+- margin:
+
+  Optional. A margin to add around the outside of the combined grid of
+  plots, e.g. so the grid can be centered on a larger sheet of paper
+  when saved with
+  [`ggplot2::ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html).
+  Passed to
+  [`get_margin()`](https://elipousson.github.io/papersize/reference/margins.md)
+  with unit. The margin pads the composed page rather than the
+  individual plots in `plots`, and does not affect the number of rows
+  and columns in the grid. Default: `NULL`.
+
+- unit:
+
+  Unit used for `margin` if margin is a bare numeric vector or list.
+  Ignored if margin is a `unit` class object. Default: `"in"`.
+
+- marks:
+
+  If `TRUE`, add crop marks in the `margin` area showing where to cut
+  the page into individual plots. Requires `margin`. Marks are placed
+  assuming the grid of plots exactly fills the page after subtracting
+  `margin`, i.e. the same assumption `margin` itself relies on. Default:
+  `FALSE`.
+
 - images:
 
   Not yet implemented. If `TRUE` and dims is `NULL`, the input plots are
@@ -131,6 +159,21 @@ page_layout(
   page = "letter"
 )
 #> ℹ Using `dims` from first plot in `plots`.
+#> $`1`
+
+#> 
+
+page_layout(
+  plots = plot_cards("Poker", 6),
+  page = make_page_size(width = 2.5 * 3, height = 3.5 * 2, units = "in"),
+  ncol = 3,
+  nrow = 2,
+  margin = margins(t = 0.75, r = 0.5, b = 0.75, l = 0.5, unit = "in"),
+  marks = TRUE
+)
+#> Warning: `orientation` can't be set to "landscape" when the page width is 7.5 and height
+#> is 7.
+#> ℹ Orientation kept as "square".
 #> $`1`
 
 #> 

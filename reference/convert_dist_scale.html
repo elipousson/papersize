@@ -118,6 +118,39 @@ defaults to <code>NULL</code>.</p></dd>
     <dt><code>height</code></dt>
 <dd><p>Page height in "in", "px" or "mm" units. Default: <code>NULL</code></p></dd>
 
+    <dt><code>reorient</code></dt>
+<dd><p>If <code>TRUE</code> and orientation is not <code>NULL</code>, flip width and height
+dimensions for any pages that do not match the provided orientation. Set
+<code>reorient = FALSE</code> to filter pages by orientation.</p></dd>
+
+    <dt><code>type</code></dt>
+<dd><p>Page type, Options include "paper", "social", "postcard",
+"print", "card", or "screen". Default: <code>NULL</code></p></dd>
+
+    <dt><code>ignore.case</code></dt>
+<dd><p>If <code>FALSE</code>, filtering for page and type are case
+sensitive. Defaults to <code>TRUE</code>.</p></dd>
+
+    <dt><code>page</code></dt>
+<dd><p>Used by <code><a href="get_page_size.html">get_page_dims()</a></code>, page is either a character vector
+passed to the name parameter of <code><a href="get_page_size.html">get_page_size()</a></code>, a data.frame with column
+names matching the cols parameter, or a length 2 numeric vector with the
+page width and height.</p></dd>
+
+    <dt><code>cols</code></dt>
+<dd><p>Length 2 character vector with column names for page dimensions.
+Defaults to c("width", "height").</p></dd>
+
+    <dt><code>arg,call</code></dt>
+<dd><p>Passed to <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort()</a></code> to improve internal error messages.</p></dd>
+
+    <dt><code>units</code></dt>
+<dd><p>Units to convert page dimensions to using <code><a href="as_unit.html">convert_unit_type()</a></code>.</p></dd>
+
+    <dt><code>valueOnly</code></dt>
+<dd><p>Passed to valueOnly parameter of <code><a href="https://rdrr.io/r/grid/grid.convert.html" class="external-link">grid::convertUnit()</a></code>.
+Defaults to <code>FALSE</code>.</p></dd>
+
 
 </dl></dd>
 

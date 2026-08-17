@@ -53,6 +53,9 @@
 <span>  ncol <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  nrow <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  dims <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  margin <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  unit <span class="op">=</span> <span class="st">"in"</span>,</span>
+<span>  marks <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  images <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  dpi <span class="op">=</span> <span class="fl">120</span>,</span>
 <span>  call <span class="op">=</span> <span class="fu">caller_env</span><span class="op">(</span><span class="op">)</span></span>
@@ -126,6 +129,28 @@ Otherwise, if <code>NULL</code> (default), dims are inferred based on the dimens
 of the first plot in plots.</p></dd>
 
 
+<dt id="arg-margin">margin<a class="anchor" aria-label="anchor" href="#arg-margin"></a></dt>
+<dd><p>Optional. A margin to add around the outside of the combined
+grid of plots, e.g. so the grid can be centered on a larger sheet of
+paper when saved with <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggplot2::ggsave()</a></code>. Passed to <code><a href="margins.html">get_margin()</a></code> with
+unit. The margin pads the composed page rather than the individual plots
+in <code>plots</code>, and does not affect the number of rows and columns in the
+grid. Default: <code>NULL</code>.</p></dd>
+
+
+<dt id="arg-unit">unit<a class="anchor" aria-label="anchor" href="#arg-unit"></a></dt>
+<dd><p>Unit used for <code>margin</code> if margin is a bare numeric vector or
+list. Ignored if margin is a <code>unit</code> class object. Default: <code>"in"</code>.</p></dd>
+
+
+<dt id="arg-marks">marks<a class="anchor" aria-label="anchor" href="#arg-marks"></a></dt>
+<dd><p>If <code>TRUE</code>, add crop marks in the <code>margin</code> area showing where
+to cut the page into individual plots. Requires <code>margin</code>. Marks are
+placed assuming the grid of plots exactly fills the page after
+subtracting <code>margin</code>, i.e. the same assumption <code>margin</code> itself relies
+on. Default: <code>FALSE</code>.</p></dd>
+
+
 <dt id="arg-images">images<a class="anchor" aria-label="anchor" href="#arg-images"></a></dt>
 <dd><p>Not yet implemented. If <code>TRUE</code> and dims is <code>NULL</code>, the input
 plots are assumed to be plots created with <code><a href="https://docs.ropensci.org/magick/reference/image_ggplot.html" class="external-link">magick::image_ggplot()</a></code> and dpi
@@ -162,6 +187,21 @@ mentioned in error messages as the source of the error. See the
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using `dims` from first plot in `plots`.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`1`</span>
 <span class="r-plt img"><img src="page_layout-1.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">page_layout</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  plots <span class="op">=</span> <span class="fu"><a href="plot_cards.html">plot_cards</a></span><span class="op">(</span><span class="st">"Poker"</span>, <span class="fl">6</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  page <span class="op">=</span> <span class="fu"><a href="make_page_size.html">make_page_size</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">2.5</span> <span class="op">*</span> <span class="fl">3</span>, height <span class="op">=</span> <span class="fl">3.5</span> <span class="op">*</span> <span class="fl">2</span>, units <span class="op">=</span> <span class="st">"in"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  ncol <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>  nrow <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>  margin <span class="op">=</span> <span class="fu"><a href="margins.html">margins</a></span><span class="op">(</span>t <span class="op">=</span> <span class="fl">0.75</span>, r <span class="op">=</span> <span class="fl">0.5</span>, b <span class="op">=</span> <span class="fl">0.75</span>, l <span class="op">=</span> <span class="fl">0.5</span>, unit <span class="op">=</span> <span class="st">"in"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  marks <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`orientation` can't be set to <span style="color: #0000BB;">"landscape"</span> when the page width is <span style="color: #0000BB;">7.5</span> and height</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> is <span style="color: #0000BB;">7</span>.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Orientation kept as <span style="color: #0000BB;">"square"</span>.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`1`</span>
+<span class="r-plt img"><img src="page_layout-2.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>

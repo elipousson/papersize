@@ -98,25 +98,59 @@ below (but above the background)?</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Arguments passed on to <code><a href="as_unit.html">convert_unit_type</a></code></p><dl><dt><code>from</code></dt>
+<dd><p>Arguments passed on to <code><a href="as_unit.html">convert_unit_type</a></code></p><dl><dt><code>arg</code></dt>
+<dd><p>Passed to <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort()</a></code> to improve internal error messages.</p></dd>
+
+    <dt><code>valid_units</code></dt>
+<dd><p>Character vector with name or symbols for valid units.
+Defaults to <code>NULL</code> but any other unit name or symbol, e.g. "px", is
+permitted.</p></dd>
+
+    <dt><code>from</code></dt>
 <dd><p>Unit to convert from. If <code>NULL</code> and x is not a units object,
 convert to <code>to</code> units with a warning.</p></dd>
 
     <dt><code>to</code></dt>
 <dd><p>Unit to convert to. Passed to unitTo parameter of
-<code><a href="https://rdrr.io/r/grid/grid-defunct.html" class="external-link">grid::convertUnit()</a></code>. If <code>NULL</code>, return x as is.</p></dd>
+<code><a href="https://rdrr.io/r/grid/grid.convert.html" class="external-link">grid::convertUnit()</a></code>. If <code>NULL</code>, return x as is.</p></dd>
 
     <dt><code>typeFrom</code></dt>
-<dd><p>Passed to typeFrom parameter of <code><a href="https://rdrr.io/r/grid/grid-defunct.html" class="external-link">grid::convertUnit()</a></code>.
+<dd><p>Passed to typeFrom parameter of <code><a href="https://rdrr.io/r/grid/grid.convert.html" class="external-link">grid::convertUnit()</a></code>.
 Defaults to "dimension".</p></dd>
 
     <dt><code>valueOnly</code></dt>
-<dd><p>Passed to valueOnly parameter of <code><a href="https://rdrr.io/r/grid/grid-defunct.html" class="external-link">grid::convertUnit()</a></code>.
+<dd><p>Passed to valueOnly parameter of <code><a href="https://rdrr.io/r/grid/grid.convert.html" class="external-link">grid::convertUnit()</a></code>.
 Defaults to <code>FALSE</code>.</p></dd>
+
+    <dt><code>y</code></dt>
+<dd><p>Object to compare to x.</p></dd>
 
     <dt><code>x</code></dt>
 <dd><p>A numeric vector.</p>
 <p>For <code>is.unit</code>, any R object.</p></dd>
+
+    <dt><code>units</code></dt>
+<dd><p>A character vector specifying the units for the
+    corresponding numeric values.</p></dd>
+
+    <dt><code>data</code></dt>
+<dd><p>This argument is used to supply extra information
+    for special <code>unit</code> types.</p></dd>
+
+    <dt><code>call</code></dt>
+<dd><p>The execution environment of a currently running
+function, e.g. <code>call = caller_env()</code>. The corresponding function
+call is retrieved and mentioned in error messages as the source
+of the error.</p>
+<p>You only need to supply <code>call</code> when throwing a condition from a
+helper function which wouldn't be relevant to mention in the
+message.</p>
+<p>Can also be <code>NULL</code> or a <a href="https://rlang.r-lib.org/reference/topic-defuse.html" class="external-link">defused function call</a> to
+respectively not display any call or hard-code a code to display.</p>
+<p>For more information about error calls, see <a href="https://rlang.r-lib.org/reference/topic-error-call.html" class="external-link">Including function calls in error messages</a>.</p></dd>
+
+    <dt><code>recurse</code></dt>
+<dd><p>Whether to recurse into complex units.</p></dd>
 
 
 </dl></dd>

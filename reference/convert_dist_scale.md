@@ -89,6 +89,54 @@ convert_dist_scale(
 
   :   Page height in "in", "px" or "mm" units. Default: `NULL`
 
+  `reorient`
+
+  :   If `TRUE` and orientation is not `NULL`, flip width and height
+      dimensions for any pages that do not match the provided
+      orientation. Set `reorient = FALSE` to filter pages by
+      orientation.
+
+  `type`
+
+  :   Page type, Options include "paper", "social", "postcard", "print",
+      "card", or "screen". Default: `NULL`
+
+  `ignore.case`
+
+  :   If `FALSE`, filtering for page and type are case sensitive.
+      Defaults to `TRUE`.
+
+  `page`
+
+  :   Used by
+      [`get_page_dims()`](https://elipousson.github.io/papersize/reference/get_page_size.md),
+      page is either a character vector passed to the name parameter of
+      [`get_page_size()`](https://elipousson.github.io/papersize/reference/get_page_size.md),
+      a data.frame with column names matching the cols parameter, or a
+      length 2 numeric vector with the page width and height.
+
+  `cols`
+
+  :   Length 2 character vector with column names for page dimensions.
+      Defaults to c("width", "height").
+
+  `arg,call`
+
+  :   Passed to
+      [`cli_abort()`](https://cli.r-lib.org/reference/cli_abort.html) to
+      improve internal error messages.
+
+  `units`
+
+  :   Units to convert page dimensions to using
+      [`convert_unit_type()`](https://elipousson.github.io/papersize/reference/as_unit.md).
+
+  `valueOnly`
+
+  :   Passed to valueOnly parameter of
+      [`grid::convertUnit()`](https://rdrr.io/r/grid/grid.convert.html).
+      Defaults to `FALSE`.
+
 ## Value
 
 - If paper is not provided, return a vector of dist values converted

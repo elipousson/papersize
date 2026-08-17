@@ -76,8 +76,8 @@ is_same_unit_type(x, y, recurse = FALSE, data = NULL, valid_units = NULL)
 - arg:
 
   Passed to
-  [`cli::cli_abort()`](https://cli.r-lib.org/reference/cli_abort.html)
-  to improve internal error messages.
+  [`cli_abort()`](https://cli.r-lib.org/reference/cli_abort.html) to
+  improve internal error messages.
 
 - call:
 
@@ -109,25 +109,25 @@ is_same_unit_type(x, y, recurse = FALSE, data = NULL, valid_units = NULL)
 - to:
 
   Unit to convert to. Passed to unitTo parameter of
-  [`grid::convertUnit()`](https://rdrr.io/r/grid/grid-defunct.html). If
+  [`grid::convertUnit()`](https://rdrr.io/r/grid/grid.convert.html). If
   `NULL`, return x as is.
 
 - typeFrom:
 
   Passed to typeFrom parameter of
-  [`grid::convertUnit()`](https://rdrr.io/r/grid/grid-defunct.html).
+  [`grid::convertUnit()`](https://rdrr.io/r/grid/grid.convert.html).
   Defaults to "dimension".
 
 - valueOnly:
 
   Passed to valueOnly parameter of
-  [`grid::convertUnit()`](https://rdrr.io/r/grid/grid-defunct.html).
+  [`grid::convertUnit()`](https://rdrr.io/r/grid/grid.convert.html).
   Defaults to `FALSE`.
 
 - ...:
 
   Arguments passed on to
-  [`grid::convertUnit`](https://rdrr.io/r/grid/grid-defunct.html)
+  [`grid::convertUnit`](https://rdrr.io/r/grid/grid.convert.html)
 
   `axisFrom`
 

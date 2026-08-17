@@ -109,8 +109,8 @@ convert_page_units(
 - arg, call:
 
   Passed to
-  [`cli::cli_abort()`](https://cli.r-lib.org/reference/cli_abort.html)
-  to improve internal error messages.
+  [`cli_abort()`](https://cli.r-lib.org/reference/cli_abort.html) to
+  improve internal error messages.
 
 - ...:
 
@@ -120,7 +120,7 @@ convert_page_units(
 - valueOnly:
 
   Passed to valueOnly parameter of
-  [`grid::convertUnit()`](https://rdrr.io/r/grid/grid-defunct.html).
+  [`grid::convertUnit()`](https://rdrr.io/r/grid/grid.convert.html).
   Defaults to `FALSE`.
 
 ## Value

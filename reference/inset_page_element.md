@@ -64,6 +64,17 @@ inset_page_element(
   Arguments passed on to
   [`convert_unit_type`](https://elipousson.github.io/papersize/reference/as_unit.md)
 
+  `arg`
+
+  :   Passed to
+      [`cli_abort()`](https://cli.r-lib.org/reference/cli_abort.html) to
+      improve internal error messages.
+
+  `valid_units`
+
+  :   Character vector with name or symbols for valid units. Defaults to
+      `NULL` but any other unit name or symbol, e.g. "px", is permitted.
+
   `from`
 
   :   Unit to convert from. If `NULL` and x is not a units object,
@@ -72,26 +83,63 @@ inset_page_element(
   `to`
 
   :   Unit to convert to. Passed to unitTo parameter of
-      [`grid::convertUnit()`](https://rdrr.io/r/grid/grid-defunct.html).
+      [`grid::convertUnit()`](https://rdrr.io/r/grid/grid.convert.html).
       If `NULL`, return x as is.
 
   `typeFrom`
 
   :   Passed to typeFrom parameter of
-      [`grid::convertUnit()`](https://rdrr.io/r/grid/grid-defunct.html).
+      [`grid::convertUnit()`](https://rdrr.io/r/grid/grid.convert.html).
       Defaults to "dimension".
 
   `valueOnly`
 
   :   Passed to valueOnly parameter of
-      [`grid::convertUnit()`](https://rdrr.io/r/grid/grid-defunct.html).
+      [`grid::convertUnit()`](https://rdrr.io/r/grid/grid.convert.html).
       Defaults to `FALSE`.
+
+  `y`
+
+  :   Object to compare to x.
 
   `x`
 
   :   A numeric vector.
 
       For `is.unit`, any R object.
+
+  `units`
+
+  :   A character vector specifying the units for the corresponding
+      numeric values.
+
+  `data`
+
+  :   This argument is used to supply extra information for special
+      `unit` types.
+
+  `call`
+
+  :   The execution environment of a currently running function, e.g.
+      `call = caller_env()`. The corresponding function call is
+      retrieved and mentioned in error messages as the source of the
+      error.
+
+      You only need to supply `call` when throwing a condition from a
+      helper function which wouldn't be relevant to mention in the
+      message.
+
+      Can also be `NULL` or a [defused function
+      call](https://rlang.r-lib.org/reference/topic-defuse.html) to
+      respectively not display any call or hard-code a code to display.
+
+      For more information about error calls, see [Including function
+      calls in error
+      messages](https://rlang.r-lib.org/reference/topic-error-call.html).
+
+  `recurse`
+
+  :   Whether to recurse into complex units.
 
 ## Value
 

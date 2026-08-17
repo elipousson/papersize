@@ -111,8 +111,15 @@ dimensions for any pages that do not match the provided orientation. Set
 <dd><p>If <code>FALSE</code>, filtering for page and type are case
 sensitive. Defaults to <code>TRUE</code>.</p></dd>
 
+    <dt><code>arg,call</code></dt>
+<dd><p>Passed to <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort()</a></code> to improve internal error messages.</p></dd>
+
     <dt><code>units</code></dt>
 <dd><p>Units to convert page dimensions to using <code><a href="as_unit.html">convert_unit_type()</a></code>.</p></dd>
+
+    <dt><code>valueOnly</code></dt>
+<dd><p>Passed to valueOnly parameter of <code><a href="https://rdrr.io/r/grid/grid.convert.html" class="external-link">grid::convertUnit()</a></code>.
+Defaults to <code>FALSE</code>.</p></dd>
 
 
 </dl></dd>

@@ -110,6 +110,14 @@ page_to_viewport(page, name = NULL, cols = c("width", "height"), ...)
   :   A numeric vector giving the columns occupied by this viewport in
       its parent's layout.
 
+  `parent`
+
+  :   A grid viewport object.
+
+  `children`
+
+  :   A vpList object.
+
 ## Value
 
 A `viewport` class object with the same width and height as the input

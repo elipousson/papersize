@@ -85,10 +85,22 @@ as_asp(
   :   If `FALSE`, filtering for page and type are case sensitive.
       Defaults to `TRUE`.
 
+  `arg,call`
+
+  :   Passed to
+      [`cli_abort()`](https://cli.r-lib.org/reference/cli_abort.html) to
+      improve internal error messages.
+
   `units`
 
   :   Units to convert page dimensions to using
       [`convert_unit_type()`](https://elipousson.github.io/papersize/reference/as_unit.md).
+
+  `valueOnly`
+
+  :   Passed to valueOnly parameter of
+      [`grid::convertUnit()`](https://rdrr.io/r/grid/grid.convert.html).
+      Defaults to `FALSE`.
 
 ## Value
 

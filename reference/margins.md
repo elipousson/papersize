@@ -39,7 +39,7 @@ get_margin(margin = NULL, ..., unit = "in")
   so units class objects as well as unit names supported
   [`grid::unit()`](https://rdrr.io/r/grid/unit.html) are allowed.
   Defaults to "in" except for
-  [`ggplot2::margin()`](https://ggplot2.tidyverse.org/reference/element.html)
+  [`margin()`](https://ggplot2.tidyverse.org/reference/element.html)
   where unit defaults to "pt" to match
   [`ggplot2::margin()`](https://ggplot2.tidyverse.org/reference/element.html).
 
