@@ -36,7 +36,7 @@ to ":".}
 Defaults to c("width", "height").}
 
 \item{...}{
-  Arguments passed on to \code{\link[=get_page_size]{get_page_size}}
+  Arguments passed on to \code{\link{get_page_size}}
   \describe{
     \item{\code{name}}{Page name, e.g. "letter", not case sensitive, Default: \code{NULL}}
     \item{\code{width}}{Page width in "in", "px" or "mm" units. Default: \code{NULL}}
@@ -48,7 +48,10 @@ dimensions for any pages that do not match the provided orientation. Set
 "print", "card", or "screen". Default: \code{NULL}}
     \item{\code{ignore.case}}{If \code{FALSE}, filtering for page and type are case
 sensitive. Defaults to \code{TRUE}.}
+    \item{\code{arg,call}}{Passed to \code{\link[cli:cli_abort]{cli_abort()}} to improve internal error messages.}
     \item{\code{units}}{Units to convert page dimensions to using \code{\link[=convert_unit_type]{convert_unit_type()}}.}
+    \item{\code{valueOnly}}{Passed to valueOnly parameter of \code{\link[grid:convertUnit]{grid::convertUnit()}}.
+Defaults to \code{FALSE}.}
   }}
 }
 \value{

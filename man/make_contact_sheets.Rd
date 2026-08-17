@@ -32,13 +32,13 @@ make_contact_sheets(
 \item{ncol, nrow}{The dimensions of the grid to create.  If both are \code{NULL},
 dims will be used or dims will be determined based on the plot dimensions.}
 
-\item{captions}{Template for caption, passed to \code{\link[glue:glue]{glue::glue_data()}} using the
+\item{captions}{Template for caption, passed to \code{\link[glue:glue_data]{glue::glue_data()}} using the
 images data.frame as .x. Note that this template may vary if you are using
 a custom tags parameter or modify the "filenamr.exif_xwalk" option. See
 \code{\link[filenamr:read_exif]{filenamr::read_exif()}} for more details. Default:
 "\{file_name\}\\n\{date_created\}"}
 
-\item{caption_size}{Caption size, passed to \code{\link[ggplot2:element]{ggplot2::element_text()}} for
+\item{caption_size}{Caption size, passed to \code{\link[ggplot2:element_text]{ggplot2::element_text()}} for
 plot.caption for theme, Default: 12}
 
 \item{caption_position}{Caption position, passed to plot.caption.position for
@@ -85,5 +85,5 @@ to create contact shets for a folder of images.
 \code{\link[filenamr:read_exif]{filenamr::read_exif()}}
 \code{\link[glue:glue]{glue::glue()}}
 \code{\link[magick:editing]{magick::editing()}}, \code{\link[magick:image_ggplot]{magick::image_ggplot()}}
-\code{\link[ggplot2:labs]{ggplot2::labs()}}, \code{\link[ggplot2:theme]{ggplot2::theme()}}, \code{\link[ggplot2:element]{ggplot2::margin()}}
+\code{\link[ggplot2:labs]{ggplot2::labs()}}, \code{\link[ggplot2:theme]{ggplot2::theme()}}, \code{\link[ggplot2:margin]{ggplot2::margin()}}
 }

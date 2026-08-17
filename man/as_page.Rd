@@ -16,7 +16,7 @@ does not match any of the names in paper_sizes, x is passed as the name
 parameter to \code{\link[=make_page_size]{make_page_size()}}}
 
 \item{...}{
-  Arguments passed on to \code{\link[=make_page_size]{make_page_size}}
+  Arguments passed on to \code{\link{make_page_size}}
   \describe{
     \item{\code{width,height}}{Page width and height. Both are required, if asp is
 \code{NULL}. Default to \code{NULL}.}

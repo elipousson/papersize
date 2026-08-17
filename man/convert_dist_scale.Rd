@@ -47,11 +47,28 @@ defaults to \code{NULL}.}
 "portrait", "landscape", or "square".}
 
 \item{...}{
-  Arguments passed on to \code{\link[=get_paper]{get_paper}}
+  Arguments passed on to \code{\link{get_paper}}
   \describe{
     \item{\code{name}}{Page name, e.g. "letter", not case sensitive, Default: \code{NULL}}
     \item{\code{width}}{Page width in "in", "px" or "mm" units. Default: \code{NULL}}
     \item{\code{height}}{Page height in "in", "px" or "mm" units. Default: \code{NULL}}
+    \item{\code{reorient}}{If \code{TRUE} and orientation is not \code{NULL}, flip width and height
+dimensions for any pages that do not match the provided orientation. Set
+\code{reorient = FALSE} to filter pages by orientation.}
+    \item{\code{type}}{Page type, Options include "paper", "social", "postcard",
+"print", "card", or "screen". Default: \code{NULL}}
+    \item{\code{ignore.case}}{If \code{FALSE}, filtering for page and type are case
+sensitive. Defaults to \code{TRUE}.}
+    \item{\code{page}}{Used by \code{\link[=get_page_dims]{get_page_dims()}}, page is either a character vector
+passed to the name parameter of \code{\link[=get_page_size]{get_page_size()}}, a data.frame with column
+names matching the cols parameter, or a length 2 numeric vector with the
+page width and height.}
+    \item{\code{cols}}{Length 2 character vector with column names for page dimensions.
+Defaults to c("width", "height").}
+    \item{\code{arg,call}}{Passed to \code{\link[cli:cli_abort]{cli_abort()}} to improve internal error messages.}
+    \item{\code{units}}{Units to convert page dimensions to using \code{\link[=convert_unit_type]{convert_unit_type()}}.}
+    \item{\code{valueOnly}}{Passed to valueOnly parameter of \code{\link[grid:convertUnit]{grid::convertUnit()}}.
+Defaults to \code{FALSE}.}
   }}
 }
 \value{
@@ -68,8 +85,8 @@ This function converts scale distances to actual units based on named
 \link{standard_scales}.
 }
 \seealso{
-Other dist: 
-\code{\link{convert_dist_units}()},
-\code{\link{is_dist_units}()}
+Other dist:
+\code{\link[=convert_dist_units]{convert_dist_units()}},
+\code{\link[=is_dist_units]{is_dist_units()}}
 }
 \concept{dist}

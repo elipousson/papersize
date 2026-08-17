@@ -52,7 +52,7 @@ is_same_unit_type(x, y, recurse = FALSE, data = NULL, valid_units = NULL)
 
 \item{recurse}{Whether to recurse into complex units.}
 
-\item{arg}{Passed to \code{\link[cli:cli_abort]{cli::cli_abort()}} to improve internal error messages.}
+\item{arg}{Passed to \code{\link[cli:cli_abort]{cli_abort()}} to improve internal error messages.}
 
 \item{call}{The execution environment of a currently running
 function, e.g. \code{call = caller_env()}. The corresponding function
@@ -76,16 +76,16 @@ permitted.}
 convert to \code{to} units with a warning.}
 
 \item{to}{Unit to convert to. Passed to unitTo parameter of
-\code{\link[grid:grid.convert]{grid::convertUnit()}}. If \code{NULL}, return x as is.}
+\code{\link[grid:convertUnit]{grid::convertUnit()}}. If \code{NULL}, return x as is.}
 
-\item{typeFrom}{Passed to typeFrom parameter of \code{\link[grid:grid.convert]{grid::convertUnit()}}.
+\item{typeFrom}{Passed to typeFrom parameter of \code{\link[grid:convertUnit]{grid::convertUnit()}}.
 Defaults to "dimension".}
 
-\item{valueOnly}{Passed to valueOnly parameter of \code{\link[grid:grid.convert]{grid::convertUnit()}}.
+\item{valueOnly}{Passed to valueOnly parameter of \code{\link[grid:convertUnit]{grid::convertUnit()}}.
 Defaults to \code{FALSE}.}
 
 \item{...}{
-  Arguments passed on to \code{\link[grid:grid.convert]{grid::convertUnit}}
+  Arguments passed on to \code{\link[grid:convertUnit]{grid::convertUnit}}
   \describe{
     \item{\code{axisFrom}}{ Either \code{"x"} or \code{"y"} to indicate
     whether the unit object represents a value in the x- or

@@ -36,6 +36,6 @@ body dimensions, body aspect ratio, and margins.
 Set margins for page data.frame (adding body width, height, and asp)
 }
 \seealso{
-\code{\link[ggplot2:element]{ggplot2::margin()}}; \code{\link[=set_page_dims]{set_page_dims()}}; \code{\link[=set_page_orientation]{set_page_orientation()}};
+\code{\link[ggplot2:margin]{ggplot2::margin()}}; \code{\link[=set_page_dims]{set_page_dims()}}; \code{\link[=set_page_orientation]{set_page_orientation()}};
 \code{\link[=set_page_asp]{set_page_asp()}}
 }

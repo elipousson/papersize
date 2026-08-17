@@ -19,6 +19,9 @@ page_layout(
   ncol = NULL,
   nrow = NULL,
   dims = NULL,
+  margin = NULL,
+  unit = "in",
+  marks = FALSE,
   images = FALSE,
   dpi = 120,
   call = caller_env()
@@ -66,6 +69,22 @@ dims will be used or dims will be determined based on the plot dimensions.}
 Otherwise, if \code{NULL} (default), dims are inferred based on the dimensions
 of the first plot in plots.}
 
+\item{margin}{Optional. A margin to add around the outside of the combined
+grid of plots, e.g. so the grid can be centered on a larger sheet of
+paper when saved with \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}}. Passed to \code{\link[=get_margin]{get_margin()}} with
+unit. The margin pads the composed page rather than the individual plots
+in \code{plots}, and does not affect the number of rows and columns in the
+grid. Default: \code{NULL}.}
+
+\item{unit}{Unit used for \code{margin} if margin is a bare numeric vector or
+list. Ignored if margin is a \code{unit} class object. Default: \code{"in"}.}
+
+\item{marks}{If \code{TRUE}, add crop marks in the \code{margin} area showing where
+to cut the page into individual plots. Requires \code{margin}. Marks are
+placed assuming the grid of plots exactly fills the page after
+subtracting \code{margin}, i.e. the same assumption \code{margin} itself relies
+on. Default: \code{FALSE}.}
+
 \item{images}{Not yet implemented. If \code{TRUE} and dims is \code{NULL}, the input
 plots are assumed to be plots created with \code{\link[magick:image_ggplot]{magick::image_ggplot()}} and dpi
 is used to infer dimensions.}
@@ -87,6 +106,15 @@ Use patchwork to lay out a list of fixed aspect plots on a larger page
 page_layout(
   plots = plot_cards("Poker", 6),
   page = "letter"
+)
+
+page_layout(
+  plots = plot_cards("Poker", 6),
+  page = make_page_size(width = 2.5 * 3, height = 3.5 * 2, units = "in"),
+  ncol = 3,
+  nrow = 2,
+  margin = margins(t = 0.75, r = 0.5, b = 0.75, l = 0.5, unit = "in"),
+  marks = TRUE
 )
 }
 \seealso{

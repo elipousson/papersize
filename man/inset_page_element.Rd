@@ -43,19 +43,42 @@ below (but above the background)?}
 \item{ignore_tag}{Logical. Should autotagging ignore the inset?}
 
 \item{...}{
-  Arguments passed on to \code{\link[=convert_unit_type]{convert_unit_type}}
+  Arguments passed on to \code{\link{convert_unit_type}}
   \describe{
+    \item{\code{arg}}{Passed to \code{\link[cli:cli_abort]{cli_abort()}} to improve internal error messages.}
+    \item{\code{valid_units}}{Character vector with name or symbols for valid units.
+Defaults to \code{NULL} but any other unit name or symbol, e.g. "px", is
+permitted.}
     \item{\code{from}}{Unit to convert from. If \code{NULL} and x is not a units object,
 convert to \code{to} units with a warning.}
     \item{\code{to}}{Unit to convert to. Passed to unitTo parameter of
-\code{\link[grid:grid.convert]{grid::convertUnit()}}. If \code{NULL}, return x as is.}
-    \item{\code{typeFrom}}{Passed to typeFrom parameter of \code{\link[grid:grid.convert]{grid::convertUnit()}}.
+\code{\link[grid:convertUnit]{grid::convertUnit()}}. If \code{NULL}, return x as is.}
+    \item{\code{typeFrom}}{Passed to typeFrom parameter of \code{\link[grid:convertUnit]{grid::convertUnit()}}.
 Defaults to "dimension".}
-    \item{\code{valueOnly}}{Passed to valueOnly parameter of \code{\link[grid:grid.convert]{grid::convertUnit()}}.
+    \item{\code{valueOnly}}{Passed to valueOnly parameter of \code{\link[grid:convertUnit]{grid::convertUnit()}}.
 Defaults to \code{FALSE}.}
+    \item{\code{y}}{Object to compare to x.}
     \item{\code{x}}{A numeric vector.
 
     For \code{is.unit}, any R object.}
+    \item{\code{units}}{A character vector specifying the units for the
+    corresponding numeric values.}
+    \item{\code{data}}{This argument is used to supply extra information
+    for special \code{unit} types.}
+    \item{\code{call}}{The execution environment of a currently running
+function, e.g. \code{call = caller_env()}. The corresponding function
+call is retrieved and mentioned in error messages as the source
+of the error.
+
+You only need to supply \code{call} when throwing a condition from a
+helper function which wouldn't be relevant to mention in the
+message.
+
+Can also be \code{NULL} or a \link[rlang:topic-defuse]{defused function call} to
+respectively not display any call or hard-code a code to display.
+
+For more information about error calls, see \ifelse{html}{\link[rlang:topic-error-call]{Including function calls in error messages}}{\link[rlang:topic-error-call]{Including function calls in error messages}}.}
+    \item{\code{recurse}}{Whether to recurse into complex units.}
   }}
 }
 \value{

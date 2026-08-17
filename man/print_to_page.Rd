@@ -33,7 +33,7 @@ print_to_page_layout(
 \item{vp}{viewport to draw plot in}
 
 \item{...}{
-  Arguments passed on to \code{\link[=page_to_viewport]{page_to_viewport}}, \code{\link[=page_to_layout]{page_to_layout}}
+  Arguments passed on to \code{\link{page_to_viewport}}, \code{\link{page_to_layout}}
   \describe{
     \item{\code{name}}{A character value to uniquely identify the viewport
     once it has been pushed onto the viewport tree.  }

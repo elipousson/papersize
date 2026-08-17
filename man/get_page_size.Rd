@@ -72,12 +72,12 @@ page width and height.}
 \item{cols}{Length 2 character vector with column names for page dimensions.
 Defaults to c("width", "height").}
 
-\item{arg, call}{Passed to \code{\link[cli:cli_abort]{cli::cli_abort()}} to improve internal error messages.}
+\item{arg, call}{Passed to \code{\link[cli:cli_abort]{cli_abort()}} to improve internal error messages.}
 
 \item{...}{Additional parameters passed by \code{\link[=get_page_dims]{get_page_dims()}} to \code{\link[=get_page_size]{get_page_size()}}
 if page is a character object.}
 
-\item{valueOnly}{Passed to valueOnly parameter of \code{\link[grid:grid.convert]{grid::convertUnit()}}.
+\item{valueOnly}{Passed to valueOnly parameter of \code{\link[grid:convertUnit]{grid::convertUnit()}}.
 Defaults to \code{FALSE}.}
 }
 \value{

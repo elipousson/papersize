@@ -63,6 +63,8 @@ as as the width name and the second as the height.}
     \item{\code{layout.pos.col}}{A numeric vector giving the
     columns occupied by this viewport in its
     parent's layout.}
+    \item{\code{parent}}{A grid viewport object.}
+    \item{\code{children}}{A vpList object.}
   }}
 }
 \value{

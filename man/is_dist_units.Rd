@@ -35,7 +35,7 @@ or area_unit_options.}
 \code{dist_unit_options} or \code{area_unit_options}?
 \item \code{\link[=get_dist_units]{get_dist_units()}}: Get the distance units from x (if x is a sf or units
 objects or a character string from \link{dist_unit_options})
-\item \code{\link[=as_dist_units]{as_dist_units()}}: Convert x to units using \link[units:units]{units::as_units}
+\item \code{\link[=as_dist_units]{as_dist_units()}}: Convert x to units using \link[units:as_units]{units::as_units}
 \item \code{\link[=is_same_units]{is_same_units()}}: Do x and y have the same distance units attribute?
 Names or symbols of valid distance units are allowed.
 }
@@ -58,8 +58,8 @@ as_dist_units(2, mile)
 
 }
 \seealso{
-Other dist: 
-\code{\link{convert_dist_scale}()},
-\code{\link{convert_dist_units}()}
+Other dist:
+\code{\link[=convert_dist_scale]{convert_dist_scale()}},
+\code{\link[=convert_dist_units]{convert_dist_units()}}
 }
 \concept{dist}

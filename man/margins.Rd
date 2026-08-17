@@ -22,12 +22,12 @@ get_margin(margin = NULL, ..., unit = "in")
 \item{unit}{Default units for margins (ignored if margin is a margin class
 object). Passed to \code{\link[=as_unit_type]{as_unit_type()}} so units class objects as well as unit
 names supported \code{\link[grid:unit]{grid::unit()}} are allowed. Defaults to "in" except for
-\code{\link[ggplot2:element]{ggplot2::margin()}} where unit defaults to "pt" to match \code{\link[ggplot2:element]{ggplot2::margin()}}.}
+\code{\link[ggplot2:margin]{margin()}} where unit defaults to "pt" to match \code{\link[ggplot2:margin]{ggplot2::margin()}}.}
 
 \item{x}{Object to check for class margin and unit}
 }
 \description{
-An extended version of \code{\link[ggplot2:element]{ggplot2::margin()}} with more flexibility in
+An extended version of \code{\link[ggplot2:margin]{ggplot2::margin()}} with more flexibility in
 specification. If margin is a margin class object it is returned as is. If
 margin is length 1, the t, r, b, and l values are all set to that value. If
 margin is length 2, the t and b are set to half the first value and the r and
