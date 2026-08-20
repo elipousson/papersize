@@ -166,3 +166,26 @@ test_that("make_page_size works", {
     )
   )
 })
+
+test_that("make_page_size require_units works", {
+  expect_error(
+    make_page_size(8.5, 11),
+    "units"
+  )
+
+  expect_identical(
+    make_page_size(8.5, 11, require_units = FALSE, class = "list"),
+    list(
+      "width" = 8.5,
+      "height" = 11,
+      "orientation" = "portrait",
+      "asp" = 8.5 / 11
+    )
+  )
+
+  # units are still used and validated if supplied
+  expect_identical(
+    make_page_size(8.5, 11, units = "in", require_units = FALSE)[["units"]],
+    "inches"
+  )
+})
