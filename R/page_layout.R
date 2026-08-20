@@ -3,7 +3,12 @@
 #' @param plots Page name, a data.frame with width and height columns, or a list
 #'   of ggplot2 objects with card plots. Default: `NULL`
 #' @param page Paper name or a data.frame with width and height columns.
-#'   Optional if width and height are both provided, Default: `NULL`
+#'   Optional if width and height are both provided, Default: `NULL`. If
+#'   `ncol` and `nrow` are also supplied, `page` is not used to determine the
+#'   grid size — but if `margin` or `marks` are used, `page` must still be
+#'   set to the exact final output size (the same width/height you plan to
+#'   pass to [ggplot2::ggsave()]), not just the combined size of the grid of
+#'   plots. See `margin` and `marks` for why this matters.
 #' @param width,height Paper width and height, Default: `NULL`
 #' @param orientation Paper orientation, Optional if width and height are both
 #'   provided, Default: 'landscape'
@@ -16,19 +21,53 @@
 #'   of the first plot in plots.
 #' @param ncol,nrow The dimensions of the grid to create.  If both are `NULL`,
 #'   dims will be used or dims will be determined based on the plot dimensions.
+#' @param gutter Optional. Spacing to add between plots in the grid, as a
+#'   single number (used for both row and column spacing), a length-2 numeric
+#'   vector `c(row, col)`, or a named vector or list with `row` and `col`
+#'   elements. Interpreted in `unit`. Implemented by adding half of `gutter`
+#'   to the interior-facing sides of each plot's own `plot.margin` (so two
+#'   adjacent plots each contribute half, summing to the full gutter between
+#'   them) based on its row/column position in the `ncol` x `nrow` grid —
+#'   this replaces each plot's existing `plot.margin`. Plots on the outer
+#'   edge of the grid are not padded on their outward-facing side; use
+#'   `margin` for space around the outside of the whole grid. Default: `NULL`
+#'   (no extra spacing).
+#'
+#'   `gutter` changes the total size of the combined grid (adding
+#'   `(ncol - 1) * col_gutter` and `(nrow - 1) * row_gutter`), which `marks`
+#'   accounts for automatically — but `set_page_grid()`'s automatic `ncol`/
+#'   `nrow` calculation from `page`/`dims` does not reserve extra room for
+#'   `gutter`, so pass `ncol`/`nrow` explicitly when combining `gutter` with
+#'   an auto-computed grid size.
 #' @param margin Optional. A margin to add around the outside of the combined
 #'   grid of plots, e.g. so the grid can be centered on a larger sheet of
 #'   paper when saved with [ggplot2::ggsave()]. Passed to [get_margin()] with
 #'   unit. The margin pads the composed page rather than the individual plots
 #'   in `plots`, and does not affect the number of rows and columns in the
 #'   grid. Default: `NULL`.
-#' @param unit Unit used for `margin` if margin is a bare numeric vector or
-#'   list. Ignored if margin is a `unit` class object. Default: `"in"`.
+#'
+#'   `margin` itself always renders correctly regardless of `page`, because
+#'   it is applied as a fixed absolute-unit margin around whatever canvas
+#'   size [ggplot2::ggsave()] is eventually called with. `marks`, below, is
+#'   the one that depends on `page` being set correctly — see `marks`.
+#' @param unit Unit used for `gutter`, and for `margin` if margin is a bare
+#'   numeric vector or list (ignored for `margin` if it is a `unit` class
+#'   object; `gutter` does not support `unit` class objects). Default:
+#'   `"in"`.
 #' @param marks If `TRUE`, add crop marks in the `margin` area showing where
 #'   to cut the page into individual plots. Requires `margin`. Marks are
 #'   placed assuming the grid of plots exactly fills the page after
 #'   subtracting `margin`, i.e. the same assumption `margin` itself relies
 #'   on. Default: `FALSE`.
+#'
+#'   Unlike `margin`, `marks` reads `page` (via [get_page_dims()]) to work
+#'   out where the margin area is, so **`page` must equal the exact final
+#'   output size** — the same width/height you pass to `ggsave()` — even if
+#'   `ncol`/`nrow` are supplied directly and `page` would otherwise be
+#'   unused. Passing just the combined size of the grid of plots (i.e.
+#'   `page` without `margin` added on) will place the marks in the wrong
+#'   location, because [ggplot2::ggsave()] will render a larger canvas than
+#'   `marks` was calculated for.
 #' @param images  Not yet implemented. If `TRUE` and dims is `NULL`, the input
 #'   plots are assumed to be plots created with [magick::image_ggplot()] and dpi
 #'   is used to infer dimensions.
@@ -41,11 +80,27 @@
 #'   page = "letter"
 #' )
 #'
+#' # `page` must be the final output size (grid of 3x2 Poker cards, 7.5x7in,
+#' # plus the 0.5/0.75in margin on each side = 8.5x8.5in), not just the size
+#' # of the grid of plots — this is what ggsave(width, height) should match
 #' page_layout(
 #'   plots = plot_cards("Poker", 6),
-#'   page = make_page_size(width = 2.5 * 3, height = 3.5 * 2, units = "in"),
+#'   page = make_page_size(width = 8.5, height = 8.5, units = "in"),
 #'   ncol = 3,
 #'   nrow = 2,
+#'   margin = margins(t = 0.75, r = 0.5, b = 0.75, l = 0.5, unit = "in"),
+#'   marks = TRUE
+#' )
+#'
+#' # `gutter` adds spacing between plots, which grows the grid (3x2 Poker
+#' # cards with a 0.1in gutter = 7.7x7.1in) — `page` (and `marks`) account
+#' # for it automatically, so it still needs the full 8.7x8.6in page size
+#' page_layout(
+#'   plots = plot_cards("Poker", 6),
+#'   page = make_page_size(width = 8.7, height = 8.6, units = "in"),
+#'   ncol = 3,
+#'   nrow = 2,
+#'   gutter = 0.1,
 #'   margin = margins(t = 0.75, r = 0.5, b = 0.75, l = 0.5, unit = "in"),
 #'   marks = TRUE
 #' )
@@ -69,6 +124,7 @@ page_layout <- function(
   ncol = NULL,
   nrow = NULL,
   dims = NULL,
+  gutter = NULL,
   margin = NULL,
   unit = "in",
   marks = FALSE,
@@ -82,6 +138,8 @@ page_layout <- function(
     "{.arg marks} requires {.arg margin} (crop marks are drawn in the
     margin area)." = marks && is_null(margin)
   )
+
+  gutter_dims <- get_gutter(gutter, unit = unit, call = call)
 
   page_grid <- set_page_grid(
     plots = plots,
@@ -122,6 +180,15 @@ page_layout <- function(
   }
 
   if (!paginate) {
+    plots <- add_gutter_margins(
+      plots,
+      ncol = page_grid[[1]],
+      nrow = page_grid[[2]],
+      byrow = byrow,
+      gutter = gutter_dims,
+      unit = unit
+    )
+
     patch_layout <- patchwork::wrap_plots(
       plots,
       ncol = page_grid[[1]],
@@ -141,7 +208,8 @@ page_layout <- function(
         nrow = page_grid[[2]],
         page_width = page_dims[["width"]],
         page_height = page_dims[["height"]],
-        margin = get_margin(margin, unit = unit)
+        margin = get_margin(margin, unit = unit),
+        gutter = gutter_dims
       )
     }
 
@@ -158,10 +226,20 @@ page_layout <- function(
   map(
     plots,
     function(x) {
+      x <- add_gutter_margins(
+        x,
+        ncol = page_grid[[1]],
+        nrow = page_grid[[2]],
+        byrow = byrow,
+        gutter = gutter_dims,
+        unit = unit
+      )
+
       patch_layout <- patchwork::wrap_plots(
         x,
         ncol = page_grid[[1]],
         nrow = page_grid[[2]],
+        byrow = byrow,
         guides = guides,
         tag_level = tag_level,
         design = design
@@ -176,11 +254,94 @@ page_layout <- function(
           nrow = page_grid[[2]],
           page_width = page_dims[["width"]],
           page_height = page_dims[["height"]],
-          margin = get_margin(margin, unit = unit)
+          margin = get_margin(margin, unit = unit),
+          gutter = gutter_dims
         )
       }
 
       patch_layout
+    }
+  )
+}
+
+# TODO: Determine if unused unit argument for get_gutter is required
+#' Parse the `gutter` argument into a `c(row =, col =)` numeric pair
+#' @noRd
+get_gutter <- function(gutter = NULL, unit = "in", call = caller_env()) {
+  if (is_null(gutter)) {
+    return(c(row = 0, col = 0))
+  }
+
+  if (is_list(gutter)) {
+    gutter <- unlist(gutter)
+  }
+
+  if (all(has_name(gutter, c("row", "col")))) {
+    return(c(
+      row = as.numeric(gutter[["row"]]),
+      col = as.numeric(gutter[["col"]])
+    ))
+  }
+
+  if (has_length(gutter, 1)) {
+    gutter <- as.numeric(gutter)
+    return(c(row = gutter, col = gutter))
+  }
+
+  if (has_length(gutter, 2)) {
+    gutter <- as.numeric(gutter)
+    return(c(row = gutter[[1]], col = gutter[[2]]))
+  }
+
+  cli_abort(
+    "{.arg gutter} must be a single number, a length-2 numeric vector, or a
+    named vector or list with {.val row} and {.val col} elements.",
+    call = call
+  )
+}
+
+#' Add interior spacing between plots by patching each plot's own margin
+#'
+#' Adds half of `gutter` to the grid-interior-facing sides of each plot's
+#' `plot.margin`, based on its row/column position in the `ncol` x `nrow`
+#' grid (matching `patchwork::wrap_plots()`'s own `byrow` fill order), so two
+#' adjacent plots each contribute half the gutter and it sums to the full
+#' amount between them. Plots on the outer edge of the grid are left at 0 on
+#' their outward-facing side — pair with `add_page_margin()` for space
+#' around the outside of the whole grid. This replaces each plot's existing
+#' `plot.margin` entirely.
+#' @noRd
+add_gutter_margins <- function(
+  plots,
+  ncol,
+  nrow,
+  byrow = FALSE,
+  gutter = c(row = 0, col = 0),
+  unit = "in"
+) {
+  if (all(gutter == 0)) {
+    return(plots)
+  }
+
+  pos <- matrix(seq_len(ncol * nrow), nrow = nrow, ncol = ncol, byrow = byrow)
+
+  map(
+    seq_along(plots),
+    function(k) {
+      rc <- which(pos == k, arr.ind = TRUE)
+      row <- rc[1, "row"]
+      col <- rc[1, "col"]
+
+      plots[[k]] +
+        ggplot2::theme(
+          plot.margin = ggplot2::margin(
+            t = if (row > 1) gutter[["row"]] / 2 else 0,
+            r = if (col < ncol) gutter[["col"]] / 2 else 0,
+            b = if (row < nrow) gutter[["row"]] / 2 else 0,
+            l = if (col > 1) gutter[["col"]] / 2 else 0,
+            unit = unit
+          )
+        )
     }
   )
 }
@@ -225,6 +386,7 @@ add_crop_marks <- function(
   page_width,
   page_height,
   margin,
+  gutter = c(row = 0, col = 0),
   length = 0.15,
   gap = 0.05,
   color = "black",
@@ -236,11 +398,20 @@ add_crop_marks <- function(
   content_bottom <- margin[3]
   content_left <- margin[4]
 
-  card_width <- (content_right - content_left) / ncol
-  card_height <- (content_top - content_bottom) / nrow
+  card_width <- (content_right - content_left - (ncol - 1) * gutter[["col"]]) /
+    ncol
+  card_height <- (content_top - content_bottom - (nrow - 1) * gutter[["row"]]) /
+    nrow
 
-  x_breaks <- content_left + (0:ncol) * card_width
-  y_breaks <- content_bottom + (0:nrow) * card_height
+  # each card's own left/right (or bottom/top) edges, deduped — collapses to
+  # the same evenly-spaced breaks as before when gutter is 0, since adjacent
+  # cards' edges then coincide
+  col_left <- content_left + (0:(ncol - 1)) * (card_width + gutter[["col"]])
+  x_breaks <- sort(unique(c(col_left, col_left + card_width)))
+
+  row_bottom <- content_bottom +
+    (0:(nrow - 1)) * (card_height + gutter[["row"]])
+  y_breaks <- sort(unique(c(row_bottom, row_bottom + card_height)))
 
   marks <- ggplot2::ggplot()
 
@@ -307,9 +478,19 @@ add_crop_marks <- function(
     ) +
     ggplot2::theme_void()
 
+  # `wrap_elements()` and the composition created by adding `inset_element()`
+  # each pick up ggplot2's default ~5.5pt `plot.margin`/background on top of
+  # whatever `patch` already has, shrinking the content area on every side
+  # (visible as marks landing inside `margin` rather than at its edge) unless
+  # both are explicitly zeroed out here
+  no_margin <- ggplot2::theme(
+    plot.margin = ggplot2::margin(0, 0, 0, 0),
+    plot.background = ggplot2::element_rect(fill = NA, color = NA)
+  )
+
   # `inset_element()` aligns to the last panel added to `patch` unless the
   # whole composed grid is first collapsed into a single wrapped element
-  patchwork::wrap_elements(patch) +
+  (patchwork::wrap_elements(patch) + no_margin) +
     patchwork::inset_element(
       marks,
       left = 0,
@@ -319,7 +500,8 @@ add_crop_marks <- function(
       align_to = "full",
       on_top = TRUE,
       clip = FALSE
-    )
+    ) &
+    no_margin
 }
 
 #' @noRd
