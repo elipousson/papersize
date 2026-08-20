@@ -322,8 +322,7 @@ ggsave_social <- function(
 #'   patchwork including inset maps created with the
 #'   [maplayer::layer_inset()] function.
 #' @export
-#' @importFrom cli cli_alert_warning cli_bullets cli_progress_step
-#'   cli_progress_update
+#' @importFrom cli cli_alert_warning cli_bullets cli_progress_step cli_progress_update
 map_ggsave_ext <- function(
   plot,
   name = NULL,
