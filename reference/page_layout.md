@@ -19,6 +19,7 @@ page_layout(
   ncol = NULL,
   nrow = NULL,
   dims = NULL,
+  gutter = NULL,
   margin = NULL,
   unit = "in",
   marks = FALSE,
@@ -38,7 +39,14 @@ page_layout(
 - page:
 
   Paper name or a data.frame with width and height columns. Optional if
-  width and height are both provided, Default: `NULL`
+  width and height are both provided, Default: `NULL`. If `ncol` and
+  `nrow` are also supplied, `page` is not used to determine the grid
+  size — but if `margin` or `marks` are used, `page` must still be set
+  to the exact final output size (the same width/height you plan to pass
+  to
+  [`ggplot2::ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html)),
+  not just the combined size of the grid of plots. See `margin` and
+  `marks` for why this matters.
 
 - width, height:
 
@@ -97,6 +105,27 @@ page_layout(
   Otherwise, if `NULL` (default), dims are inferred based on the
   dimensions of the first plot in plots.
 
+- gutter:
+
+  Optional. Spacing to add between plots in the grid, as a single number
+  (used for both row and column spacing), a length-2 numeric vector
+  `c(row, col)`, or a named vector or list with `row` and `col`
+  elements. Interpreted in `unit`. Implemented by adding half of
+  `gutter` to the interior-facing sides of each plot's own `plot.margin`
+  (so two adjacent plots each contribute half, summing to the full
+  gutter between them) based on its row/column position in the `ncol` x
+  `nrow` grid — this replaces each plot's existing `plot.margin`. Plots
+  on the outer edge of the grid are not padded on their outward-facing
+  side; use `margin` for space around the outside of the whole grid.
+  Default: `NULL` (no extra spacing).
+
+  `gutter` changes the total size of the combined grid (adding
+  `(ncol - 1) * col_gutter` and `(nrow - 1) * row_gutter`), which
+  `marks` accounts for automatically — but `set_page_grid()`'s automatic
+  `ncol`/ `nrow` calculation from `page`/`dims` does not reserve extra
+  room for `gutter`, so pass `ncol`/`nrow` explicitly when combining
+  `gutter` with an auto-computed grid size.
+
 - margin:
 
   Optional. A margin to add around the outside of the combined grid of
@@ -109,10 +138,18 @@ page_layout(
   individual plots in `plots`, and does not affect the number of rows
   and columns in the grid. Default: `NULL`.
 
+  `margin` itself always renders correctly regardless of `page`, because
+  it is applied as a fixed absolute-unit margin around whatever canvas
+  size
+  [`ggplot2::ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html)
+  is eventually called with. `marks`, below, is the one that depends on
+  `page` being set correctly — see `marks`.
+
 - unit:
 
-  Unit used for `margin` if margin is a bare numeric vector or list.
-  Ignored if margin is a `unit` class object. Default: `"in"`.
+  Unit used for `gutter`, and for `margin` if margin is a bare numeric
+  vector or list (ignored for `margin` if it is a `unit` class object;
+  `gutter` does not support `unit` class objects). Default: `"in"`.
 
 - marks:
 
@@ -121,6 +158,18 @@ page_layout(
   assuming the grid of plots exactly fills the page after subtracting
   `margin`, i.e. the same assumption `margin` itself relies on. Default:
   `FALSE`.
+
+  Unlike `margin`, `marks` reads `page` (via
+  [`get_page_dims()`](https://elipousson.github.io/papersize/reference/get_page_size.md))
+  to work out where the margin area is, so **`page` must equal the exact
+  final output size** — the same width/height you pass to
+  [`ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html) —
+  even if `ncol`/`nrow` are supplied directly and `page` would otherwise
+  be unused. Passing just the combined size of the grid of plots (i.e.
+  `page` without `margin` added on) will place the marks in the wrong
+  location, because
+  [`ggplot2::ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html)
+  will render a larger canvas than `marks` was calculated for.
 
 - images:
 
@@ -163,16 +212,38 @@ page_layout(
 
 #> 
 
+# `page` must be the final output size (grid of 3x2 Poker cards, 7.5x7in,
+# plus the 0.5/0.75in margin on each side = 8.5x8.5in), not just the size
+# of the grid of plots — this is what ggsave(width, height) should match
 page_layout(
   plots = plot_cards("Poker", 6),
-  page = make_page_size(width = 2.5 * 3, height = 3.5 * 2, units = "in"),
+  page = make_page_size(width = 8.5, height = 8.5, units = "in"),
   ncol = 3,
   nrow = 2,
   margin = margins(t = 0.75, r = 0.5, b = 0.75, l = 0.5, unit = "in"),
   marks = TRUE
 )
-#> Warning: `orientation` can't be set to "landscape" when the page width is 7.5 and height
-#> is 7.
+#> Warning: `orientation` can't be set to "landscape" when the page width is 8.5 and height
+#> is 8.5.
+#> ℹ Orientation kept as "square".
+#> $`1`
+
+#> 
+
+# `gutter` adds spacing between plots, which grows the grid (3x2 Poker
+# cards with a 0.1in gutter = 7.7x7.1in) — `page` (and `marks`) account
+# for it automatically, so it still needs the full 8.7x8.6in page size
+page_layout(
+  plots = plot_cards("Poker", 6),
+  page = make_page_size(width = 8.7, height = 8.6, units = "in"),
+  ncol = 3,
+  nrow = 2,
+  gutter = 0.1,
+  margin = margins(t = 0.75, r = 0.5, b = 0.75, l = 0.5, unit = "in"),
+  marks = TRUE
+)
+#> Warning: `orientation` can't be set to "landscape" when the page width is 8.7 and height
+#> is 8.6.
 #> ℹ Orientation kept as "square".
 #> $`1`
 

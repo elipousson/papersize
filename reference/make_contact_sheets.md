@@ -75,7 +75,14 @@ make_contact_sheets(
 - page:
 
   Paper name or a data.frame with width and height columns. Optional if
-  width and height are both provided, Default: `NULL`
+  width and height are both provided, Default: `NULL`. If `ncol` and
+  `nrow` are also supplied, `page` is not used to determine the grid
+  size — but if `margin` or `marks` are used, `page` must still be set
+  to the exact final output size (the same width/height you plan to pass
+  to
+  [`ggplot2::ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html)),
+  not just the combined size of the grid of plots. See `margin` and
+  `marks` for why this matters.
 
 - orientation:
 

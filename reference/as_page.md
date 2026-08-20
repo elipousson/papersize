@@ -6,7 +6,7 @@ get_page_size() or make_page_size()
 ## Usage
 
 ``` r
-as_page(x, ..., cols = c("width", "height"), class = "data.frame")
+as_page(x = NULL, ..., cols = c("width", "height"), class = "data.frame")
 ```
 
 ## Arguments
@@ -37,7 +37,7 @@ as_page(x, ..., cols = c("width", "height"), class = "data.frame")
   `units`
 
   :   Units for width and height. Required unless units is included in
-      dims. Passed to
+      dims or `require_units = FALSE`. Passed to
       [`as_unit_type()`](https://elipousson.github.io/papersize/reference/as_unit.md)
       to validate.
 
@@ -63,6 +63,16 @@ as_page(x, ..., cols = c("width", "height"), class = "data.frame")
       a portrait orientation when orientation = "landscape", the
       dimensions are reversed so the page dimensions match the provided
       orientation.
+
+  `require_units`
+
+  :   If `TRUE` (default), `units` must be supplied (either directly or
+      via `dims`) or the function errors. Set `require_units = FALSE` to
+      allow `units` to be omitted, e.g. for use by
+      [`get_page_dims()`](https://elipousson.github.io/papersize/reference/get_page_size.md)
+      where a unitless width and height are valid input. If `units` is
+      omitted and `require_units = FALSE`, the returned page has no
+      units column.
 
   `valid_units`
 

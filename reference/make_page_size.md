@@ -10,7 +10,7 @@ height may be reversed to match the provided orientation.
 make_page_size(
   width = NULL,
   height = NULL,
-  units,
+  units = NULL,
   asp = NULL,
   orientation = NULL,
   name = NULL,
@@ -18,6 +18,7 @@ make_page_size(
   valid_units = NULL,
   cols = c("width", "height"),
   class = "data.frame",
+  require_units = TRUE,
   call = caller_env()
 )
 ```
@@ -31,8 +32,8 @@ make_page_size(
 
 - units:
 
-  Units for width and height. Required unless units is included in dims.
-  Passed to
+  Units for width and height. Required unless units is included in dims
+  or `require_units = FALSE`. Passed to
   [`as_unit_type()`](https://elipousson.github.io/papersize/reference/as_unit.md)
   to validate.
 
@@ -72,6 +73,16 @@ make_page_size(
 
   Class of return object: "data.frame" (default) or "list" (only
   supported when input page size is a single row).
+
+- require_units:
+
+  If `TRUE` (default), `units` must be supplied (either directly or via
+  `dims`) or the function errors. Set `require_units = FALSE` to allow
+  `units` to be omitted, e.g. for use by
+  [`get_page_dims()`](https://elipousson.github.io/papersize/reference/get_page_size.md)
+  where a unitless width and height are valid input. If `units` is
+  omitted and `require_units = FALSE`, the returned page has no units
+  column.
 
 - call:
 

@@ -45,8 +45,8 @@ set_page_asp(page, flipped = FALSE, cols = c("width", "height"))
 
 - units:
 
-  Units for width and height. Required unless units is included in dims.
-  Passed to
+  Units for width and height. Required unless units is included in dims
+  or `require_units = FALSE`. Passed to
   [`as_unit_type()`](https://elipousson.github.io/papersize/reference/as_unit.md)
   to validate.
 

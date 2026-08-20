@@ -53,6 +53,7 @@
 <span>  ncol <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  nrow <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  dims <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  gutter <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  margin <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  unit <span class="op">=</span> <span class="st">"in"</span>,</span>
 <span>  marks <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -73,7 +74,12 @@ of ggplot2 objects with card plots. Default: <code>NULL</code></p></dd>
 
 <dt id="arg-page">page<a class="anchor" aria-label="anchor" href="#arg-page"></a></dt>
 <dd><p>Paper name or a data.frame with width and height columns.
-Optional if width and height are both provided, Default: <code>NULL</code></p></dd>
+Optional if width and height are both provided, Default: <code>NULL</code>. If
+<code>ncol</code> and <code>nrow</code> are also supplied, <code>page</code> is not used to determine the
+grid size — but if <code>margin</code> or <code>marks</code> are used, <code>page</code> must still be
+set to the exact final output size (the same width/height you plan to
+pass to <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggplot2::ggsave()</a></code>), not just the combined size of the grid of
+plots. See <code>margin</code> and <code>marks</code> for why this matters.</p></dd>
 
 
 <dt id="arg-width-height">width, height<a class="anchor" aria-label="anchor" href="#arg-width-height"></a></dt>
@@ -129,18 +135,44 @@ Otherwise, if <code>NULL</code> (default), dims are inferred based on the dimens
 of the first plot in plots.</p></dd>
 
 
+<dt id="arg-gutter">gutter<a class="anchor" aria-label="anchor" href="#arg-gutter"></a></dt>
+<dd><p>Optional. Spacing to add between plots in the grid, as a
+single number (used for both row and column spacing), a length-2 numeric
+vector <code>c(row, col)</code>, or a named vector or list with <code>row</code> and <code>col</code>
+elements. Interpreted in <code>unit</code>. Implemented by adding half of <code>gutter</code>
+to the interior-facing sides of each plot's own <code>plot.margin</code> (so two
+adjacent plots each contribute half, summing to the full gutter between
+them) based on its row/column position in the <code>ncol</code> x <code>nrow</code> grid —
+this replaces each plot's existing <code>plot.margin</code>. Plots on the outer
+edge of the grid are not padded on their outward-facing side; use
+<code>margin</code> for space around the outside of the whole grid. Default: <code>NULL</code>
+(no extra spacing).</p>
+<p><code>gutter</code> changes the total size of the combined grid (adding
+<code>(ncol - 1) * col_gutter</code> and <code>(nrow - 1) * row_gutter</code>), which <code>marks</code>
+accounts for automatically — but <code>set_page_grid()</code>'s automatic <code>ncol</code>/
+<code>nrow</code> calculation from <code>page</code>/<code>dims</code> does not reserve extra room for
+<code>gutter</code>, so pass <code>ncol</code>/<code>nrow</code> explicitly when combining <code>gutter</code> with
+an auto-computed grid size.</p></dd>
+
+
 <dt id="arg-margin">margin<a class="anchor" aria-label="anchor" href="#arg-margin"></a></dt>
 <dd><p>Optional. A margin to add around the outside of the combined
 grid of plots, e.g. so the grid can be centered on a larger sheet of
 paper when saved with <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggplot2::ggsave()</a></code>. Passed to <code><a href="margins.html">get_margin()</a></code> with
 unit. The margin pads the composed page rather than the individual plots
 in <code>plots</code>, and does not affect the number of rows and columns in the
-grid. Default: <code>NULL</code>.</p></dd>
+grid. Default: <code>NULL</code>.</p>
+<p><code>margin</code> itself always renders correctly regardless of <code>page</code>, because
+it is applied as a fixed absolute-unit margin around whatever canvas
+size <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggplot2::ggsave()</a></code> is eventually called with. <code>marks</code>, below, is
+the one that depends on <code>page</code> being set correctly — see <code>marks</code>.</p></dd>
 
 
 <dt id="arg-unit">unit<a class="anchor" aria-label="anchor" href="#arg-unit"></a></dt>
-<dd><p>Unit used for <code>margin</code> if margin is a bare numeric vector or
-list. Ignored if margin is a <code>unit</code> class object. Default: <code>"in"</code>.</p></dd>
+<dd><p>Unit used for <code>gutter</code>, and for <code>margin</code> if margin is a bare
+numeric vector or list (ignored for <code>margin</code> if it is a <code>unit</code> class
+object; <code>gutter</code> does not support <code>unit</code> class objects). Default:
+<code>"in"</code>.</p></dd>
 
 
 <dt id="arg-marks">marks<a class="anchor" aria-label="anchor" href="#arg-marks"></a></dt>
@@ -148,7 +180,15 @@ list. Ignored if margin is a <code>unit</code> class object. Default: <code>"in"
 to cut the page into individual plots. Requires <code>margin</code>. Marks are
 placed assuming the grid of plots exactly fills the page after
 subtracting <code>margin</code>, i.e. the same assumption <code>margin</code> itself relies
-on. Default: <code>FALSE</code>.</p></dd>
+on. Default: <code>FALSE</code>.</p>
+<p>Unlike <code>margin</code>, <code>marks</code> reads <code>page</code> (via <code><a href="get_page_size.html">get_page_dims()</a></code>) to work
+out where the margin area is, so <strong><code>page</code> must equal the exact final
+output size</strong> — the same width/height you pass to <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave()</a></code> — even if
+<code>ncol</code>/<code>nrow</code> are supplied directly and <code>page</code> would otherwise be
+unused. Passing just the combined size of the grid of plots (i.e.
+<code>page</code> without <code>margin</code> added on) will place the marks in the wrong
+location, because <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggplot2::ggsave()</a></code> will render a larger canvas than
+<code>marks</code> was calculated for.</p></dd>
 
 
 <dt id="arg-images">images<a class="anchor" aria-label="anchor" href="#arg-images"></a></dt>
@@ -189,19 +229,41 @@ mentioned in error messages as the source of the error. See the
 <span class="r-plt img"><img src="page_layout-1.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># `page` must be the final output size (grid of 3x2 Poker cards, 7.5x7in,</span></span></span>
+<span class="r-in"><span><span class="co"># plus the 0.5/0.75in margin on each side = 8.5x8.5in), not just the size</span></span></span>
+<span class="r-in"><span><span class="co"># of the grid of plots — this is what ggsave(width, height) should match</span></span></span>
 <span class="r-in"><span><span class="fu">page_layout</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  plots <span class="op">=</span> <span class="fu"><a href="plot_cards.html">plot_cards</a></span><span class="op">(</span><span class="st">"Poker"</span>, <span class="fl">6</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  page <span class="op">=</span> <span class="fu"><a href="make_page_size.html">make_page_size</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">2.5</span> <span class="op">*</span> <span class="fl">3</span>, height <span class="op">=</span> <span class="fl">3.5</span> <span class="op">*</span> <span class="fl">2</span>, units <span class="op">=</span> <span class="st">"in"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  page <span class="op">=</span> <span class="fu"><a href="make_page_size.html">make_page_size</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">8.5</span>, height <span class="op">=</span> <span class="fl">8.5</span>, units <span class="op">=</span> <span class="st">"in"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  ncol <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>  nrow <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>  margin <span class="op">=</span> <span class="fu"><a href="margins.html">margins</a></span><span class="op">(</span>t <span class="op">=</span> <span class="fl">0.75</span>, r <span class="op">=</span> <span class="fl">0.5</span>, b <span class="op">=</span> <span class="fl">0.75</span>, l <span class="op">=</span> <span class="fl">0.5</span>, unit <span class="op">=</span> <span class="st">"in"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  marks <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`orientation` can't be set to <span style="color: #0000BB;">"landscape"</span> when the page width is <span style="color: #0000BB;">7.5</span> and height</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> is <span style="color: #0000BB;">7</span>.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`orientation` can't be set to <span style="color: #0000BB;">"landscape"</span> when the page width is <span style="color: #0000BB;">8.5</span> and height</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> is <span style="color: #0000BB;">8.5</span>.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Orientation kept as <span style="color: #0000BB;">"square"</span>.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`1`</span>
 <span class="r-plt img"><img src="page_layout-2.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># `gutter` adds spacing between plots, which grows the grid (3x2 Poker</span></span></span>
+<span class="r-in"><span><span class="co"># cards with a 0.1in gutter = 7.7x7.1in) — `page` (and `marks`) account</span></span></span>
+<span class="r-in"><span><span class="co"># for it automatically, so it still needs the full 8.7x8.6in page size</span></span></span>
+<span class="r-in"><span><span class="fu">page_layout</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  plots <span class="op">=</span> <span class="fu"><a href="plot_cards.html">plot_cards</a></span><span class="op">(</span><span class="st">"Poker"</span>, <span class="fl">6</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  page <span class="op">=</span> <span class="fu"><a href="make_page_size.html">make_page_size</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">8.7</span>, height <span class="op">=</span> <span class="fl">8.6</span>, units <span class="op">=</span> <span class="st">"in"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  ncol <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>  nrow <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>  gutter <span class="op">=</span> <span class="fl">0.1</span>,</span></span>
+<span class="r-in"><span>  margin <span class="op">=</span> <span class="fu"><a href="margins.html">margins</a></span><span class="op">(</span>t <span class="op">=</span> <span class="fl">0.75</span>, r <span class="op">=</span> <span class="fl">0.5</span>, b <span class="op">=</span> <span class="fl">0.75</span>, l <span class="op">=</span> <span class="fl">0.5</span>, unit <span class="op">=</span> <span class="st">"in"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  marks <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`orientation` can't be set to <span style="color: #0000BB;">"landscape"</span> when the page width is <span style="color: #0000BB;">8.7</span> and height</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> is <span style="color: #0000BB;">8.6</span>.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Orientation kept as <span style="color: #0000BB;">"square"</span>.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`1`</span>
+<span class="r-plt img"><img src="page_layout-3.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>

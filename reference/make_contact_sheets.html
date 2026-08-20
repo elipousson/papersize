@@ -107,7 +107,12 @@ theme, Default: 'panel'</p></dd>
 
 <dt id="arg-page">page<a class="anchor" aria-label="anchor" href="#arg-page"></a></dt>
 <dd><p>Paper name or a data.frame with width and height columns.
-Optional if width and height are both provided, Default: <code>NULL</code></p></dd>
+Optional if width and height are both provided, Default: <code>NULL</code>. If
+<code>ncol</code> and <code>nrow</code> are also supplied, <code>page</code> is not used to determine the
+grid size — but if <code>margin</code> or <code>marks</code> are used, <code>page</code> must still be
+set to the exact final output size (the same width/height you plan to
+pass to <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggplot2::ggsave()</a></code>), not just the combined size of the grid of
+plots. See <code>margin</code> and <code>marks</code> for why this matters.</p></dd>
 
 
 <dt id="arg-orientation">orientation<a class="anchor" aria-label="anchor" href="#arg-orientation"></a></dt>

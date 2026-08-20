@@ -13,6 +13,7 @@ add_card_number(
   n = 1,
   color = "white",
   size = 5,
-  family = NULL
+  family = NULL,
+  sequence = TRUE
 )
 ```
