@@ -106,6 +106,13 @@ as_unit_type <- function(
     return(type)
   }
 
+  if (is.null(x)) {
+    cli_abort(
+      "{.arg {arg}} can't be NULL.",
+      call = call
+    )
+  }
+
   rlang::try_fetch(
     grid::unitType(grid::unit(1, x, data), recurse),
     error = function(cnd) {
