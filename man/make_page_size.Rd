@@ -7,7 +7,7 @@
 make_page_size(
   width = NULL,
   height = NULL,
-  units,
+  units = NULL,
   asp = NULL,
   orientation = NULL,
   name = NULL,
@@ -15,6 +15,7 @@ make_page_size(
   valid_units = NULL,
   cols = c("width", "height"),
   class = "data.frame",
+  require_units = TRUE,
   call = caller_env()
 )
 }
@@ -23,7 +24,7 @@ make_page_size(
 \code{NULL}. Default to \code{NULL}.}
 
 \item{units}{Units for width and height. Required unless units is included in
-dims. Passed to \code{\link[=as_unit_type]{as_unit_type()}} to validate.}
+dims or \code{require_units = FALSE}. Passed to \code{\link[=as_unit_type]{as_unit_type()}} to validate.}
 
 \item{asp}{Aspect ratio. Required if only one of width or height are
 provided.}
@@ -49,6 +50,12 @@ as as the width name and the second as the height.}
 
 \item{class}{Class of return object: "data.frame" (default) or "list" (only
 supported when input page size is a single row).}
+
+\item{require_units}{If \code{TRUE} (default), \code{units} must be supplied (either
+directly or via \code{dims}) or the function errors. Set \code{require_units = FALSE} to allow \code{units} to be omitted, e.g. for use by
+\code{\link[=get_page_dims]{get_page_dims()}} where a unitless width and height are valid input. If
+\code{units} is omitted and \code{require_units = FALSE}, the returned page has no
+units column.}
 
 \item{call}{The execution environment of a currently running
 function, e.g. \code{call = caller_env()}. The corresponding function

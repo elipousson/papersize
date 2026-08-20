@@ -19,6 +19,7 @@ page_layout(
   ncol = NULL,
   nrow = NULL,
   dims = NULL,
+  gutter = NULL,
   margin = NULL,
   unit = "in",
   marks = FALSE,
@@ -32,7 +33,12 @@ page_layout(
 of ggplot2 objects with card plots. Default: \code{NULL}}
 
 \item{page}{Paper name or a data.frame with width and height columns.
-Optional if width and height are both provided, Default: \code{NULL}}
+Optional if width and height are both provided, Default: \code{NULL}. If
+\code{ncol} and \code{nrow} are also supplied, \code{page} is not used to determine the
+grid size — but if \code{margin} or \code{marks} are used, \code{page} must still be
+set to the exact final output size (the same width/height you plan to
+pass to \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}}), not just the combined size of the grid of
+plots. See \code{margin} and \code{marks} for why this matters.}
 
 \item{width, height}{Paper width and height, Default: \code{NULL}}
 
@@ -69,21 +75,56 @@ dims will be used or dims will be determined based on the plot dimensions.}
 Otherwise, if \code{NULL} (default), dims are inferred based on the dimensions
 of the first plot in plots.}
 
+\item{gutter}{Optional. Spacing to add between plots in the grid, as a
+single number (used for both row and column spacing), a length-2 numeric
+vector \code{c(row, col)}, or a named vector or list with \code{row} and \code{col}
+elements. Interpreted in \code{unit}. Implemented by adding half of \code{gutter}
+to the interior-facing sides of each plot's own \code{plot.margin} (so two
+adjacent plots each contribute half, summing to the full gutter between
+them) based on its row/column position in the \code{ncol} x \code{nrow} grid —
+this replaces each plot's existing \code{plot.margin}. Plots on the outer
+edge of the grid are not padded on their outward-facing side; use
+\code{margin} for space around the outside of the whole grid. Default: \code{NULL}
+(no extra spacing).
+
+\code{gutter} changes the total size of the combined grid (adding
+\code{(ncol - 1) * col_gutter} and \code{(nrow - 1) * row_gutter}), which \code{marks}
+accounts for automatically — but \code{set_page_grid()}'s automatic \code{ncol}/
+\code{nrow} calculation from \code{page}/\code{dims} does not reserve extra room for
+\code{gutter}, so pass \code{ncol}/\code{nrow} explicitly when combining \code{gutter} with
+an auto-computed grid size.}
+
 \item{margin}{Optional. A margin to add around the outside of the combined
 grid of plots, e.g. so the grid can be centered on a larger sheet of
 paper when saved with \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}}. Passed to \code{\link[=get_margin]{get_margin()}} with
 unit. The margin pads the composed page rather than the individual plots
 in \code{plots}, and does not affect the number of rows and columns in the
-grid. Default: \code{NULL}.}
+grid. Default: \code{NULL}.
 
-\item{unit}{Unit used for \code{margin} if margin is a bare numeric vector or
-list. Ignored if margin is a \code{unit} class object. Default: \code{"in"}.}
+\code{margin} itself always renders correctly regardless of \code{page}, because
+it is applied as a fixed absolute-unit margin around whatever canvas
+size \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} is eventually called with. \code{marks}, below, is
+the one that depends on \code{page} being set correctly — see \code{marks}.}
+
+\item{unit}{Unit used for \code{gutter}, and for \code{margin} if margin is a bare
+numeric vector or list (ignored for \code{margin} if it is a \code{unit} class
+object; \code{gutter} does not support \code{unit} class objects). Default:
+\code{"in"}.}
 
 \item{marks}{If \code{TRUE}, add crop marks in the \code{margin} area showing where
 to cut the page into individual plots. Requires \code{margin}. Marks are
 placed assuming the grid of plots exactly fills the page after
 subtracting \code{margin}, i.e. the same assumption \code{margin} itself relies
-on. Default: \code{FALSE}.}
+on. Default: \code{FALSE}.
+
+Unlike \code{margin}, \code{marks} reads \code{page} (via \code{\link[=get_page_dims]{get_page_dims()}}) to work
+out where the margin area is, so \strong{\code{page} must equal the exact final
+output size} — the same width/height you pass to \code{ggsave()} — even if
+\code{ncol}/\code{nrow} are supplied directly and \code{page} would otherwise be
+unused. Passing just the combined size of the grid of plots (i.e.
+\code{page} without \code{margin} added on) will place the marks in the wrong
+location, because \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} will render a larger canvas than
+\code{marks} was calculated for.}
 
 \item{images}{Not yet implemented. If \code{TRUE} and dims is \code{NULL}, the input
 plots are assumed to be plots created with \code{\link[magick:image_ggplot]{magick::image_ggplot()}} and dpi
@@ -108,11 +149,27 @@ page_layout(
   page = "letter"
 )
 
+# `page` must be the final output size (grid of 3x2 Poker cards, 7.5x7in,
+# plus the 0.5/0.75in margin on each side = 8.5x8.5in), not just the size
+# of the grid of plots — this is what ggsave(width, height) should match
 page_layout(
   plots = plot_cards("Poker", 6),
-  page = make_page_size(width = 2.5 * 3, height = 3.5 * 2, units = "in"),
+  page = make_page_size(width = 8.5, height = 8.5, units = "in"),
   ncol = 3,
   nrow = 2,
+  margin = margins(t = 0.75, r = 0.5, b = 0.75, l = 0.5, unit = "in"),
+  marks = TRUE
+)
+
+# `gutter` adds spacing between plots, which grows the grid (3x2 Poker
+# cards with a 0.1in gutter = 7.7x7.1in) — `page` (and `marks`) account
+# for it automatically, so it still needs the full 8.7x8.6in page size
+page_layout(
+  plots = plot_cards("Poker", 6),
+  page = make_page_size(width = 8.7, height = 8.6, units = "in"),
+  ncol = 3,
+  nrow = 2,
+  gutter = 0.1,
   margin = margins(t = 0.75, r = 0.5, b = 0.75, l = 0.5, unit = "in"),
   marks = TRUE
 )

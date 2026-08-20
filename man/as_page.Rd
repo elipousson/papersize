@@ -5,7 +5,7 @@
 \title{Coerce a character or named vector to a page data.frame using get_page_size()
 or make_page_size()}
 \usage{
-as_page(x, ..., cols = c("width", "height"), class = "data.frame")
+as_page(x = NULL, ..., cols = c("width", "height"), class = "data.frame")
 }
 \arguments{
 \item{x}{A character vector passed to the name parameter of
@@ -21,7 +21,7 @@ parameter to \code{\link[=make_page_size]{make_page_size()}}}
     \item{\code{width,height}}{Page width and height. Both are required, if asp is
 \code{NULL}. Default to \code{NULL}.}
     \item{\code{units}}{Units for width and height. Required unless units is included in
-dims. Passed to \code{\link[=as_unit_type]{as_unit_type()}} to validate.}
+dims or \code{require_units = FALSE}. Passed to \code{\link[=as_unit_type]{as_unit_type()}} to validate.}
     \item{\code{asp}}{Aspect ratio. Required if only one of width or height are
 provided.}
     \item{\code{name}}{Optional name for paper size. Recommend avoiding duplication with
@@ -32,6 +32,11 @@ units, and/or asp.}
 "portrait", "landscape", or "square". If width and height suggest a
 portrait orientation when orientation = "landscape", the dimensions are
 reversed so the page dimensions match the provided orientation.}
+    \item{\code{require_units}}{If \code{TRUE} (default), \code{units} must be supplied (either
+directly or via \code{dims}) or the function errors. Set \code{require_units = FALSE} to allow \code{units} to be omitted, e.g. for use by
+\code{\link[=get_page_dims]{get_page_dims()}} where a unitless width and height are valid input. If
+\code{units} is omitted and \code{require_units = FALSE}, the returned page has no
+units column.}
     \item{\code{valid_units}}{Character vector with name or symbols for valid units.
 Defaults to \code{NULL} but any other unit name or symbol, e.g. "px", is
 permitted.}

@@ -47,7 +47,12 @@ theme, Default: 'panel'}
 \item{image_margin}{Image margin passed Default: \code{margins(0.1, unit = "in")}}
 
 \item{page}{Paper name or a data.frame with width and height columns.
-Optional if width and height are both provided, Default: \code{NULL}}
+Optional if width and height are both provided, Default: \code{NULL}. If
+\code{ncol} and \code{nrow} are also supplied, \code{page} is not used to determine the
+grid size — but if \code{margin} or \code{marks} are used, \code{page} must still be
+set to the exact final output size (the same width/height you plan to
+pass to \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}}), not just the combined size of the grid of
+plots. See \code{margin} and \code{marks} for why this matters.}
 
 \item{orientation}{Paper orientation, Optional if width and height are both
 provided, Default: 'landscape'}

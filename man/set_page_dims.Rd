@@ -35,7 +35,7 @@ set_page_asp(page, flipped = FALSE, cols = c("width", "height"))
 \code{NULL}. Default to \code{NULL}.}
 
 \item{units}{Units for width and height. Required unless units is included in
-dims. Passed to \code{\link[=as_unit_type]{as_unit_type()}} to validate.}
+dims or \code{require_units = FALSE}. Passed to \code{\link[=as_unit_type]{as_unit_type()}} to validate.}
 
 \item{cols}{Column names to use for width and height columns. Defaults to
 c("width", "height"). Must be length 2 and the first value is always used
