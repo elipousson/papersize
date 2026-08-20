@@ -177,6 +177,8 @@ get_page_dims <- function(
   call = parent.frame(),
   ...
 ) {
+  cols <- check_dims_cols(cols, width, height)
+
   page <- as_page(
     page,
     width = width,
@@ -192,10 +194,8 @@ get_page_dims <- function(
     return(set_names(c(page[[cols[1]]], page[[cols[2]]]), cols[1:2]))
   }
 
-  nm <- check_dims_cols(cols, width, height)
-
   if (all(is_bare_numeric(c(width, height)))) {
-    return(set_names(c(width, height), nm))
+    return(set_names(c(width, height), cols))
   }
 
   cli_abort(
