@@ -2,6 +2,9 @@
 
 ## All functions
 
+- [`annotate_wave()`](https://elipousson.github.io/papersize/reference/annotate_wave.md)
+  : Annotate a plot with a wavy (sine) line
+
 - [`area_unit_options`](https://elipousson.github.io/papersize/reference/area_unit_options.md)
   : Area units (vector)
 
@@ -12,6 +15,9 @@
 - [`as_page()`](https://elipousson.github.io/papersize/reference/as_page.md)
   : Coerce a character or named vector to a page data.frame using
   get_page_size() or make_page_size()
+
+- [`as_thickness()`](https://elipousson.github.io/papersize/reference/as_thickness.md)
+  : Calculate the thickness of a stack of cards or paper
 
 - [`as_unit()`](https://elipousson.github.io/papersize/reference/as_unit.md)
   [`as_unit_type()`](https://elipousson.github.io/papersize/reference/as_unit.md)
@@ -99,6 +105,15 @@
 
 - [`paper_sizes`](https://elipousson.github.io/papersize/reference/paper_sizes.md)
   : Standard paper and image sizes
+
+- [`plot_band()`](https://elipousson.github.io/papersize/reference/plot_band.md)
+  : Plot a folded paper band to bundle a stack of cards or paper
+
+- [`plot_band_dims()`](https://elipousson.github.io/papersize/reference/plot_band_dims.md)
+  : Calculate the printed dimensions of a folded paper band
+
+- [`plot_band_page()`](https://elipousson.github.io/papersize/reference/plot_band_page.md)
+  : Arrange one or more paper bands on a page for printing
 
 - [`plot_cards()`](https://elipousson.github.io/papersize/reference/plot_cards.md)
   : Use ggplot to plot for one or more cards

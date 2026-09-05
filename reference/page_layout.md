@@ -21,10 +21,13 @@ page_layout(
   dims = NULL,
   gutter = NULL,
   margin = NULL,
+  position = "top-left",
   unit = "in",
   marks = FALSE,
   images = FALSE,
   dpi = 120,
+  widths = NULL,
+  heights = NULL,
   call = caller_env()
 )
 ```
@@ -136,7 +139,11 @@ page_layout(
   [`get_margin()`](https://elipousson.github.io/papersize/reference/margins.md)
   with unit. The margin pads the composed page rather than the
   individual plots in `plots`, and does not affect the number of rows
-  and columns in the grid. Default: `NULL`.
+  and columns in the grid. Default: `NULL`, which computes a margin from
+  `position` whenever plot dimensions are known (supplied via `dims`, or
+  auto-detected from the first plot) — see `position`. Set `margin`
+  explicitly to override that (or to add a margin when dimensions aren't
+  known, e.g. `ncol`/ `nrow` supplied without `dims`).
 
   `margin` itself always renders correctly regardless of `page`, because
   it is applied as a fixed absolute-unit margin around whatever canvas
@@ -144,6 +151,22 @@ page_layout(
   [`ggplot2::ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html)
   is eventually called with. `marks`, below, is the one that depends on
   `page` being set correctly — see `marks`.
+
+- position:
+
+  Where to place `plots` on `page` when they don't fill it completely —
+  e.g. fewer `plots` than the page has room for, or a remainder page
+  when `paginate` splits a longer list. One of `"top-left"` (default),
+  `"top"`, `"top-right"`, `"left"`, `"center"`, `"right"`,
+  `"bottom-left"`, `"bottom"`, or `"bottom-right"`. Only takes effect
+  when plot dimensions are known (see `margin`) and `margin` isn't
+  supplied directly; the grid is first shrunk to just the rows/columns
+  needed for the plots being placed (rather than the full page
+  capacity), then the leftover page space is split into a `margin` that
+  pushes that grid toward the requested anchor — `"center"` splits
+  leftover space evenly on both axes, `"top-left"` (matching the
+  pre-existing default behavior) assigns it all to the bottom/right, and
+  so on.
 
 - unit:
 
@@ -181,6 +204,19 @@ page_layout(
 - dpi:
 
   Not yet implemented. Resolution.
+
+- widths, heights:
+
+  Optional. Column widths and row heights passed to
+  [`patchwork::wrap_plots()`](https://patchwork.data-imaginist.com/reference/wrap_plots.html).
+  By default (`NULL`), and whenever plot dimensions are known (supplied
+  via `dims`, or auto-detected from the first plot), each column/row is
+  pinned to that exact size — so plots keep their true physical size
+  instead of `patchwork`'s own proportional division of space, which
+  only happens to line up with each plot's true size when `plots`
+  exactly fills every cell of the grid with same-sized content. Pass
+  `widths`/`heights` explicitly (as `unit` objects, one per column/row)
+  to override this.
 
 - call:
 
@@ -245,6 +281,18 @@ page_layout(
 #> Warning: `orientation` can't be set to "landscape" when the page width is 8.7 and height
 #> is 8.6.
 #> ℹ Orientation kept as "square".
+#> $`1`
+
+#> 
+
+# Fewer plots than the page holds a `position` (default "top-left") to
+# decide where the shrunk-to-fit grid lands on the page
+page_layout(
+  plots = plot_cards("Poker", 1),
+  page = "letter",
+  position = "center"
+)
+#> ℹ Using `dims` from first plot in `plots`.
 #> $`1`
 
 #> 
