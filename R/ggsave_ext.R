@@ -412,7 +412,10 @@ map_ggsave_ext <- function(
   }
 
   n_plots <- seq_along(plot)
-  plot_nums <- glue("{postfix}{n_plots}")
+  plot_nums <- glue(
+    "{postfix}
+    {stringr::str_pad(n_plots, width = max(nchar(n_plots)), pad = '0')}"
+  )
 
   msg <- "1"
   cli::cli_progress_step("Saving plot {msg} of {max(n_plots)}", spinner = TRUE)
