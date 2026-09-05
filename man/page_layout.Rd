@@ -21,10 +21,13 @@ page_layout(
   dims = NULL,
   gutter = NULL,
   margin = NULL,
+  position = "top-left",
   unit = "in",
   marks = FALSE,
   images = FALSE,
   dpi = 120,
+  widths = NULL,
+  heights = NULL,
   call = caller_env()
 )
 }
@@ -99,12 +102,29 @@ grid of plots, e.g. so the grid can be centered on a larger sheet of
 paper when saved with \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}}. Passed to \code{\link[=get_margin]{get_margin()}} with
 unit. The margin pads the composed page rather than the individual plots
 in \code{plots}, and does not affect the number of rows and columns in the
-grid. Default: \code{NULL}.
+grid. Default: \code{NULL}, which computes a margin from \code{position} whenever
+plot dimensions are known (supplied via \code{dims}, or auto-detected from
+the first plot) — see \code{position}. Set \code{margin} explicitly to override
+that (or to add a margin when dimensions aren't known, e.g. \code{ncol}/
+\code{nrow} supplied without \code{dims}).
 
 \code{margin} itself always renders correctly regardless of \code{page}, because
 it is applied as a fixed absolute-unit margin around whatever canvas
 size \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} is eventually called with. \code{marks}, below, is
 the one that depends on \code{page} being set correctly — see \code{marks}.}
+
+\item{position}{Where to place \code{plots} on \code{page} when they don't fill it
+completely — e.g. fewer \code{plots} than the page has room for, or a
+remainder page when \code{paginate} splits a longer list. One of
+\code{"top-left"} (default), \code{"top"}, \code{"top-right"}, \code{"left"}, \code{"center"},
+\code{"right"}, \code{"bottom-left"}, \code{"bottom"}, or \code{"bottom-right"}. Only takes
+effect when plot dimensions are known (see \code{margin}) and \code{margin} isn't
+supplied directly; the grid is first shrunk to just the rows/columns
+needed for the plots being placed (rather than the full page capacity),
+then the leftover page space is split into a \code{margin} that pushes that
+grid toward the requested anchor — \code{"center"} splits leftover space
+evenly on both axes, \code{"top-left"} (matching the pre-existing default
+behavior) assigns it all to the bottom/right, and so on.}
 
 \item{unit}{Unit used for \code{gutter}, and for \code{margin} if margin is a bare
 numeric vector or list (ignored for \code{margin} if it is a \code{unit} class
@@ -131,6 +151,16 @@ plots are assumed to be plots created with \code{\link[magick:image_ggplot]{magi
 is used to infer dimensions.}
 
 \item{dpi}{Not yet implemented. Resolution.}
+
+\item{widths, heights}{Optional. Column widths and row heights passed to
+\code{\link[patchwork:wrap_plots]{patchwork::wrap_plots()}}. By default (\code{NULL}), and whenever plot
+dimensions are known (supplied via \code{dims}, or auto-detected from the
+first plot), each column/row is pinned to that exact size — so plots
+keep their true physical size instead of \code{patchwork}'s own proportional
+division of space, which only happens to line up with each plot's true
+size when \code{plots} exactly fills every cell of the grid with same-sized
+content. Pass \code{widths}/\code{heights} explicitly (as \code{unit} objects, one per
+column/row) to override this.}
 
 \item{call}{The execution environment of a currently
 running function, e.g. \code{caller_env()}. The function will be
@@ -172,6 +202,14 @@ page_layout(
   gutter = 0.1,
   margin = margins(t = 0.75, r = 0.5, b = 0.75, l = 0.5, unit = "in"),
   marks = TRUE
+)
+
+# Fewer plots than the page holds a `position` (default "top-left") to
+# decide where the shrunk-to-fit grid lands on the page
+page_layout(
+  plots = plot_cards("Poker", 1),
+  page = "letter",
+  position = "center"
 )
 }
 \seealso{

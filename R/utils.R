@@ -1,7 +1,11 @@
 utils::globalVariables(
   c(
+    "at",
+    "end",
+    "fill",
     "height",
     "label",
+    "start",
     "width",
     "x",
     "y"

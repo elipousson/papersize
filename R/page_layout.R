@@ -44,12 +44,28 @@
 #'   paper when saved with [ggplot2::ggsave()]. Passed to [get_margin()] with
 #'   unit. The margin pads the composed page rather than the individual plots
 #'   in `plots`, and does not affect the number of rows and columns in the
-#'   grid. Default: `NULL`.
+#'   grid. Default: `NULL`, which computes a margin from `position` whenever
+#'   plot dimensions are known (supplied via `dims`, or auto-detected from
+#'   the first plot) — see `position`. Set `margin` explicitly to override
+#'   that (or to add a margin when dimensions aren't known, e.g. `ncol`/
+#'   `nrow` supplied without `dims`).
 #'
 #'   `margin` itself always renders correctly regardless of `page`, because
 #'   it is applied as a fixed absolute-unit margin around whatever canvas
 #'   size [ggplot2::ggsave()] is eventually called with. `marks`, below, is
 #'   the one that depends on `page` being set correctly — see `marks`.
+#' @param position Where to place `plots` on `page` when they don't fill it
+#'   completely — e.g. fewer `plots` than the page has room for, or a
+#'   remainder page when `paginate` splits a longer list. One of
+#'   `"top-left"` (default), `"top"`, `"top-right"`, `"left"`, `"center"`,
+#'   `"right"`, `"bottom-left"`, `"bottom"`, or `"bottom-right"`. Only takes
+#'   effect when plot dimensions are known (see `margin`) and `margin` isn't
+#'   supplied directly; the grid is first shrunk to just the rows/columns
+#'   needed for the plots being placed (rather than the full page capacity),
+#'   then the leftover page space is split into a `margin` that pushes that
+#'   grid toward the requested anchor — `"center"` splits leftover space
+#'   evenly on both axes, `"top-left"` (matching the pre-existing default
+#'   behavior) assigns it all to the bottom/right, and so on.
 #' @param unit Unit used for `gutter`, and for `margin` if margin is a bare
 #'   numeric vector or list (ignored for `margin` if it is a `unit` class
 #'   object; `gutter` does not support `unit` class objects). Default:
@@ -72,6 +88,15 @@
 #'   plots are assumed to be plots created with [magick::image_ggplot()] and dpi
 #'   is used to infer dimensions.
 #' @param dpi Not yet implemented. Resolution.
+#' @param widths,heights Optional. Column widths and row heights passed to
+#'   [patchwork::wrap_plots()]. By default (`NULL`), and whenever plot
+#'   dimensions are known (supplied via `dims`, or auto-detected from the
+#'   first plot), each column/row is pinned to that exact size — so plots
+#'   keep their true physical size instead of `patchwork`'s own proportional
+#'   division of space, which only happens to line up with each plot's true
+#'   size when `plots` exactly fills every cell of the grid with same-sized
+#'   content. Pass `widths`/`heights` explicitly (as `unit` objects, one per
+#'   column/row) to override this.
 #' @inheritParams rlang::args_error_context
 #' @return A `patchwork` object or a list of `patchwork` objects.
 #' @examples
@@ -104,12 +129,21 @@
 #'   margin = margins(t = 0.75, r = 0.5, b = 0.75, l = 0.5, unit = "in"),
 #'   marks = TRUE
 #' )
+#'
+#' # Fewer plots than the page holds a `position` (default "top-left") to
+#' # decide where the shrunk-to-fit grid lands on the page
+#' page_layout(
+#'   plots = plot_cards("Poker", 1),
+#'   page = "letter",
+#'   position = "center"
+#' )
 #' @seealso
 #'  [ggplot2::ggplot_build()]
 #'  [patchwork::wrap_plots()], [patchwork::plot_layout()]
 #' @rdname page_layout
 #' @aliases layout_cards
 #' @export
+#' @importFrom rlang arg_match
 page_layout <- function(
   plots = NULL,
   page = NULL,
@@ -126,17 +160,30 @@ page_layout <- function(
   dims = NULL,
   gutter = NULL,
   margin = NULL,
+  position = "top-left",
   unit = "in",
   marks = FALSE,
   images = FALSE,
   dpi = 120,
+  widths = NULL,
+  heights = NULL,
   call = caller_env()
 ) {
   check_installed(c("ggplot2", "patchwork"), call = call)
 
-  cli_abort_if(
-    "{.arg marks} requires {.arg margin} (crop marks are drawn in the
-    margin area)." = marks && is_null(margin)
+  position <- arg_match(
+    position,
+    c(
+      "top-left",
+      "top",
+      "top-right",
+      "left",
+      "center",
+      "right",
+      "bottom-left",
+      "bottom",
+      "bottom-right"
+    )
   )
 
   gutter_dims <- get_gutter(gutter, unit = unit, call = call)
@@ -156,8 +203,20 @@ page_layout <- function(
 
   stopifnot(all(page_grid > 0))
 
+  cell_dims <- attr(page_grid, "dims")
+
+  cli_abort_if(
+    "{.arg marks} requires {.arg margin}, or plot dimensions known from
+    {.arg dims} or the first plot (to compute one from {.arg position})
+    — crop marks are drawn in the margin area." = marks &&
+      is_null(margin) &&
+      is_null(cell_dims)
+  )
+
+  # only needed to place `marks` or compute a `position`-based `margin`; both
+  # require `page` to resolve to the exact final output size (see `marks`)
   page_dims <- NULL
-  if (marks) {
+  if (marks || !is_null(cell_dims)) {
     page_dims <- get_page_dims(
       page,
       width = width,
@@ -167,101 +226,124 @@ page_layout <- function(
   }
 
   if (is_null(plots)) {
+    if (is_null(widths) && !is_null(cell_dims)) {
+      widths <- grid::unit(rep(cell_dims[[1]], page_grid[[1]]), unit)
+    }
+
+    if (is_null(heights) && !is_null(cell_dims)) {
+      heights <- grid::unit(rep(cell_dims[[2]], page_grid[[2]]), unit)
+    }
+
     patch_layout <- patchwork::plot_layout(
       ncol = page_grid[[1]],
       nrow = page_grid[[2]],
       byrow = byrow,
       guides = guides,
       tag_level = tag_level,
-      design = design
+      design = design,
+      widths = widths,
+      heights = heights
     )
 
     return(patch_layout)
   }
 
-  if (!paginate) {
-    plots <- add_gutter_margins(
-      plots,
-      ncol = page_grid[[1]],
-      nrow = page_grid[[2]],
+  # Renders one page's worth of `plots` — shared by the `!paginate` (single
+  # page) and `paginate` (one call per page-sized chunk) code paths below.
+  #
+  # `patchwork::wrap_plots()` divides the grid's space proportionally, which
+  # only lines up with each plot's true size when `group_plots` fills every
+  # cell (ncol * nrow) of the full page-capacity grid with same-sized
+  # content. When plot dimensions are known and `group_plots` is smaller
+  # than that capacity (e.g. a remainder page, or fewer `plots` than the
+  # page holds to begin with), the grid actually used is shrunk to just fit
+  # `group_plots` — via `fit_page_grid()` — and `widths`/`heights` pinned to
+  # that shrunk grid's true size (unless the caller already supplied their
+  # own). Any leftover page space is then assigned to `margin` (unless the
+  # caller already supplied one) based on `position`, so the shrunk grid
+  # lands at the requested anchor instead of stretching to fill the page.
+  render_page_group <- function(group_plots) {
+    used <- page_grid
+    if (!is_null(cell_dims)) {
+      used <- fit_page_grid(page_grid, length(group_plots))
+    }
+
+    group_widths <- widths
+    group_heights <- heights
+
+    if (is_null(group_widths) && !is_null(cell_dims)) {
+      group_widths <- grid::unit(rep(cell_dims[[1]], used[[1]]), unit)
+    }
+
+    if (is_null(group_heights) && !is_null(cell_dims)) {
+      group_heights <- grid::unit(rep(cell_dims[[2]], used[[2]]), unit)
+    }
+
+    group_margin <- margin
+    if (is_null(group_margin) && !is_null(cell_dims)) {
+      used_width <- (used[[1]] * cell_dims[[1]]) +
+        ((used[[1]] - 1) * gutter_dims[["col"]])
+      used_height <- (used[[2]] * cell_dims[[2]]) +
+        ((used[[2]] - 1) * gutter_dims[["row"]])
+
+      group_margin <- position_margin(
+        position,
+        leftover_width = page_dims[["width"]] - used_width,
+        leftover_height = page_dims[["height"]] - used_height,
+        unit = unit
+      )
+    }
+
+    group_plots <- add_gutter_margins(
+      group_plots,
+      ncol = used[[1]],
+      nrow = used[[2]],
       byrow = byrow,
       gutter = gutter_dims,
       unit = unit
     )
 
     patch_layout <- patchwork::wrap_plots(
-      plots,
-      ncol = page_grid[[1]],
-      nrow = page_grid[[2]],
+      group_plots,
+      ncol = used[[1]],
+      nrow = used[[2]],
       byrow = byrow,
       guides = guides,
       tag_level = tag_level,
-      design = design
+      design = design,
+      widths = group_widths,
+      heights = group_heights
     )
 
-    patch_layout <- add_page_margin(patch_layout, margin, unit = unit)
+    patch_layout <- add_page_margin(patch_layout, group_margin, unit = unit)
 
     if (marks) {
       patch_layout <- add_crop_marks(
         patch_layout,
-        ncol = page_grid[[1]],
-        nrow = page_grid[[2]],
+        ncol = used[[1]],
+        nrow = used[[2]],
         page_width = page_dims[["width"]],
         page_height = page_dims[["height"]],
-        margin = get_margin(margin, unit = unit),
+        margin = get_margin(group_margin, unit = unit),
         gutter = gutter_dims
       )
     }
 
-    return(patch_layout)
+    patch_layout
+  }
+
+  if (!paginate) {
+    return(render_page_group(plots))
   }
 
   plot_spaces <- page_grid[[1]] * page_grid[[2]]
 
-  plots <- split(
+  groups <- split(
     plots,
     ceiling(seq_along(plots) / plot_spaces)
   )
 
-  map(
-    plots,
-    function(x) {
-      x <- add_gutter_margins(
-        x,
-        ncol = page_grid[[1]],
-        nrow = page_grid[[2]],
-        byrow = byrow,
-        gutter = gutter_dims,
-        unit = unit
-      )
-
-      patch_layout <- patchwork::wrap_plots(
-        x,
-        ncol = page_grid[[1]],
-        nrow = page_grid[[2]],
-        byrow = byrow,
-        guides = guides,
-        tag_level = tag_level,
-        design = design
-      )
-
-      patch_layout <- add_page_margin(patch_layout, margin, unit = unit)
-
-      if (marks) {
-        patch_layout <- add_crop_marks(
-          patch_layout,
-          ncol = page_grid[[1]],
-          nrow = page_grid[[2]],
-          page_width = page_dims[["width"]],
-          page_height = page_dims[["height"]],
-          margin = get_margin(margin, unit = unit),
-          gutter = gutter_dims
-        )
-      }
-
-      patch_layout
-    }
-  )
+  map(groups, render_page_group)
 }
 
 # TODO: Determine if unused unit argument for get_gutter is required
@@ -504,6 +586,75 @@ add_crop_marks <- function(
     no_margin
 }
 
+#' Fit a compact ncol x nrow grid for n items within a maximum capacity
+#'
+#' Used to shrink a page-capacity grid (e.g. `4x2`) down to just the
+#' rows/columns needed for `n` items (e.g. `n = 1` fits in `1x1`), so
+#' `page_layout()` doesn't reserve space for cells that have no plot to
+#' show. Prioritizes filling columns (up to `capacity[[1]]`) before adding
+#' rows.
+#'
+#' @noRd
+fit_page_grid <- function(capacity, n) {
+  ncol <- max(min(capacity[[1]], n), 1)
+  nrow <- max(min(capacity[[2]], ceiling(n / ncol)), 1)
+  c(ncol, nrow)
+}
+
+#' Translate a position/anchor into a margin distributing leftover space
+#'
+#' Splits `leftover_width`/`leftover_height` (the page space not used by a
+#' shrunk-to-fit grid of plots) into a `t`/`r`/`b`/`l` margin that pushes the
+#' grid toward the requested anchor: `"top"`/`"bottom"`/`"left"`/`"right"`
+#' assign all the leftover space on that axis to the opposite side (e.g.
+#' `"top"` sets the top margin to 0 and the bottom margin to the full
+#' leftover height); `"center"`, and the axis a `position` doesn't mention
+#' (e.g. the horizontal axis for `"top"`), split it evenly.
+#'
+#' @noRd
+position_margin <- function(
+  position = "top-left",
+  leftover_width = 0,
+  leftover_height = 0,
+  unit = "in"
+) {
+  leftover_width <- max(leftover_width, 0)
+  leftover_height <- max(leftover_height, 0)
+
+  valign <- switch(
+    position,
+    "top" = ,
+    "top-left" = ,
+    "top-right" = "top",
+    "bottom" = ,
+    "bottom-left" = ,
+    "bottom-right" = "bottom",
+    "center"
+  )
+
+  halign <- switch(
+    position,
+    "left" = ,
+    "top-left" = ,
+    "bottom-left" = "left",
+    "right" = ,
+    "top-right" = ,
+    "bottom-right" = "right",
+    "center"
+  )
+
+  t <- switch(valign, top = 0, bottom = leftover_height, leftover_height / 2)
+  l <- switch(halign, left = 0, right = leftover_width, leftover_width / 2)
+
+  margins(
+    t = t,
+    r = leftover_width - l,
+    b = leftover_height - t,
+    l = l,
+    unit = unit
+  )
+}
+
 #' @noRd
 set_page_grid <- function(
   plots = NULL,
@@ -544,7 +695,9 @@ set_page_grid <- function(
       )
     }
 
-    return(as.numeric(page_dims %/% dims))
+    grid <- as.numeric(page_dims %/% dims)
+    attr(grid, "dims") <- as.numeric(dims)
+    return(grid)
   }
 
   dims_plot <- plots[[1]]
@@ -575,10 +728,17 @@ set_page_grid <- function(
     call = call
   )
 
+  # `range()` (not `diff(c(xmin, xmax))`) so this also works when the first
+  # layer has multiple rows (e.g. several geom_rect segments in one layer,
+  # as in plot_band()) rather than a single row (as in plot_cards()'s single
+  # geom_tile) — `diff(c(xmin, xmax))` on multi-row data would (incorrectly)
+  # take differences between the concatenated vectors' adjacent elements.
   dims <- c(
-    "width" = abs(diff(c(plot_data$xmin, plot_data$xmax))),
-    "height" = abs(diff(c(plot_data$ymin, plot_data$ymax)))
+    "width" = diff(range(plot_data$xmin, plot_data$xmax)),
+    "height" = diff(range(plot_data$ymin, plot_data$ymax))
   )
 
-  as.numeric(page_dims %/% dims)
+  grid <- as.numeric(page_dims %/% dims)
+  attr(grid, "dims") <- as.numeric(dims)
+  grid
 }
