@@ -35,10 +35,9 @@
 #'
 #'   `gutter` changes the total size of the combined grid (adding
 #'   `(ncol - 1) * col_gutter` and `(nrow - 1) * row_gutter`), which `marks`
-#'   accounts for automatically — but `set_page_grid()`'s automatic `ncol`/
-#'   `nrow` calculation from `page`/`dims` does not reserve extra room for
-#'   `gutter`, so pass `ncol`/`nrow` explicitly when combining `gutter` with
-#'   an auto-computed grid size.
+#'   accounts for automatically — the automatic `ncol`/`nrow` calculation
+#'   from `page`/`dims` also reserves room for it, so fewer plots may fit
+#'   per page than with `gutter = 0`.
 #' @param margin Optional. A margin to add around the outside of the combined
 #'   grid of plots, e.g. so the grid can be centered on a larger sheet of
 #'   paper when saved with [ggplot2::ggsave()]. Passed to [get_margin()] with
@@ -197,11 +196,17 @@ page_layout <- function(
     dims = dims,
     ncol = ncol,
     nrow = nrow,
+    gutter = gutter_dims,
     images = images,
     dpi = dpi
   )
 
-  stopifnot(all(page_grid > 0))
+  cli_abort_if(
+    "At least one dimension of the plot grid came back {.val {0}} (no room
+    for even a single plot on {.arg page}). This usually means {.arg paper}
+    or {.arg dims} and {.arg page} are in different units — check both use
+    the same units, or convert one to match." = !all(page_grid > 0)
+  )
 
   cell_dims <- attr(page_grid, "dims")
 
@@ -586,6 +591,39 @@ add_crop_marks <- function(
     no_margin
 }
 
+#' Convert a dims page data.frame to page_units, when both are known
+#'
+#' Reconciles an explicit `dims` (a page data.frame, from `set_page_grid()`'s
+#' `dims` argument or a paper name) against the units `page` itself resolved
+#' to, so e.g. `dims` in "cm" against a `page` in "in" doesn't silently
+#' divide mismatched numbers. A no-op when either unit is unknown, or `dims`
+#' has no units column of its own — [get_page_dims()] then just treats the
+#' numbers as already matching `page`'s units, as before.
+#'
+#' @noRd
+reconcile_dims_units <- function(dims, page_units) {
+  if (is_null(page_units) || !has_name(dims, get_units_col())) {
+    return(dims)
+  }
+
+  convert_page_units(dims, units = page_units)
+}
+
+#' How many `dims`-sized cells, spaced by `gutter`, fit in `page_dims`
+#'
+#' The largest integer `n` of size `d` (plus a `g`-sized gap between each
+#' pair) that fits in a span `p` solves `n*d + (n-1)*g <= p`, i.e.
+#' `n <= (p + g) / (d + g)` — floored. With `gutter = 0` this reduces to the
+#' plain `page_dims %/% dims` used before capacity accounted for gutter.
+#'
+#' @noRd
+capacity_grid <- function(page_dims, dims, gutter = c(row = 0, col = 0)) {
+  c(
+    floor((page_dims[[1]] + gutter[["col"]]) / (dims[[1]] + gutter[["col"]])),
+    floor((page_dims[[2]] + gutter[["row"]]) / (dims[[2]] + gutter[["row"]]))
+  )
+}
+
 #' Fit a compact ncol x nrow grid for n items within a maximum capacity
 #'
 #' Used to shrink a page-capacity grid (e.g. `4x2`) down to just the
@@ -662,6 +700,7 @@ set_page_grid <- function(
   ncol = NULL,
   nrow = NULL,
   dims = NULL,
+  gutter = c(row = 0, col = 0),
   images = FALSE,
   dpi = 120,
   ...,
@@ -680,12 +719,15 @@ set_page_grid <- function(
   }
 
   page_dims <- get_page_dims(page, ...)
+  page_units <- attr(page_dims, "units")
 
   if (!is_null(dims)) {
     if (is.data.frame(dims)) {
+      dims <- reconcile_dims_units(dims, page_units)
       dims <- get_page_dims(dims)
     } else if (is_character(dims)) {
-      dims <- get_page_dims(get_page_size(dims))
+      dims <- reconcile_dims_units(get_page_size(dims), page_units)
+      dims <- get_page_dims(dims)
     } else if (!is_bare_numeric(dims)) {
       cli_abort(
         "A {.arg dims} must be a a {.cls data.frame} with plot dimensions,
@@ -695,7 +737,7 @@ set_page_grid <- function(
       )
     }
 
-    grid <- as.numeric(page_dims %/% dims)
+    grid <- capacity_grid(page_dims, dims, gutter)
     attr(grid, "dims") <- as.numeric(dims)
     return(grid)
   }
@@ -704,6 +746,18 @@ set_page_grid <- function(
   cli::cli_alert_info(
     "Using {.arg dims} from first plot in {.arg plots}."
   )
+
+  # a plot's own data coordinates carry no unit metadata, so this is a
+  # best-effort check: `page_units` known and not inches means the
+  # auto-detected `dims` (assumed to be inches, see below) may not actually
+  # match `page` — pass `dims` explicitly (in matching units) if so.
+  if (!is_null(page_units) && !is_same_unit_type(page_units, "in")) {
+    cli_warn(
+      "{.arg page} is in {.val {page_units}}, but dimensions auto-detected
+      from the first plot are assumed to be inches. Pass {.arg dims}
+      explicitly (in {.val {page_units}}) if the resulting grid looks wrong."
+    )
+  }
 
   if (!images) {
     plot_data <- ggplot2::layer_data(dims_plot)
@@ -738,7 +792,7 @@ set_page_grid <- function(
     "height" = diff(range(plot_data$ymin, plot_data$ymax))
   )
 
-  grid <- as.numeric(page_dims %/% dims)
+  grid <- capacity_grid(page_dims, dims, gutter)
   attr(grid, "dims") <- as.numeric(dims)
   grid
 }

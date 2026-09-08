@@ -7,7 +7,7 @@
 #' stack.
 #'
 #' @param n Number of sheets or cards in the stack. Ignored if `x` is
-#'   supplied.
+#'   supplied. Either `n` or `x` must be supplied.
 #' @param pt Caliper thickness of a single sheet or card, in points (1/1000
 #'   in). Ignored if `x` is supplied. Default: 10, a typical thickness for a
 #'   playing card.
@@ -21,7 +21,13 @@
 #'
 #' as_thickness(x = 0.75, units = "in")
 #' @export
+#' @importFrom cliExtras cli_abort_if
 as_thickness <- function(..., n = NULL, pt = 10, x = NULL, units = NULL) {
+  cliExtras::cli_abort_if(
+    "{.arg n} or {.arg x} must be supplied to calculate thickness.",
+    condition = is_null(n) && is_null(x)
+  )
+
   if (is.null(x)) {
     units <- "in"
     x <- n * (pt / 1000)
@@ -63,8 +69,10 @@ as_thickness <- function(..., n = NULL, pt = 10, x = NULL, units = NULL) {
 #'   side segments of the band exactly. Default: `NULL`
 #' @param overlap Distance the band extends past the far edge of the stack,
 #'   forming a segment that can be glued or taped closed. A `unit` object or
-#'   a number (in the units of `paper`). Default: `0.5` (inches, if `paper`
-#'   has no units)
+#'   a number (in the units of `paper`). Default: `NULL`, which uses 40% of
+#'   the `width` of `paper` (if `orientation` is `"horizontal"`) or 40% of
+#'   the `height` of `paper` (if `orientation` is `"vertical"`) — i.e. 40%
+#'   of whichever dimension of `paper` the band wraps around.
 #' @param band_width Height of the band if `orientation` is `"horizontal"`,
 #'   or width of the band if `orientation` is `"vertical"` — the dimension of
 #'   the band perpendicular to the direction it wraps around the stack. A
@@ -100,7 +108,7 @@ plot_band <- function(
   pt = 10,
   x = NULL,
   thickness = NULL,
-  overlap = 0.5,
+  overlap = NULL,
   band_width = NULL,
   fill = "white",
   color = "black",
@@ -123,17 +131,19 @@ plot_band <- function(
     band_width = band_width
   )
 
+  plot_dims <- band_to_inches(band)
+
   segments <- make_band_segments(
-    band$main,
-    band$thickness,
-    band$overlap,
+    plot_dims$main,
+    plot_dims$thickness,
+    plot_dims$overlap,
     fill,
     glue_fill
   )
 
   plot_band_segments(
     segments,
-    cross = band$band_width,
+    cross = plot_dims$band_width,
     orientation = orientation,
     color = color,
     linewidth = linewidth,
@@ -169,7 +179,7 @@ plot_band_dims <- function(
   pt = 10,
   x = NULL,
   thickness = NULL,
-  overlap = 0.5,
+  overlap = NULL,
   band_width = NULL
 ) {
   orientation <- arg_match(orientation)
@@ -252,7 +262,7 @@ plot_band_page <- function(
   pt = 10,
   x = NULL,
   thickness = NULL,
-  overlap = 0.5,
+  overlap = NULL,
   band_width = NULL,
   fill = "white",
   color = "black",
@@ -321,7 +331,7 @@ band_layout <- function(
   pt = 10,
   x = NULL,
   thickness = NULL,
-  overlap = 0.5,
+  overlap = NULL,
   band_width = NULL
 ) {
   cliExtras::cli_abort_if(
@@ -344,8 +354,6 @@ band_layout <- function(
     thickness <- thickness + ease
   }
 
-  overlap <- as_band_dist(overlap, units)
-
   if (orientation == "horizontal") {
     main <- paper[["width"]]
     cross <- paper[["height"]]
@@ -353,6 +361,9 @@ band_layout <- function(
     main <- paper[["height"]]
     cross <- paper[["width"]]
   }
+
+  overlap <- overlap %||% (0.4 * main)
+  overlap <- as_band_dist(overlap, units)
 
   band_width <- band_width %||% (0.4 * cross)
   band_width <- as_band_dist(band_width, units)
@@ -363,6 +374,33 @@ band_layout <- function(
     overlap = overlap,
     band_width = band_width,
     units = units
+  )
+}
+
+#' Convert a band_layout() result's dimensions to inches
+#'
+#' [plot_band()]'s plotted data must always be in inches, regardless of what
+#' units `paper` was supplied in, because [page_layout()] (via its internal
+#' `set_page_grid()`) auto-detects a plot's true size from its data
+#' coordinates with [ggplot2::layer_data()] — plain numbers with no unit
+#' metadata attached — and assumes they're inches (the same implicit
+#' convention [plot_cards()]'s inches-only card tables already rely on).
+#' Without this conversion, a `paper` supplied in any other unit (e.g. "cm")
+#' would silently misalign [plot_band_page()]'s auto-computed grid against
+#' `page`. [plot_band_dims()] reports the band's size in `paper`'s original
+#' units and doesn't need this conversion.
+#'
+#' @noRd
+band_to_inches <- function(band) {
+  to_in <- function(x) {
+    convert_unit_type(as_unit(x, band[["units"]]), to = "in", valueOnly = TRUE)
+  }
+
+  list(
+    main = to_in(band[["main"]]),
+    thickness = to_in(band[["thickness"]]),
+    overlap = to_in(band[["overlap"]]),
+    band_width = to_in(band[["band_width"]])
   )
 }
 
@@ -423,7 +461,12 @@ plot_band_segments <- function(
       ymax = cross,
       fill = fill
     )
-    outline_aes <- ggplot2::aes(xmin = start, xmax = end, ymin = 0, ymax = cross)
+    outline_aes <- ggplot2::aes(
+      xmin = start,
+      xmax = end,
+      ymin = 0,
+      ymax = cross
+    )
     fold_aes <- ggplot2::aes(x = at, xend = at, y = 0, yend = cross)
   } else {
     segment_aes <- ggplot2::aes(
@@ -433,7 +476,12 @@ plot_band_segments <- function(
       xmax = cross,
       fill = fill
     )
-    outline_aes <- ggplot2::aes(ymin = start, ymax = end, xmin = 0, xmax = cross)
+    outline_aes <- ggplot2::aes(
+      ymin = start,
+      ymax = end,
+      xmin = 0,
+      xmax = cross
+    )
     fold_aes <- ggplot2::aes(x = 0, xend = cross, y = at, yend = at)
   }
 

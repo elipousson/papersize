@@ -165,6 +165,12 @@ get_card <- function(
 #' @param arg,call Passed to [cli_abort()] to improve internal error messages.
 #' @param ... Additional parameters passed by [get_page_dims()] to [get_page_size()]
 #'   if page is a character object.
+#' @returns [get_page_dims()] returns a length 2 numeric vector with `page`'s
+#'   width and height. If `page` resolved to a data.frame with a units
+#'   column, that unit is also attached as a `"units"` attribute (`NULL`
+#'   otherwise, e.g. when `page` was given only as bare `width`/`height`
+#'   numbers) — check it before comparing dimensions from two different
+#'   `get_page_dims()` calls, which aren't guaranteed to share units.
 #' @export
 #' @importFrom cli cli_abort
 get_page_dims <- function(
@@ -191,7 +197,14 @@ get_page_dims <- function(
   if (is.data.frame(page)) {
     check_page(page, cols[1:2], n = 1, call = call)
 
-    return(set_names(c(page[[cols[1]]], page[[cols[2]]]), cols[1:2]))
+    dims <- set_names(c(page[[cols[1]]], page[[cols[2]]]), cols[1:2])
+
+    units_col <- get_units_col()
+    if (has_name(page, units_col)) {
+      attr(dims, "units") <- page[[units_col]]
+    }
+
+    return(dims)
   }
 
   if (all(is_bare_numeric(c(width, height)))) {
