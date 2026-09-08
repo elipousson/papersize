@@ -20,6 +20,11 @@ test_that("as_thickness respects units when x is supplied", {
   expect_equal(as_unit_type(thickness), "cm")
 })
 
+test_that("as_thickness errors clearly if neither n nor x is supplied", {
+  expect_error(as_thickness(), "n.*x")
+  expect_error(as_thickness(pt = 20), "n.*x")
+})
+
 test_that("plot_band errors if thickness, n, and x are all missing", {
   expect_error(
     plot_band(make_page_size(width = 2.5, height = 3.5, units = "in")),
@@ -45,9 +50,9 @@ test_that("plot_band segments use pt-based ease when thickness is calculated", {
   seg <- ggplot2::layer_data(band, 1)
 
   # main (2.5), side (thickness 0.54 + pt/1000 ease 0.01 = 0.55), main, side,
-  # glue (overlap 0.5)
+  # glue (overlap defaults to 40% of main, the wrap dimension: 2.5 * 0.4 = 1)
   expect_equal(seg[["xmin"]], c(0, 2.5, 3.05, 5.55, 6.10))
-  expect_equal(seg[["xmax"]], c(2.5, 3.05, 5.55, 6.10, 6.60))
+  expect_equal(seg[["xmax"]], c(2.5, 3.05, 5.55, 6.10, 7.10))
   expect_equal(seg[["fill"]], c("white", "white", "white", "white", "grey85"))
 })
 
@@ -80,12 +85,47 @@ test_that("plot_band orientation = vertical uses height as main and width for ba
 
   seg <- ggplot2::layer_data(band, 1)
 
-  # main (3.5), side (0.55), main, side, glue (0.5)
+  # main (3.5), side (0.55), main, side, glue (overlap defaults to 40% of
+  # main, the wrap dimension: 3.5 * 0.4 = 1.4)
   expect_equal(seg[["ymin"]], c(0, 3.5, 4.05, 7.55, 8.10))
-  expect_equal(seg[["ymax"]], c(3.5, 4.05, 7.55, 8.10, 8.60))
+  expect_equal(seg[["ymax"]], c(3.5, 4.05, 7.55, 8.10, 9.50))
   # band_width (cross dimension) defaults to 40% of width (2.5 * 0.4 = 1)
   expect_equal(unique(seg[["xmin"]]), 0)
   expect_equal(unique(seg[["xmax"]]), 1)
+})
+
+test_that("plot_band overlap defaults to 40% of main, not the thickness", {
+  paper <- make_page_size(width = 2.5, height = 3.5, units = "in")
+  band <- plot_band(paper, n = 54)
+
+  seg <- ggplot2::layer_data(band, 1)
+  glue_length <- seg[["xmax"]][[5]] - seg[["xmin"]][[5]]
+
+  # 40% of paper's width (2.5), the dimension the band wraps around when
+  # orientation = "horizontal" — not 40% of the stack thickness (0.55)
+  expect_equal(glue_length, 2.5 * 0.4)
+})
+
+test_that("plot_band overlap default tracks main across orientations", {
+  paper <- make_page_size(width = 2.5, height = 3.5, units = "in")
+  band_v <- plot_band(paper, n = 54, orientation = "vertical")
+
+  seg_v <- ggplot2::layer_data(band_v, 1)
+  glue_length_v <- seg_v[["ymax"]][[5]] - seg_v[["ymin"]][[5]]
+
+  # 40% of paper's height (3.5), the dimension wrapped when orientation =
+  # "vertical"
+  expect_equal(glue_length_v, 3.5 * 0.4)
+})
+
+test_that("plot_band overlap can be set explicitly", {
+  paper <- make_page_size(width = 2.5, height = 3.5, units = "in")
+  band <- plot_band(paper, n = 54, overlap = 0.25)
+
+  seg <- ggplot2::layer_data(band, 1)
+  glue_length <- seg[["xmax"]][[5]] - seg[["xmin"]][[5]]
+
+  expect_equal(glue_length, 0.25)
 })
 
 test_that("plot_band band_width defaults to 40% of the cross dimension", {
@@ -133,11 +173,11 @@ test_that("plot_band_dims horizontal vs vertical swap width/height", {
   dims_h <- plot_band_dims(paper, n = 54)
   dims_v <- plot_band_dims(paper, n = 54, orientation = "vertical")
 
-  expect_equal(dims_h[["width"]], 6.6)
+  expect_equal(dims_h[["width"]], 7.1)
   expect_equal(dims_h[["height"]], 1.4)
 
   expect_equal(dims_v[["width"]], 1)
-  expect_equal(dims_v[["height"]], 8.6)
+  expect_equal(dims_v[["height"]], 9.5)
 })
 
 test_that("plot_band_dims uses thickness exactly, with no ease, when supplied", {
@@ -188,8 +228,6 @@ test_that("plot_band_page paginates using explicit ncol/nrow", {
 })
 
 test_that("plot_band_page defaults to centering the band on the page", {
-  get_patches <- getFromNamespace("get_patches", "patchwork")
-
   layout <- plot_band_page(get_card("Poker"), n = 54)
   margin <- as.numeric(get_patches(layout[[1]])$annotation$theme$plot.margin)
 
@@ -200,8 +238,6 @@ test_that("plot_band_page defaults to centering the band on the page", {
 })
 
 test_that("plot_band_page position overrides the default centering", {
-  get_patches <- getFromNamespace("get_patches", "patchwork")
-
   layout <- plot_band_page(
     get_card("Poker"),
     n = 54,
@@ -214,4 +250,38 @@ test_that("plot_band_page position overrides the default centering", {
   expect_equal(margin[[4]], 0)
   expect_true(margin[[2]] > 0)
   expect_true(margin[[3]] > 0)
+})
+
+test_that("plot_band's plotted data is always in inches, regardless of paper's units", {
+  paper_cm <- make_page_size(width = 6, height = 9, units = "cm")
+  band <- plot_band(paper_cm, n = 54)
+  dims <- plot_band_dims(paper_cm, n = 54)
+
+  seg <- ggplot2::layer_data(band, 1)
+
+  expect_equal(
+    max(seg[["xmax"]]),
+    convert_unit_type(
+      as_unit(dims[["width"]], "cm"),
+      to = "in",
+      valueOnly = TRUE
+    )
+  )
+  expect_equal(
+    unique(seg[["ymax"]]),
+    convert_unit_type(
+      as_unit(dims[["height"]], "cm"),
+      to = "in",
+      valueOnly = TRUE
+    )
+  )
+})
+
+test_that("plot_band_page works when paper's units differ from page's (e.g. letter)", {
+  paper_cm <- make_page_size(width = 6, height = 9, units = "cm")
+
+  layout <- plot_band_page(paper_cm, n = 54, n_bands = 1)
+
+  expect_type(layout, "list")
+  expect_s3_class(layout[[1]], "patchwork")
 })

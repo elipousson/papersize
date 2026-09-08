@@ -27,12 +27,14 @@ test_that("get_page works", {
 test_that("get_page_dims works", {
   expect_equal(
     get_page_dims("ledger"),
-    c("width" = 11, "height" = 17)
+    c("width" = 11, "height" = 17),
+    ignore_attr = "units"
   )
 
   expect_equal(
     get_page_dims(get_page_size("ledger")),
-    c("width" = 11, "height" = 17)
+    c("width" = 11, "height" = 17),
+    ignore_attr = "units"
   )
   expect_equal(
     get_page_dims(width = 11, height = 17),
@@ -40,7 +42,8 @@ test_that("get_page_dims works", {
   )
   expect_equal(
     get_page_dims(c(11, 17), units = "in"),
-    c("width" = 11, "height" = 17)
+    c("width" = 11, "height" = 17),
+    ignore_attr = "units"
   )
   expect_warning(
     get_page_dims(width = 11, height = 17, cols = c("X", "Y", "Z"))
@@ -48,6 +51,16 @@ test_that("get_page_dims works", {
   expect_error(
     get_page_dims(NA)
   )
+})
+
+test_that("get_page_dims attaches a units attribute when known", {
+  expect_equal(attr(get_page_dims("ledger"), "units"), "in")
+  expect_equal(
+    attr(get_page_dims(get_page_size("ledger", units = "cm")), "units"),
+    "cm"
+  )
+  # bare width/height with no units column has nothing to attach
+  expect_null(attr(get_page_dims(width = 11, height = 17), "units"))
 })
 
 test_that("get_page errors", {
@@ -136,7 +149,7 @@ test_that("helpers work", {
     ),
     test_df
   )
-  expect_identical(
+  expect_equal(
     get_inset_dims(
       get_page_dims(
         test_df,
@@ -145,7 +158,8 @@ test_that("helpers work", {
       ),
       nm = c("w", "h")
     ),
-    c("w" = 6.5, "h" = 9)
+    c("w" = 6.5, "h" = 9),
+    ignore_attr = "units"
   )
 })
 

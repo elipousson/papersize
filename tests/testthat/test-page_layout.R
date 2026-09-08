@@ -186,7 +186,6 @@ test_that("add_page_margin applies a plot.margin to the composed page", {
 
   expect_s3_class(patch_margin, "patchwork")
 
-  get_patches <- getFromNamespace("get_patches", "patchwork")
   expect_equal(
     as.numeric(get_patches(patch_margin)$annotation$theme$plot.margin),
     c(1, 1, 1, 1)
@@ -226,14 +225,16 @@ test_that("position_margin clamps negative leftover space to 0", {
 
 test_that("page_layout errors on an invalid position", {
   expect_error(
-    page_layout(plots = plot_cards("Poker", 1), page = "letter", position = "nowhere"),
+    page_layout(
+      plots = plot_cards("Poker", 1),
+      page = "letter",
+      position = "nowhere"
+    ),
     "position"
   )
 })
 
 test_that("page_layout position defaults to top-left (no margin)", {
-  get_patches <- getFromNamespace("get_patches", "patchwork")
-
   layout <- page_layout(plots = plot_cards("Poker", 1), page = "letter")
   margin <- as.numeric(get_patches(layout[[1]])$annotation$theme$plot.margin)
 
@@ -242,8 +243,6 @@ test_that("page_layout position defaults to top-left (no margin)", {
 })
 
 test_that("page_layout position = center splits leftover space evenly", {
-  get_patches <- getFromNamespace("get_patches", "patchwork")
-
   layout <- page_layout(
     plots = plot_cards("Poker", 1),
     page = "letter",
@@ -257,8 +256,6 @@ test_that("page_layout position = center splits leftover space evenly", {
 })
 
 test_that("page_layout position = bottom-right pushes content to that corner", {
-  get_patches <- getFromNamespace("get_patches", "patchwork")
-
   layout <- page_layout(
     plots = plot_cards("Poker", 1),
     page = "letter",
@@ -273,8 +270,6 @@ test_that("page_layout position = bottom-right pushes content to that corner", {
 })
 
 test_that("page_layout position is ignored when an explicit margin is supplied", {
-  get_patches <- getFromNamespace("get_patches", "patchwork")
-
   explicit_margin <- margins(t = 1, r = 1, b = 1, l = 1, unit = "in")
   layout <- page_layout(
     plots = plot_cards("Poker", 1),
@@ -299,8 +294,6 @@ test_that("page_layout shrinks the grid to fit fewer plots than the page holds",
 })
 
 test_that("page_layout centers each pagination group independently", {
-  get_patches <- getFromNamespace("get_patches", "patchwork")
-
   # 9 Poker cards auto-fit an 4x2 = 8 capacity grid on letter (landscape),
   # paginating into a full group of 8 and a 1-card remainder — the
   # remainder page should still be centered on its own, not stretched to
@@ -320,4 +313,110 @@ test_that("page_layout centers each pagination group independently", {
   margin2 <- as.numeric(get_patches(layout[[2]])$annotation$theme$plot.margin)
   expect_equal(margin2[[1]], margin2[[3]])
   expect_equal(margin2[[2]], margin2[[4]])
+})
+
+test_that("set_page_grid reconciles dims units against page units", {
+  # 5cm =~ 1.9685in; page (letter, portrait 8.5x11in, no orientation
+  # override) fits floor(8.5/1.9685) = 4 columns, floor(11/1.9685) = 5 rows
+  dims_cm <- make_page_size(width = 5, height = 5, units = "cm")
+
+  grid <- set_page_grid(
+    plots = plot_cards("Poker", 1),
+    page = "letter",
+    dims = dims_cm
+  )
+
+  expect_equal(as.numeric(grid), c(4, 5))
+})
+
+test_that("page_layout works with dims in different units than page", {
+  dims_cm <- make_page_size(width = 5, height = 5, units = "cm")
+
+  layout <- page_layout(
+    plots = plot_cards("Poker", 1),
+    page = "letter",
+    dims = dims_cm
+  )
+
+  expect_type(layout, "list")
+  expect_s3_class(layout[[1]], "patchwork")
+})
+
+test_that("page_layout errors clearly when the grid can't fit on the page", {
+  expect_error(
+    suppressWarnings(
+      page_layout(
+        plots = plot_cards("Poker", 1),
+        page = make_page_size(width = 1, height = 1, units = "in")
+      )
+    ),
+    "units"
+  )
+})
+
+test_that("page_layout warns when page units aren't inches and dims are auto-detected", {
+  expect_warning(
+    page_layout(
+      plots = plot_cards("Poker", 1),
+      page = make_page_size(width = 20, height = 30, units = "cm")
+    ),
+    "inches"
+  )
+})
+
+test_that("page_layout doesn't warn about units when page is already in inches", {
+  expect_no_warning(
+    page_layout(plots = plot_cards("Poker", 1), page = "letter")
+  )
+})
+
+test_that("capacity_grid ignores gutter when it's 0 (matches plain division)", {
+  expect_equal(capacity_grid(c(8, 8), c(2, 2)), c(4, 4))
+})
+
+test_that("capacity_grid accounts for gutter between cells", {
+  # 3 cells of 2in + 2 gutters of 0.5in = 7in <= 8in; a 4th would need 9.5in
+  expect_equal(
+    capacity_grid(c(8, 8), c(2, 2), gutter = c(row = 0.5, col = 0.5)),
+    c(3, 3)
+  )
+})
+
+test_that("set_page_grid's auto-detected capacity accounts for gutter", {
+  grid_no_gutter <- set_page_grid(
+    page = make_page_size(width = 8, height = 8, units = "in"),
+    dims = c(2, 2)
+  )
+  grid_gutter <- set_page_grid(
+    page = make_page_size(width = 8, height = 8, units = "in"),
+    dims = c(2, 2),
+    gutter = c(row = 0.5, col = 0.5)
+  )
+
+  expect_equal(as.numeric(grid_no_gutter), c(4, 4))
+  expect_equal(as.numeric(grid_gutter), c(3, 3))
+})
+
+test_that("page_layout with gutter no longer overflows the page (regression)", {
+  # previously: capacity ignored gutter, fit_page_grid picked ncol = 4 (its
+  # true footprint with gutter, 4*2 + 3*0.5 = 9.5in, exceeds the 8in page),
+  # and the resulting negative leftover was silently clamped to a 0 margin,
+  # so the grid rendered wider than the page and got clipped by ggsave()
+  plots <- suppressMessages(plot_cards("Poker", 4))
+  layout <- suppressWarnings(
+    page_layout(
+      plots = plots,
+      page = make_page_size(width = 8, height = 8, units = "in"),
+      dims = c(2, 2),
+      gutter = 0.5,
+      position = "center"
+    )
+  )
+
+  margin <- as.numeric(get_patches(layout[[1]])$annotation$theme$plot.margin)
+
+  # a real (non-zero, symmetric) margin means the grid actually fit
+  expect_true(all(margin > 0))
+  expect_equal(margin[[1]], margin[[3]])
+  expect_equal(margin[[2]], margin[[4]])
 })
