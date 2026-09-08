@@ -10,7 +10,7 @@ as_thickness(..., n = NULL, pt = 10, x = NULL, units = NULL)
 \item{...}{Not used.}
 
 \item{n}{Number of sheets or cards in the stack. Ignored if \code{x} is
-supplied.}
+supplied. Either \code{n} or \code{x} must be supplied.}
 
 \item{pt}{Caliper thickness of a single sheet or card, in points (1/1000
 in). Ignored if \code{x} is supplied. Default: 10, a typical thickness for a
