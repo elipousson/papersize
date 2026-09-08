@@ -115,6 +115,7 @@ setup_card_plot <- function(
   linetype = "solid",
   linewidth = 0,
   fixed = TRUE,
+  expand = FALSE,
   card_theme = ggplot2::theme_void()
 ) {
   check_installed("ggplot2")
@@ -141,11 +142,11 @@ setup_card_plot <- function(
       )
     )
 
-  if (fixed) {
-    return(plot + ggplot2::coord_fixed())
+  if (!fixed) {
+    return(plot)
   }
 
-  plot
+  plot + ggplot2::coord_fixed(expand = expand)
 }
 
 #' Helper to add a number to each card plot in a list
