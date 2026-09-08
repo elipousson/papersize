@@ -82,6 +82,13 @@ Defaults to \code{FALSE}.}
 }
 \value{
 A data.frame with page, paper, or card name and dimensions.
+
+\code{\link[=get_page_dims]{get_page_dims()}} returns a length 2 numeric vector with \code{page}'s
+width and height. If \code{page} resolved to a data.frame with a units
+column, that unit is also attached as a \code{"units"} attribute (\code{NULL}
+otherwise, e.g. when \code{page} was given only as bare \code{width}/\code{height}
+numbers) — check it before comparing dimensions from two different
+\code{get_page_dims()} calls, which aren't guaranteed to share units.
 }
 \description{
 \itemize{

@@ -11,7 +11,7 @@ plot_band_page(
   pt = 10,
   x = NULL,
   thickness = NULL,
-  overlap = 0.5,
+  overlap = NULL,
   band_width = NULL,
   fill = "white",
   color = "black",
@@ -60,8 +60,10 @@ side segments of the band exactly. Default: \code{NULL}}
 
 \item{overlap}{Distance the band extends past the far edge of the stack,
 forming a segment that can be glued or taped closed. A \code{unit} object or
-a number (in the units of \code{paper}). Default: \code{0.5} (inches, if \code{paper}
-has no units)}
+a number (in the units of \code{paper}). Default: \code{NULL}, which uses 40\% of
+the \code{width} of \code{paper} (if \code{orientation} is \code{"horizontal"}) or 40\% of
+the \code{height} of \code{paper} (if \code{orientation} is \code{"vertical"}) — i.e. 40\%
+of whichever dimension of \code{paper} the band wraps around.}
 
 \item{band_width}{Height of the band if \code{orientation} is \code{"horizontal"},
 or width of the band if \code{orientation} is \code{"vertical"} — the dimension of
@@ -113,10 +115,9 @@ edge of the grid are not padded on their outward-facing side; use
 
 \code{gutter} changes the total size of the combined grid (adding
 \code{(ncol - 1) * col_gutter} and \code{(nrow - 1) * row_gutter}), which \code{marks}
-accounts for automatically — but \code{set_page_grid()}'s automatic \code{ncol}/
-\code{nrow} calculation from \code{page}/\code{dims} does not reserve extra room for
-\code{gutter}, so pass \code{ncol}/\code{nrow} explicitly when combining \code{gutter} with
-an auto-computed grid size.}
+accounts for automatically — the automatic \code{ncol}/\code{nrow} calculation
+from \code{page}/\code{dims} also reserves room for it, so fewer plots may fit
+per page than with \code{gutter = 0}.}
 
 \item{margin}{Optional. A margin to add around the outside of the combined
 grid of plots, e.g. so the grid can be centered on a larger sheet of

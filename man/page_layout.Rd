@@ -92,10 +92,9 @@ edge of the grid are not padded on their outward-facing side; use
 
 \code{gutter} changes the total size of the combined grid (adding
 \code{(ncol - 1) * col_gutter} and \code{(nrow - 1) * row_gutter}), which \code{marks}
-accounts for automatically — but \code{set_page_grid()}'s automatic \code{ncol}/
-\code{nrow} calculation from \code{page}/\code{dims} does not reserve extra room for
-\code{gutter}, so pass \code{ncol}/\code{nrow} explicitly when combining \code{gutter} with
-an auto-computed grid size.}
+accounts for automatically — the automatic \code{ncol}/\code{nrow} calculation
+from \code{page}/\code{dims} also reserves room for it, so fewer plots may fit
+per page than with \code{gutter = 0}.}
 
 \item{margin}{Optional. A margin to add around the outside of the combined
 grid of plots, e.g. so the grid can be centered on a larger sheet of
