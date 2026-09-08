@@ -22,7 +22,7 @@ plot_band_page(
   pt = 10,
   x = NULL,
   thickness = NULL,
-  overlap = 0.5,
+  overlap = NULL,
   band_width = NULL,
   fill = "white",
   color = "black",
@@ -89,8 +89,10 @@ plot_band_page(
 
   Distance the band extends past the far edge of the stack, forming a
   segment that can be glued or taped closed. A `unit` object or a number
-  (in the units of `paper`). Default: `0.5` (inches, if `paper` has no
-  units)
+  (in the units of `paper`). Default: `NULL`, which uses 40% of the
+  `width` of `paper` (if `orientation` is `"horizontal"`) or 40% of the
+  `height` of `paper` (if `orientation` is `"vertical"`) — i.e. 40% of
+  whichever dimension of `paper` the band wraps around.
 
 - band_width:
 
@@ -164,10 +166,9 @@ plot_band_page(
 
   `gutter` changes the total size of the combined grid (adding
   `(ncol - 1) * col_gutter` and `(nrow - 1) * row_gutter`), which
-  `marks` accounts for automatically — but `set_page_grid()`'s automatic
-  `ncol`/ `nrow` calculation from `page`/`dims` does not reserve extra
-  room for `gutter`, so pass `ncol`/`nrow` explicitly when combining
-  `gutter` with an auto-computed grid size.
+  `marks` accounts for automatically — the automatic `ncol`/`nrow`
+  calculation from `page`/`dims` also reserves room for it, so fewer
+  plots may fit per page than with `gutter = 0`.
 
 - margin:
 

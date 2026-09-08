@@ -22,6 +22,7 @@ as_thickness(..., n = NULL, pt = 10, x = NULL, units = NULL)
 - n:
 
   Number of sheets or cards in the stack. Ignored if `x` is supplied.
+  Either `n` or `x` must be supplied.
 
 - pt:
 

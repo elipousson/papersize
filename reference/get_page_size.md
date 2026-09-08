@@ -127,6 +127,13 @@ convert_page_units(
 
 A data.frame with page, paper, or card name and dimensions.
 
+`get_page_dims()` returns a length 2 numeric vector with `page`'s width
+and height. If `page` resolved to a data.frame with a units column, that
+unit is also attached as a `"units"` attribute (`NULL` otherwise, e.g.
+when `page` was given only as bare `width`/`height` numbers) — check it
+before comparing dimensions from two different `get_page_dims()` calls,
+which aren't guaranteed to share units.
+
 ## See also
 
 [`make_page_size()`](https://elipousson.github.io/papersize/reference/make_page_size.md)
@@ -172,6 +179,8 @@ get_card("Tarot")
 get_page_dims(get_paper("letter"))
 #>  width height 
 #>    8.5   11.0 
+#> attr(,"units")
+#> [1] "inches"
 
 convert_page_units(get_paper("letter"), units = "cm")
 #> # A tibble: 1 × 10

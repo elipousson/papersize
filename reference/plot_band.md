@@ -21,7 +21,7 @@ plot_band(
   pt = 10,
   x = NULL,
   thickness = NULL,
-  overlap = 0.5,
+  overlap = NULL,
   band_width = NULL,
   fill = "white",
   color = "black",
@@ -76,8 +76,10 @@ plot_band(
 
   Distance the band extends past the far edge of the stack, forming a
   segment that can be glued or taped closed. A `unit` object or a number
-  (in the units of `paper`). Default: `0.5` (inches, if `paper` has no
-  units)
+  (in the units of `paper`). Default: `NULL`, which uses 40% of the
+  `width` of `paper` (if `orientation` is `"horizontal"`) or 40% of the
+  `height` of `paper` (if `orientation` is `"vertical"`) — i.e. 40% of
+  whichever dimension of `paper` the band wraps around.
 
 - band_width:
 

@@ -152,10 +152,9 @@ edge of the grid are not padded on their outward-facing side; use
 (no extra spacing).</p>
 <p><code>gutter</code> changes the total size of the combined grid (adding
 <code>(ncol - 1) * col_gutter</code> and <code>(nrow - 1) * row_gutter</code>), which <code>marks</code>
-accounts for automatically — but <code>set_page_grid()</code>'s automatic <code>ncol</code>/
-<code>nrow</code> calculation from <code>page</code>/<code>dims</code> does not reserve extra room for
-<code>gutter</code>, so pass <code>ncol</code>/<code>nrow</code> explicitly when combining <code>gutter</code> with
-an auto-computed grid size.</p></dd>
+accounts for automatically — the automatic <code>ncol</code>/<code>nrow</code> calculation
+from <code>page</code>/<code>dims</code> also reserves room for it, so fewer plots may fit
+per page than with <code>gutter = 0</code>.</p></dd>
 
 
 <dt id="arg-margin">margin<a class="anchor" aria-label="anchor" href="#arg-margin"></a></dt>

@@ -124,10 +124,9 @@ page_layout(
 
   `gutter` changes the total size of the combined grid (adding
   `(ncol - 1) * col_gutter` and `(nrow - 1) * row_gutter`), which
-  `marks` accounts for automatically — but `set_page_grid()`'s automatic
-  `ncol`/ `nrow` calculation from `page`/`dims` does not reserve extra
-  room for `gutter`, so pass `ncol`/`nrow` explicitly when combining
-  `gutter` with an auto-computed grid size.
+  `marks` accounts for automatically — the automatic `ncol`/`nrow`
+  calculation from `page`/`dims` also reserves room for it, so fewer
+  plots may fit per page than with `gutter = 0`.
 
 - margin:
 

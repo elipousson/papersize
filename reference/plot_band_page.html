@@ -67,7 +67,7 @@ saved directly with <code><a href="https://ggplot2.tidyverse.org/reference/ggsav
 <span>  pt <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  x <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  thickness <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  overlap <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  overlap <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  band_width <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fill <span class="op">=</span> <span class="st">"white"</span>,</span>
 <span>  color <span class="op">=</span> <span class="st">"black"</span>,</span>
@@ -129,8 +129,10 @@ side segments of the band exactly. Default: <code>NULL</code></p></dd>
 <dt id="arg-overlap">overlap<a class="anchor" aria-label="anchor" href="#arg-overlap"></a></dt>
 <dd><p>Distance the band extends past the far edge of the stack,
 forming a segment that can be glued or taped closed. A <code>unit</code> object or
-a number (in the units of <code>paper</code>). Default: <code>0.5</code> (inches, if <code>paper</code>
-has no units)</p></dd>
+a number (in the units of <code>paper</code>). Default: <code>NULL</code>, which uses 40% of
+the <code>width</code> of <code>paper</code> (if <code>orientation</code> is <code>"horizontal"</code>) or 40% of
+the <code>height</code> of <code>paper</code> (if <code>orientation</code> is <code>"vertical"</code>) — i.e. 40%
+of whichever dimension of <code>paper</code> the band wraps around.</p></dd>
 
 
 <dt id="arg-band-width">band_width<a class="anchor" aria-label="anchor" href="#arg-band-width"></a></dt>
@@ -201,10 +203,9 @@ edge of the grid are not padded on their outward-facing side; use
 (no extra spacing).</p>
 <p><code>gutter</code> changes the total size of the combined grid (adding
 <code>(ncol - 1) * col_gutter</code> and <code>(nrow - 1) * row_gutter</code>), which <code>marks</code>
-accounts for automatically — but <code>set_page_grid()</code>'s automatic <code>ncol</code>/
-<code>nrow</code> calculation from <code>page</code>/<code>dims</code> does not reserve extra room for
-<code>gutter</code>, so pass <code>ncol</code>/<code>nrow</code> explicitly when combining <code>gutter</code> with
-an auto-computed grid size.</p></dd>
+accounts for automatically — the automatic <code>ncol</code>/<code>nrow</code> calculation
+from <code>page</code>/<code>dims</code> also reserves room for it, so fewer plots may fit
+per page than with <code>gutter = 0</code>.</p></dd>
 
 
 <dt id="arg-margin">margin<a class="anchor" aria-label="anchor" href="#arg-margin"></a></dt>

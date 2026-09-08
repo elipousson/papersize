@@ -24,7 +24,7 @@ plot_band_dims(
   pt = 10,
   x = NULL,
   thickness = NULL,
-  overlap = 0.5,
+  overlap = NULL,
   band_width = NULL
 )
 ```
@@ -73,8 +73,10 @@ plot_band_dims(
 
   Distance the band extends past the far edge of the stack, forming a
   segment that can be glued or taped closed. A `unit` object or a number
-  (in the units of `paper`). Default: `0.5` (inches, if `paper` has no
-  units)
+  (in the units of `paper`). Default: `NULL`, which uses 40% of the
+  `width` of `paper` (if `orientation` is `"horizontal"`) or 40% of the
+  `height` of `paper` (if `orientation` is `"vertical"`) — i.e. 40% of
+  whichever dimension of `paper` the band wraps around.
 
 - band_width:
 
@@ -101,9 +103,9 @@ returned by
 ``` r
 plot_band_dims(get_card("Poker"), n = 54)
 #>   width height  units orientation      asp
-#> 1   6.6    1.4 inches   landscape 4.714286
+#> 1   7.1    1.4 inches   landscape 5.071429
 
 plot_band_dims(get_card("Tarot"), n = 78, orientation = "vertical")
 #>   width height  units orientation        asp
-#> 1   1.1  11.58 inches    portrait 0.09499136
+#> 1   1.1  12.98 inches    portrait 0.08474576
 ```
