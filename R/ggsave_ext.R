@@ -362,6 +362,11 @@ map_ggsave_ext <- function(
 
   check_installed("janitor")
 
+  if (!is_null(filename) && dirname(filename) != ".") {
+    path <- path %||% dirname(filename)
+    filename <- basename(filename)
+  }
+
   filename <- filenamr::make_filename(
     name = name,
     label = label,
@@ -396,11 +401,14 @@ map_ggsave_ext <- function(
     return(invisible(plot))
   }
 
+  combine_pdf <- FALSE
+
   if (single_file || onefile) {
     if (has_fileext(filename, "pdf")) {
       output_path <- path %||% getwd()
       input_path <- tempdir()
       path <- input_path
+      combine_pdf <- TRUE
     } else {
       cli::cli_bullets(
         c(
@@ -415,8 +423,7 @@ map_ggsave_ext <- function(
 
   n_plots <- seq_along(plot)
   plot_nums <- glue(
-    "{postfix}
-    {stringr::str_pad(n_plots, width = max(nchar(n_plots)), pad = '0')}"
+    "{postfix}{stringr::str_pad(n_plots, width = max(nchar(n_plots)), pad = '0')}"
   )
 
   msg <- "1"
@@ -437,7 +444,7 @@ map_ggsave_ext <- function(
     )
   }
 
-  if (!single_file && !onefile) {
+  if (!combine_pdf) {
     return(invisible(plot))
   }
 
