@@ -107,18 +107,20 @@ ggsave_ext <- function(
 
   if (identical(fileext, "pdf") && isTRUE(capabilities()[["cairo"]])) {
     device <- device %||% grDevices::cairo_pdf
-    # FIXME: This does the same thing regardless of whether plot is a patchwork
-    # object. Is that correct?
+    # patchwork objects can only be indexed with numeric indices, so
+    # plot[["theme"]] errors for them
     if (!is_patchwork(plot)) {
-      params$symbolfamily <- params$symbolfamily %||%
-        plot[["theme"]][["text"]][["family"]]
-    } else {
       params$symbolfamily <- params$symbolfamily %||%
         plot[["theme"]][["text"]][["family"]]
     }
   }
 
   check_installed("janitor")
+
+  if (!is_null(filename) && dirname(filename) != ".") {
+    path <- path %||% dirname(filename)
+    filename <- basename(filename)
+  }
 
   filename <- filenamr::make_filename(
     name = name,
