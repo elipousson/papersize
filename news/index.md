@@ -1,5 +1,64 @@
 # Changelog
 
+## papersize (development version)
+
+- [`add_card_number()`](https://elipousson.github.io/papersize/reference/add_card_number.md)
+  gains a `sequence` argument to control whether `n` is treated as a
+  count (the default, expanded with `seq(n)`) or used as-is.
+- [`annotate_wave()`](https://elipousson.github.io/papersize/reference/annotate_wave.md)
+  is a new function for adding a wavy (sine or zigzag) line annotation
+  to a plot.
+- [`as_page()`](https://elipousson.github.io/papersize/reference/as_page.md)
+  now errors on `NA` input for `x`, and supports `NULL` input (used
+  internally by
+  [`get_page_dims()`](https://elipousson.github.io/papersize/reference/get_page_size.md)
+  for unitless width/height).
+- [`as_thickness()`](https://elipousson.github.io/papersize/reference/as_thickness.md)
+  is a new helper for specifying material thickness, used by the
+  [`plot_band()`](https://elipousson.github.io/papersize/reference/plot_band.md)
+  family of functions.
+- [`as_unit_type()`](https://elipousson.github.io/papersize/reference/as_unit.md)
+  now errors on `NULL` input instead of failing later with a less
+  informative error.
+- [`ggsave_ext()`](https://elipousson.github.io/papersize/reference/ggsave_ext.md)
+  no longer mangles the directory portion of an absolute `filename` (it
+  was being run through name-cleaning meant for basenames only), and no
+  longer errors when saving a `patchwork` plot as a PDF.
+- [`make_page_size()`](https://elipousson.github.io/papersize/reference/make_page_size.md)
+  gains a `require_units` argument (default `TRUE`) that allows `units`
+  to be omitted when set to `FALSE`.
+- [`map_ggsave_ext()`](https://elipousson.github.io/papersize/reference/ggsave_ext.md)
+  fixes the same absolute-path mangling issue as
+  [`ggsave_ext()`](https://elipousson.github.io/papersize/reference/ggsave_ext.md),
+  fixes an error from an undefined `output_path` variable when saving a
+  list of `patchwork` plots to a non-PDF file, and fixes page-number
+  padding in multi-plot filenames (e.g. `pg_01`, `pg_02`, … instead of a
+  broken suffix caused by an unintended line break).
+- [`margin()`](https://ggplot2.tidyverse.org/reference/element.html) is
+  no longer exported in favor of
+  [`ggplot2::margin()`](https://ggplot2.tidyverse.org/reference/element.html).
+  [`margins()`](https://elipousson.github.io/papersize/reference/margins.md)
+  and
+  [`get_margin()`](https://elipousson.github.io/papersize/reference/margins.md)
+  now build on
+  [`ggplot2::margin()`](https://ggplot2.tidyverse.org/reference/element.html)
+  and
+  [`ggplot2::margin_auto()`](https://ggplot2.tidyverse.org/reference/element.html);
+  a single-value
+  [`margins()`](https://elipousson.github.io/papersize/reference/margins.md)
+  input now uses
+  [`ggplot2::margin_auto()`](https://ggplot2.tidyverse.org/reference/element.html)
+  instead of repeating the value on all four sides.
+- [`page_layout()`](https://elipousson.github.io/papersize/reference/page_layout.md)
+  gains a `gutter` argument to add spacing between plots in the grid.
+- [`plot_band()`](https://elipousson.github.io/papersize/reference/plot_band.md),
+  [`plot_band_dims()`](https://elipousson.github.io/papersize/reference/plot_band_dims.md),
+  and
+  [`plot_band_page()`](https://elipousson.github.io/papersize/reference/plot_band_page.md)
+  are new functions for creating a printable band or strip of repeated
+  card-style content, with fixes for handling mismatched units between
+  inputs.
+
 ## papersize 0.1.1 (2024-10-08)
 
 - Add `increment` parameter to

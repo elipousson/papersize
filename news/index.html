@@ -33,6 +33,31 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="development version" id="papersize-development-version">papersize (development version)<a class="anchor" aria-label="anchor" href="#papersize-development-version"></a></h2>
+<ul><li>
+<code><a href="../reference/add_card_number.html">add_card_number()</a></code> gains a <code>sequence</code> argument to control whether <code>n</code> is treated as a count (the default, expanded with <code>seq(n)</code>) or used as-is.</li>
+<li>
+<code><a href="../reference/annotate_wave.html">annotate_wave()</a></code> is a new function for adding a wavy (sine or zigzag) line annotation to a plot.</li>
+<li>
+<code><a href="../reference/as_page.html">as_page()</a></code> now errors on <code>NA</code> input for <code>x</code>, and supports <code>NULL</code> input (used internally by <code><a href="../reference/get_page_size.html">get_page_dims()</a></code> for unitless width/height).</li>
+<li>
+<code><a href="../reference/as_thickness.html">as_thickness()</a></code> is a new helper for specifying material thickness, used by the <code><a href="../reference/plot_band.html">plot_band()</a></code> family of functions.</li>
+<li>
+<code><a href="../reference/as_unit.html">as_unit_type()</a></code> now errors on <code>NULL</code> input instead of failing later with a less informative error.</li>
+<li>
+<code><a href="../reference/ggsave_ext.html">ggsave_ext()</a></code> no longer mangles the directory portion of an absolute <code>filename</code> (it was being run through name-cleaning meant for basenames only), and no longer errors when saving a <code>patchwork</code> plot as a PDF.</li>
+<li>
+<code><a href="../reference/make_page_size.html">make_page_size()</a></code> gains a <code>require_units</code> argument (default <code>TRUE</code>) that allows <code>units</code> to be omitted when set to <code>FALSE</code>.</li>
+<li>
+<code><a href="../reference/ggsave_ext.html">map_ggsave_ext()</a></code> fixes the same absolute-path mangling issue as <code><a href="../reference/ggsave_ext.html">ggsave_ext()</a></code>, fixes an error from an undefined <code>output_path</code> variable when saving a list of <code>patchwork</code> plots to a non-PDF file, and fixes page-number padding in multi-plot filenames (e.g. <code>pg_01</code>, <code>pg_02</code>, … instead of a broken suffix caused by an unintended line break).</li>
+<li>
+<code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">margin()</a></code> is no longer exported in favor of <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">ggplot2::margin()</a></code>. <code><a href="../reference/margins.html">margins()</a></code> and <code><a href="../reference/margins.html">get_margin()</a></code> now build on <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">ggplot2::margin()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">ggplot2::margin_auto()</a></code>; a single-value <code><a href="../reference/margins.html">margins()</a></code> input now uses <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">ggplot2::margin_auto()</a></code> instead of repeating the value on all four sides.</li>
+<li>
+<code><a href="../reference/page_layout.html">page_layout()</a></code> gains a <code>gutter</code> argument to add spacing between plots in the grid.</li>
+<li>
+<code><a href="../reference/plot_band.html">plot_band()</a></code>, <code><a href="../reference/plot_band_dims.html">plot_band_dims()</a></code>, and <code><a href="../reference/plot_band_page.html">plot_band_page()</a></code> are new functions for creating a printable band or strip of repeated card-style content, with fixes for handling mismatched units between inputs.</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.1" id="papersize-011-2024-10-08">papersize 0.1.1 (2024-10-08)<a class="anchor" aria-label="anchor" href="#papersize-011-2024-10-08"></a></h2>
 <ul><li>Add <code>increment</code> parameter to <code><a href="../reference/ggsave_ext.html">ggsave_ext()</a></code>.</li>
 <li>Avoid using <code>.onLoad</code> to load package data (use namespacing instead per <a href="https://r-pkgs.org/data.html#sec-data-data" class="external-link">guidance in R Packages book</a>)</li>
