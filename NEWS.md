@@ -1,3 +1,35 @@
+# papersize (development version)
+
+- `add_card_number()` gains a `sequence` argument to control whether `n` is
+  treated as a count (the default, expanded with `seq(n)`) or used as-is.
+- `annotate_wave()` is a new function for adding a wavy (sine or zigzag) line
+  annotation to a plot.
+- `as_page()` now errors on `NA` input for `x`, and supports `NULL` input
+  (used internally by `get_page_dims()` for unitless width/height).
+- `as_thickness()` is a new helper for specifying material thickness, used by
+  the `plot_band()` family of functions.
+- `as_unit_type()` now errors on `NULL` input instead of failing later with a
+  less informative error.
+- `ggsave_ext()` no longer mangles the directory portion of an absolute
+  `filename` (it was being run through name-cleaning meant for basenames
+  only), and no longer errors when saving a `patchwork` plot as a PDF.
+- `make_page_size()` gains a `require_units` argument (default `TRUE`) that
+  allows `units` to be omitted when set to `FALSE`.
+- `map_ggsave_ext()` fixes the same absolute-path mangling issue as
+  `ggsave_ext()`, fixes an error from an undefined `output_path` variable
+  when saving a list of `patchwork` plots to a non-PDF file, and fixes
+  page-number padding in multi-plot filenames (e.g. `pg_01`, `pg_02`, ...
+  instead of a broken suffix caused by an unintended line break).
+- `margin()` is no longer exported in favor of `ggplot2::margin()`.
+  `margins()` and `get_margin()` now build on `ggplot2::margin()` and
+  `ggplot2::margin_auto()`; a single-value `margins()` input now uses
+  `ggplot2::margin_auto()` instead of repeating the value on all four sides.
+- `page_layout()` gains a `gutter` argument to add spacing between plots in
+  the grid.
+- `plot_band()`, `plot_band_dims()`, and `plot_band_page()` are new functions
+  for creating a printable band or strip of repeated card-style content, with
+  fixes for handling mismatched units between inputs.
+
 # papersize 0.1.1 (2024-10-08)
 
 - Add `increment` parameter to `ggsave_ext()`.
